@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backscreen"
+    tools:context=".agent_login">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="275dp"
+        android:layout_height="78dp"
+        app:srcCompat="@drawable/logo1"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="141dp" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="288.55dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="291dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="68dp" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="288.55dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="348dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="68dp" />
+</android.support.constraint.ConstraintLayout>
