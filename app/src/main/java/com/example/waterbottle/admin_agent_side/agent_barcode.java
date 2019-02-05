@@ -61,6 +61,7 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
+
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     //userlist.datas(String.valueOf(dsp.getKey())); //add result into array list
                     String key1= dsp.getKey();
@@ -82,22 +83,8 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
 
             }
         });
-        FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed);
-        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
-            @Override
-            public boolean onPrepareMenu(NavigationMenu navigationMenu) {
-                // TODO: Do something with yout menu items, or return false if you don't want to show them
-                return true;
-            }
-        });
-       // FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
-    /*    fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
-            @Override
-            public boolean onMenuItemSelected(MenuItem menuItem) {
-                //TODO: Start some activity
-                return false;
-            }
-        });*/
+
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().hide(); // hide the title bar

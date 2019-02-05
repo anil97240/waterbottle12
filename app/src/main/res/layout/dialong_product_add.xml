@@ -6,7 +6,7 @@
     android:layout_height="550dp"
     android:paddingBottom="8dp"
     android:textAlignment="center"
-    android:background="@drawable/list_view_corner"
+    android:background="@drawable/dialog_corner"
     android:padding="10dp">
 
     <EditText
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="4dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button"
         android:text="All Product"
         android:textColor="@color/default_circle_indicator_fill_color"
         android:textSize="24sp"

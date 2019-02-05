@@ -135,6 +135,7 @@ public class customer_order extends AppCompatActivity{
                 public void onPageSelected(int position) {
                     currentPage = position;
                     tvdetails.setText(IMAGESNAME[position]);
+                    edtbottle.setText(""+0);
 
 
                 }

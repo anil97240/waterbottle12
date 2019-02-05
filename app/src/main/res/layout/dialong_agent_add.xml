@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="520dp"
     android:paddingBottom="8dp"
-    android:textAlignment="center">
+    android:textAlignment="center"
+    android:background="@drawable/dialog_corner">
 
     <EditText
         android:id="@+id/edtaddress"
@@ -89,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button"
         android:text="All Agent"
         android:textColor="@color/default_circle_indicator_fill_color"
         android:textSize="24sp"

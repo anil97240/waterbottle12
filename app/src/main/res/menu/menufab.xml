@@ -7,14 +7,16 @@
     <item
         android:id="@+id/action_logout"
         android:icon="@drawable/logout"
-        android:title="Agent"/>
+        android:title="Logout"/>
     <item
         android:id="@+id/action_agent"
         android:icon="@drawable/agent"
-        android:title="" />
+        android:title="Agent" />
 
     <item
         android:id="@+id/action_product"
         android:icon="@drawable/pnm"
         android:title="Product" />
+
+
 </menu>

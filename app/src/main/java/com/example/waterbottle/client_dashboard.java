@@ -1,6 +1,7 @@
 package com.example.waterbottle;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
     //the listview
     ListView listView,listView1,listView2;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +68,12 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
 
         // Initializing a new String Array
         String[] fruits = new String[] {
-               s.toString() +"         $300",
-                s.toString() +"         $300",
-                s.toString() +"         $300",
-                s.toString() +"         $300",
-                s.toString() +"         $300",
-                s.toString() +"         $300",
+                s.toString() +"                    $300",
+                s.toString() +"                    $300",
+                s.toString() +"                    $300",
+                s.toString() +"                    $300",
+                s.toString() +"                    $300",
+                s.toString() +"                    $300",
         };
 
 
@@ -84,7 +86,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
 
         // Create an ArrayAdapter from List
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.select_dialog_item, combined);
+                (this, android.R.layout.simple_list_item_1, combined);
 
         // DataBind ListView with items from ArrayAdapter
         listView.setAdapter(arrayAdapter);
@@ -137,7 +139,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
                 animateFAB();
                 break;
             case R.id.fab1:
-                Log.d("Raj", "Fab 1");
+                Log.d("a", "Fab 1");
                 showCustomDialog();
 
 
@@ -172,10 +174,12 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
 
         AlertDialog.Builder builder = new AlertDialog.Builder(client_dashboard.this);
 
-        LayoutInflater inflater = LayoutInflater.from(client_dashboard.this);
-        View view = inflater.inflate(R.layout.dialong_customer_profile, null);
-        builder.setView(view);
 
+
+        View view = getLayoutInflater().inflate(R.layout.dialong_customer_profile, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
         //get all edittext in dialog_customer_add
       /*  final EditText edtnm = view.findViewById(R.id.edtnm);
@@ -186,8 +190,6 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
 //client profile
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +197,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
                 //set all client display activity
              /*   Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);*/
-                dialog.dismiss();
+
             }
         });
 
@@ -220,7 +222,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             public void onClick(View v) {
 
 
-                dialog.dismiss();
+
             }
         });
 

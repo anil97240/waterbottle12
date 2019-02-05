@@ -7,23 +7,8 @@
     android:background="@drawable/backscreen"
     tools:context=".admin_agent_side.agent_barcode">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
 
-        <io.github.yavski.fabspeeddial.FabSpeedDial
-            android:id="@+id/fab_speed"
-            android:layout_width="66dp"
-            android:layout_height="61dp"
-            android:layout_gravity="bottom|end"
-            app:fabGravity="bottom_end"
-            app:fabMenu="@menu/menufab"
-            app:miniFabBackgroundTint="@android:color/white"
-            app:miniFabDrawableTint="?attr/colorPrimaryDark"
-            app:miniFabTitleTextColor="?attr/colorPrimaryDark" />
 
-    </FrameLayout>
 
     <Button
         android:id="@+id/button3"
@@ -79,13 +64,13 @@
 
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="-30dp"
-        android:layout_marginRight="-30dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="67dp"
         android:layout_toStartOf="@+id/fab"
         android:layout_toLeftOf="@+id/fab"
         android:src="@drawable/logout"
-
+        android:tint="@color/common_google_signin_btn_text_dark_default"
         android:visibility="invisible"
         app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
@@ -97,18 +82,19 @@
         android:layout_height="65dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="288dp"
-        android:layout_marginRight="288dp"
-        android:layout_marginBottom="24dp"
-
+        android:layout_marginEnd="107dp"
+        android:layout_marginRight="107dp"
+        android:layout_marginBottom="6dp"
         android:src="@drawable/cus"
+        android:backgroundTint="@color/colorAccent"
+        android:tint="@color/colorfab"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp" />
+        app:fabMenu="@menu/menufab"
+        app:pressedTranslationZ="12dp"
+       />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -118,15 +104,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
-
-        android:layout_marginEnd="234dp"
-        android:layout_marginRight="234dp"
-        android:layout_marginBottom="25dp"
+        android:tint="@color/colorfab"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="27dp"
         android:src="@drawable/add"
         app:backgroundTint="@color/colorAccent"
+
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:rippleColor="@color/colorBackgroud" />
+         />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -139,6 +126,10 @@
         android:layout_marginEnd="18dp"
         android:layout_marginRight="18dp"
         app:srcCompat="@drawable/titlelogo" />
+
+
+
+
 
 
 </RelativeLayout>

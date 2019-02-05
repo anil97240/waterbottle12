@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-
+android:background="@drawable/dialog_corner"
     android:textAlignment="center">
 
     <EditText
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="4dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button"
         android:text="All Client"
         android:textColor="@color/default_circle_indicator_fill_color"
         android:textSize="24sp"

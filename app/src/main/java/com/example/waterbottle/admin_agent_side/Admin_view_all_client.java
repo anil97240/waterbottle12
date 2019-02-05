@@ -3,6 +3,7 @@ package com.example.waterbottle.admin_agent_side;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.example.waterbottle.client_side.client_model.client;
@@ -67,6 +70,13 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         clientlistAdepter adapter = new clientlistAdepter(this,R.layout.my_custom_listview_customer, clientList);
 
         listView.setAdapter(adapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(Admin_view_all_client.this, ""+parent+""+position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
@@ -126,10 +136,10 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
     private void showProductDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(Admin_view_all_client.this);
 
-        LayoutInflater inflater = LayoutInflater.from(Admin_view_all_client.this);
-        View view = inflater.inflate(R.layout.dialong_product_add, null);
-        builder.setView(view);
-
+        View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
         //get all edittext in dialog_customer_add
       /*  final EditText edtnm = view.findViewById(R.id.edtnm);
@@ -140,8 +150,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
 
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +159,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
                 Intent i = new Intent(getApplicationContext(),admin_view_product.class);
                 startActivity(i);
-                dialog.dismiss();
+
             }
         });
 
@@ -169,7 +177,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
 
 
-                dialog.dismiss();
+
             }
         });
 
@@ -180,9 +188,10 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Admin_view_all_client.this);
 
-        LayoutInflater inflater = LayoutInflater.from(Admin_view_all_client.this);
-        View view = inflater.inflate(R.layout.dialong_agent_add, null);
-        builder.setView(view);
+        View view = getLayoutInflater().inflate(R.layout.dialong_agent_add, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
 
         //get all edittext in dialog_customer_add
@@ -194,16 +203,13 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
         view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //set all client display activity
                 Intent i = new Intent(getApplicationContext(),admin_dashboard.class);
                 startActivity(i);
-                dialog.dismiss();
+
             }
         });
 
@@ -221,7 +227,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
 
 
-                dialog.dismiss();
             }
         });
 
@@ -238,10 +243,10 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Admin_view_all_client.this);
 
-        LayoutInflater inflater = LayoutInflater.from(Admin_view_all_client.this);
-        View view = inflater.inflate(R.layout.dialog_customer_add, null);
-        builder.setView(view);
-
+        View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
         //get all edittext in dialog_customer_add
       /*  final EditText edtnm = view.findViewById(R.id.edtnm);
@@ -252,8 +257,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
+
 
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,7 +265,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                 //set all client display activity
              /*   Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);*/
-             dialog.dismiss();
+
             }
         });
 
@@ -286,7 +290,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
 
 
-                dialog.dismiss();
             }
         });
 

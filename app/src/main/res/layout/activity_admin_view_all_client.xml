@@ -11,14 +11,14 @@
         android:id="@+id/fab2"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/agent"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="-57dp"
-        android:layout_marginRight="-57dp"
-        android:layout_marginBottom="153dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="54dp"
         android:layout_toStartOf="@+id/fab"
         android:layout_toLeftOf="@+id/fab"
-
+        android:src="@drawable/agent"
+        android:tint="@color/colorfab"
         android:visibility="invisible"
         app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
@@ -30,12 +30,12 @@
         android:layout_height="65dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:layout_marginBottom="91dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginRight="104dp"
+        android:layout_marginBottom="0dp"
         android:src="@drawable/cus"
+        android:tint="@color/colorfab"
         android:visibility="invisible"
         app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
@@ -49,12 +49,14 @@
         android:layout_alignParentRight="true"
 
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:layout_marginBottom="215dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginRight="53dp"
+        android:layout_marginBottom="84dp"
         android:src="@drawable/add"
+        android:tint="@color/colorfab"
         android:visibility="invisible"
         app:backgroundTint="@color/colorAccent"
+
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -66,10 +68,11 @@
         android:layout_alignParentRight="true"
 
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:layout_marginBottom="276dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="75dp"
         android:src="@drawable/logout"
+        android:tint="@color/colorfab"
         android:visibility="invisible"
         app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
@@ -83,14 +86,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
 
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/add"
+        android:tint="@color/colorfab"
+
         app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="@color/colorBackgroud" />
+        app:pressedTranslationZ="12dp" />
+
 
     <ImageView
         android:id="@+id/imageView3"

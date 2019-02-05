@@ -2,6 +2,7 @@ package com.example.waterbottle.admin_agent_side;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -122,9 +123,12 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
 
-        LayoutInflater inflater = LayoutInflater.from(admin_dashboard.this);
-        View view = inflater.inflate(R.layout.dialong_product_add, null);
-        builder.setView(view);
+        View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
+
+
 
 
         //get all edittext in dialog_customer_add
@@ -136,8 +140,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
+
 
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +150,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
                 Intent i = new Intent(getApplicationContext(),admin_view_product.class);
                 startActivity(i);
-                dialog.dismiss();
+                //dialog.dismiss();
             }
         });
 
@@ -165,7 +168,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
 
 
-                dialog.dismiss();
+                //dialog.dismiss();
             }
         });
 
@@ -175,9 +178,10 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
 
-        LayoutInflater inflater = LayoutInflater.from(admin_dashboard.this);
-        View view = inflater.inflate(R.layout.dialong_agent_add, null);
-        builder.setView(view);
+        View view = getLayoutInflater().inflate(R.layout.dialong_agent_add, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
 
         //get all edittext in dialog_customer_add
@@ -189,8 +193,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
+
 
         view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +201,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 //set all client display activity
                 //Intent i = new Intent(getApplicationContext(),admin_dashboard.class);
                 //startActivity(i);
-                dialog.dismiss();
+
             }
         });
 
@@ -216,7 +219,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
 
 
-                dialog.dismiss();
             }
         });
 
@@ -232,10 +234,11 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
-        LayoutInflater inflater = LayoutInflater.from(admin_dashboard.this);
-        View view = inflater.inflate(R.layout.dialog_customer_add, null);
-        builder.setView(view);
 
 
         //get all edittext in dialog_customer_add
@@ -247,8 +250,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
 
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,7 +257,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 //set all client display activity
                 Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);
-                dialog.dismiss();
+
             }
         });
 
@@ -281,7 +282,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
 
 
-                dialog.dismiss();
+
             }
         });
 
