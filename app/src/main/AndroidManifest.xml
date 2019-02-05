@@ -2,21 +2,47 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.waterbottle">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".agent_login"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".customer_order"> </activity>
+        <activity android:name=".client_view_product" />
+        <activity android:name=".client_dashboard">
+
+        </activity>
+        <activity android:name=".client_mobile_verification" />
+        <activity android:name=".client_login">
+
+        </activity>
+        <activity android:name=".admin_agent_side.admin_view_product" >
+
+        </activity>
+        <activity android:name=".admin_agent_side.Admin_view_all_client" />
+        <activity android:name=".admin_agent_side.admin_dashboard" >
+
+        </activity>
+
+        <activity android:name=".admin_agent_side.agent_add_bottle">
+      </activity>
+        <activity android:name=".admin_agent_side.agent_barcode" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+       </activity>
+        <activity android:name=".admin_agent_side.agent_login" >
+
         </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
