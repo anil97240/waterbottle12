@@ -2,7 +2,11 @@ package com.example.waterbottle.admin_agent_side;
 
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +36,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
 
     List<client> clientList;
+
 
     //the listview
     ListView listView;
@@ -70,14 +75,22 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         clientlistAdepter adapter = new clientlistAdepter(this,R.layout.my_custom_listview_customer, clientList);
 
         listView.setAdapter(adapter);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Admin_view_all_client.this, ""+parent+""+position, Toast.LENGTH_SHORT).show();
-                return false;
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+               client c=clientList.get(position);
+               String s=c.getNo();
+
+
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+s));
+                startActivity(intent);
+
+              Toast.makeText(Admin_view_all_client.this, ""+s.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
