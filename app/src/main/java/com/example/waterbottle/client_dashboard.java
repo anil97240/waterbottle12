@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,12 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import com.example.waterbottle.admin_agent_side.Admin_view_all_client;
-import com.example.waterbottle.admin_agent_side.Model.MyListAdapter;
 import com.example.waterbottle.admin_agent_side.Model.agent;
-import com.example.waterbottle.admin_agent_side.admin_dashboard;
-import com.example.waterbottle.client_side.client_model.client;
-import com.example.waterbottle.client_side.client_model.clientlistAdepter;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import java.util.ArrayList;

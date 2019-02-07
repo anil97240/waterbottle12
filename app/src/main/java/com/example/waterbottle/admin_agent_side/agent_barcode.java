@@ -58,24 +58,17 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
         //DatabaseReference myRef = database.getReference("market");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot dsp : dataSnapshot.getChildren())
+                {
                     //userlist.datas(String.valueOf(dsp.getKey())); //add result into array list
                     String key1= dsp.getKey();
                     //dsp.child("https://waterbottle12-e6aa9.firebaseio.com/QR_CODE");
                     //condition code
-
                         arrayList.add(dsp.getValue().toString());
                         arrayList.add(key1);
-
-
-                //    Toast.makeText(agent_barcode.this, "" +userlist, Toast.LENGTH_SHORT).show();
-
                 }
-               // Toast.makeText(agent_barcode.this, ""+arrayList, Toast.LENGTH_SHORT).show();
 
             }
             @Override

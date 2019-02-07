@@ -2,111 +2,144 @@ package com.example.waterbottle.admin_agent_side;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.waterbottle.R;
-import com.example.waterbottle.admin_agent_side.product_model.product;
-import com.example.waterbottle.admin_agent_side.product_model.productlistadepter;
-import com.firebase.client.DataSnapshot;
+import com.example.waterbottle.admin_agent_side.product_model.MyProductListAdapter;
+import com.example.waterbottle.admin_agent_side.product_model.Product;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class admin_view_product extends AppCompatActivity implements View.OnClickListener{
+public class admin_view_product extends AppCompatActivity implements View.OnClickListener {
 
-
+    private static final String TAG = "Mohit";
+    //the list values in the List of type hero
+    ListView listView;
+    //list to store uploads data
+    List<Product> productList;
+    ArrayList arrayList = new ArrayList<String>();
+    //Firebase Url Get INstance
+    String url = "https://waterbottle12-e6aa9.firebaseio.com/";
+    private DatabaseReference mDatabaseReference;
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fab1, fab2,fab3, fab4;
+    private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
-    List<product> productList;
-    ArrayList arrayList = new ArrayList<String>();
-    //the listview
-    ListView listView;
-    String url="https://waterbottle12-e6aa9.firebaseio.com/";
 
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().hide(); // hide the title bar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
-
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         setContentView(R.layout.activity_admin_view_product);
 
 
+        //initializing objects
+
         productList = new ArrayList<>();
-
         listView = (ListView) findViewById(R.id.listView1);
+        Firebase.setAndroidContext(this);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Product_data");
 
-
-       Firebase.setAndroidContext(this);
-
-        Firebase ref;
-        String url="https://waterbottle12-e6aa9.firebaseio.com/Product_data";
-        ref = new Firebase(url);
-        //DatabaseReference myRef = database.getReference("market");
-        ref.addValueEventListener(new ValueEventListener() {
+        //retrieving upload data from firebase database
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Product upload = postSnapshot.getValue(Product.class);
+                        productList.add(upload);
+                    }
 
-               for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    //userlist.datas(String.valueOf(dsp.getKey())); //add result into array list
-                //    String key1 = dsp.getKey();
-                    arrayList.add(dsp.getValue().toString());
-                   String s= String.valueOf(arrayList.get(0));
-                   productList.add(new product(R.drawable.logo, 0, s, "1000", "50 L"));
+                    String[] uploads = new String[productList.size()];
 
-               }
-              /*  String[] uploads = new String[arrayList.size()];
+                    for (int i = 0; i < uploads.length; i++) {
+                        uploads[i] = productList.get(i).getProduct_name();
+                        Log.e(TAG, "onDataChange: " + uploads[i].toString());
+                    }
+                    //displaying it to list
+                    MyProductListAdapter adapter = new MyProductListAdapter(getApplicationContext(), R.layout.product_listview, productList);
 
-                for (int i = 0; i < uploads.length; i++) {
-                    uploads[i] = arrayList.get(i);
-                }*/
+                    listView.setAdapter(adapter);
 
-               productlistadepter adapter = new productlistadepter(getApplicationContext(),R.layout.product_listview, productList);
 
-                listView.setAdapter(adapter);
+                } catch (Exception e) {
+                    Log.e(TAG, "onDataChange: " + e);
+                }
+
 
             }
+
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
 
 
 
+/*
+             FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference();
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Product post = dataSnapshot.getValue(Product.class);
+                    productList.add(post);
+                    Log.e(TAG, "onDataChange: "+post );
+                    String[] uploads = new String[productList.size()];
+
+                    for (int i = 0; i < uploads.length; i++) {
+                        uploads[i] = productList.get(i).getName();
+                        Log.e(TAG, "onDataChange: "+i );
+                    }
+
+                    }
 
 
-        //add product list in listview
 
 
-     //   String s= String.valueOf(arrayList.get(0));
-     //   Toast.makeText(this, ""+s, Toast.LENGTH_SHORT).show();
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getMessage());
+                }
+            });
+            */
+
+
+// Attach a listener to read the data at our posts reference
+
+
+        //   String s= String.valueOf(arrayList.get(0));
+        //   Toast.makeText(this, ""+s, Toast.LENGTH_SHORT).show();
    /*     productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
         productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
         productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));*/
@@ -117,7 +150,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         fab3 = (FloatingActionButton) findViewById(R.id.fab3);
         fab4 = (FloatingActionButton) findViewById(R.id.fab4);
 
-        for(int i=1;i<arrayList.size();i++) {
+        for (int i = 1; i < arrayList.size(); i++) {
             Toast.makeText(admin_view_product.this, "" + arrayList.get(i), Toast.LENGTH_SHORT).show();
         }
 
@@ -148,9 +181,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 showCustomDialog();
 
 
-
-
-
                 break;
 
             case R.id.fab2:
@@ -165,7 +195,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 showProductDialog();
                 break;
             case R.id.fab4:
-                Intent i=new Intent(this,agent_login.class);
+                Intent i = new Intent(this, agent_login.class);
                 startActivity(i);
 
                 Log.d("a", "Fab 4");
@@ -176,8 +206,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 //for product add dialong method
 
     private void showProductDialog() {
-
-
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_view_product.this);
@@ -193,16 +221,14 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         final EditText edtdetail = view.findViewById(R.id.edtdetail);
 
 
-
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set all client display activity
+                //set all Client display activity
                 //display all product page
 
             }
         });
-
 
 
         view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
@@ -216,15 +242,15 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
                 // DatabaseReference usersRef = ref.child("users");
 
-                String pnm=edtnm.getText().toString();
-                String price=edtprice.getText().toString();
-                String detail=edtdetail.getText().toString();
+                String pnm = edtnm.getText().toString();
+                String price = edtprice.getText().toString();
+                String detail = edtdetail.getText().toString();
 
 
                 Map<String, String> users = new HashMap<>();
-                users.put("Product_name",pnm);
-                users.put("Product_Price",price);
-                users.put("Product_detail",detail);
+                users.put("Product_name", pnm);
+                users.put("Product_Price", price);
+                users.put("Product_detail", detail);
                 ref.child("Product_data").push().setValue(users);
 
                 // ref.child()
@@ -238,7 +264,8 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
 
     }
-//for agent add
+
+    //for agent add
     private void showAgentDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_view_product.this);
@@ -256,18 +283,17 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
-      //for agent add
+        //for agent add
 
         view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set all client display activity
-                Intent i = new Intent(getApplicationContext(),admin_dashboard.class);
+                //set all Client display activity
+                Intent i = new Intent(getApplicationContext(), admin_dashboard.class);
                 startActivity(i);
 
             }
         });
-
 
 
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
@@ -275,14 +301,8 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             public void onClick(View v) {
 
 
-
             }
         });
-
-
-
-
-
 
 
     }
@@ -308,7 +328,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set all client display activity
+                //set all Client display activity
                 Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);
             }
@@ -331,18 +351,18 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
                 //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
                 // DatabaseReference usersRef = ref.child("users");
-                String nm=edtnm.getText().toString();
-                String mob=edtmob.getText().toString();
-                String add=edtadd.getText().toString();
-                String add2=edtadd2.getText().toString();
-                String qrcode=edtbarcode.getText().toString();
+                String nm = edtnm.getText().toString();
+                String mob = edtmob.getText().toString();
+                String add = edtadd.getText().toString();
+                String add2 = edtadd2.getText().toString();
+                String qrcode = edtbarcode.getText().toString();
 
                 Map<String, String> users = new HashMap<>();
-                users.put("Customer_name",nm);
-                users.put("Mobile_number",mob);
-                users.put("Address ",add);
-                users.put("Local_address ",add2);
-                users.put("Customer_qrcode",qrcode);
+                users.put("Customer_name", nm);
+                users.put("Mobile_number", mob);
+                users.put("Address ", add);
+                users.put("Local_address ", add2);
+                users.put("Customer_qrcode", qrcode);
                 ref.child("Customer_data").push().setValue(users);
 
                 // ref.child()
@@ -352,9 +372,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 dialog.dismiss();
             }
         });
-
-
-
 
 
     }

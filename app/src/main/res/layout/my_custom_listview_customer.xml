@@ -61,7 +61,7 @@
             android:paddingLeft="10dp">
 
             <TextView
-                android:id="@+id/tvclientnm"
+                android:id="@+id/tvcnm"
                 android:layout_width="99dp"
                 android:layout_height="36dp"
                 android:text="abc"

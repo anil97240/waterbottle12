@@ -8,24 +8,45 @@
     tools:context=".admin_agent_side.agent_add_bottle">
 
     <TextView
+        android:id="@+id/txttotalbottle2"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        android:text="Total Bottle :"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
         android:id="@+id/tvbottledetails"
         android:layout_width="163dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="55dp"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnadd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_width="0dp"
+        android:layout_height="83dp"
+        android:layout_marginBottom="441dp"
+        android:background="@color/colorFAB1"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:background="@color/colorFAB1"
+        app:layout_constraintBottom_toTopOf="@+id/tvbottledetails"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:ignore="MissingConstraints">
 
         <Button
@@ -35,6 +56,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="17dp"
             android:background="@drawable/backicon" />
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="60dp"
@@ -66,97 +88,41 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
-        android:layout_width="281dp"
-        android:layout_height="283dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvbottledetails"
+        android:layout_width="417dp"
+        android:layout_height="481dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="24dp"
         android:padding="10dip"
         app:centered="true"
         app:fillColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
         app:pageColor="@color/colorBackgroud"
         app:snap="false" />
 
     <Button
-        android:id="@+id/btnadd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
-        android:layout_marginBottom="133dp"
-        android:background="@drawable/button"
-        android:onClick="addbottle"
-        android:text="+"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/edtadd" />
-
-    <EditText
-        android:id="@+id/edtadd"
-        android:layout_width="99dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnadd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnmin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="13dp"
-        android:background="@drawable/button"
-        android:onClick="minbottle"
-        android:text="-"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/edtadd"
-        app:layout_constraintTop_toTopOf="@+id/edtadd" />
-
-    <TextView
-        android:id="@+id/txttotalbottle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:text="Total Bottle :"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btnmin"
-        app:layout_constraintTop_toBottomOf="@+id/btnmin" />
-
-    <Button
         android:id="@+id/btndone"
-        android:layout_width="109dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/button"
         android:onClick="btnok"
         android:text="OK"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txttotalbottle" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

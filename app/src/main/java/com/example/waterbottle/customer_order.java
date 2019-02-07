@@ -77,7 +77,7 @@ public class customer_order extends AppCompatActivity{
 
     }
     private void init() {
-        for (int i = 0; i < IMAGES.length; i++) {
+/*        for (int i = 0; i < IMAGES.length; i++) {
 
 //            Imagesname.add((IMAGESNAME[i]));
             ImagesArray.add(IMAGES[i]);
@@ -129,7 +129,7 @@ public class customer_order extends AppCompatActivity{
             }, 300000, 300000);*/
 
             // Pager listener over indicator
-            indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+         /*   indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
                 @Override
                 public void onPageSelected(int position) {
@@ -152,7 +152,7 @@ public class customer_order extends AppCompatActivity{
                 }
             });
 
-        }
+        }*/
     }
 
     public void addbottle(View view) {

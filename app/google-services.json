@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "306766042036",
+    "firebase_url": "https://waterbottle12-e6aa9.firebaseio.com",
+    "project_id": "waterbottle12-e6aa9",
+    "storage_bucket": "waterbottle12-e6aa9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306766042036:android:72d654ad679ddbd2",
+        "android_client_info": {
+          "package_name": "com.example.waterbottle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306766042036-ekgh5md8j4ecdspa5mt46lej9rh7ofs2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.waterbottle",
+            "certificate_hash": "a349f1e4e3f86c20ab94629998a3265f12f6b082"
+          }
+        },
+        {
+          "client_id": "306766042036-7jm5cos71gn9jr2g1vnrt6oflp5uqnvv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoApQaqL6hG2ENbPriOIDomkitxWyZKOY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306766042036-7jm5cos71gn9jr2g1vnrt6oflp5uqnvv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

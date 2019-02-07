@@ -14,11 +14,11 @@ import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.firebase.client.Firebase;
-import com.firebase.client.ValueEventListener;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class agent_add_bottle extends AppCompatActivity {
@@ -36,10 +36,13 @@ String userName;
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
+
     private static final String[] IMAGESNAME= {"Bisleri","kaveri","Oxyri","Mini Bisleri"};
-    private static final Integer[] IMAGES= {R.drawable.bta,R.drawable.na,R.drawable.nb,R.drawable.nc};
-    private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
-    private ArrayList<String> Imagesname = new ArrayList<String>();
+    public static final Integer[] IMAGES= {R.drawable.bta,R.drawable.na,R.drawable.nb,R.drawable.nc};
+
+
+     List<sliding_image> slid_img;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +54,9 @@ String userName;
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_agent_add_bottle);
+        tvtotalbottle=findViewById(R.id.txttotalbottle2);
 
         Bundle extras = getIntent().getExtras();
-
 
         if (extras != null) {
             userName = extras.getString("qrcode");
@@ -62,21 +65,26 @@ String userName;
         init();
     }
 
-    private void init() {
-        for (int i = 0; i < IMAGES.length; i++) {
+    private void total() {
+        //set data on Text view and get data from sliding_image
+        sliding_image sv = new sliding_image();
+        String s= sv.getTotal();
+        tvtotalbottle.setText(s);
+        Toast.makeText(this, ""+s, Toast.LENGTH_SHORT).show();
+    }
 
-//            Imagesname.add((IMAGESNAME[i]));
-            ImagesArray.add(IMAGES[i]);
-//
+    private void init() {
+
+        slid_img = new ArrayList<>();
+        for (int i = 0; i < IMAGES.length; i++) {
+            int s=IMAGES[i];
+            slid_img.add(new sliding_image(s));
 
             mPager = (ViewPager) findViewById(R.id.pager);
             tvdetails = findViewById(R.id.tvbottledetails);
-            edtbottle=findViewById(R.id.edtadd);
-            tvtotalbottle=findViewById(R.id.txttotalbottle);
-            tvtotalbottle.setText(""+0);
-            edtbottle.setText(""+0);
-           // tvdetails.setText((CharSequence) Imagesname);
-            mPager.setAdapter(new SlidingImage_Adapter(agent_add_bottle.this, ImagesArray));
+
+
+            mPager.setAdapter(new SlidingImage_Adapter(agent_add_bottle.this,slid_img));
 
 
             CirclePageIndicator indicator = (CirclePageIndicator)
@@ -86,16 +94,10 @@ String userName;
 
             final float density = getResources().getDisplayMetrics().density;
 
-
-
-
-
         //Set circle indicator radius
             indicator.setRadius(8 * density);
 
             NUM_PAGES = IMAGES.length;
-
-
             // Auto start of viewpager
             final Handler handler = new Handler();
             final Runnable Update = new Runnable() {
@@ -104,15 +106,9 @@ String userName;
                         currentPage = 0;
                     }
                     mPager.setCurrentItem(currentPage++, true);
+
                 }
             };
-          /*  Timer swipeTimer = new Timer();
-            swipeTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    handler.post(Update);
-                }
-            }, 300000, 300000);*/
 
             // Pager listener over indicator
             indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -121,13 +117,16 @@ String userName;
                 public void onPageSelected(int position) {
                     currentPage = position;
                     tvdetails.setText(IMAGESNAME[position]);
+                    if(position>0)
+                    {
+                        total();
+                    }
 
 
                 }
 
                 @Override
                 public void onPageScrolled(int pos, float arg1, int arg2) {
-
 
                 }
 
@@ -140,7 +139,7 @@ String userName;
         }
     }
 
-    public void addbottle(View view) {
+    /*public void addbottle(View view) {
         int a= Integer.parseInt(edtbottle.getText().toString());
         int b=1;
         a=b+a;
@@ -164,7 +163,7 @@ String userName;
             edtbottle.setText("" + a);
             tvtotalbottle.setText("Total Bottles :"+a);
         }
-        }
+        }*/
 
     public void btnok(View view) {
 
