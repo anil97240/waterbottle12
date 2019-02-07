@@ -14,14 +14,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.product_model.product;
 import com.example.waterbottle.admin_agent_side.product_model.productlistadepter;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class admin_view_product extends AppCompatActivity implements View.OnClickListener{
 
@@ -31,9 +41,10 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     List<product> productList;
-
+    ArrayList arrayList = new ArrayList<String>();
     //the listview
     ListView listView;
+    String url="https://waterbottle12-e6aa9.firebaseio.com/";
 
     @SuppressLint("ResourceType")
     @Override
@@ -46,26 +57,69 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
         setContentView(R.layout.activity_admin_view_product);
 
+
         productList = new ArrayList<>();
+
         listView = (ListView) findViewById(R.id.listView1);
+
+
+       Firebase.setAndroidContext(this);
+
+        Firebase ref;
+        String url="https://waterbottle12-e6aa9.firebaseio.com/Product_data";
+        ref = new Firebase(url);
+        //DatabaseReference myRef = database.getReference("market");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+               for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    //userlist.datas(String.valueOf(dsp.getKey())); //add result into array list
+                //    String key1 = dsp.getKey();
+                    arrayList.add(dsp.getValue().toString());
+                   String s= String.valueOf(arrayList.get(0));
+                   productList.add(new product(R.drawable.logo, 0, s, "1000", "50 L"));
+
+               }
+              /*  String[] uploads = new String[arrayList.size()];
+
+                for (int i = 0; i < uploads.length; i++) {
+                    uploads[i] = arrayList.get(i);
+                }*/
+
+               productlistadepter adapter = new productlistadepter(getApplicationContext(),R.layout.product_listview, productList);
+
+                listView.setAdapter(adapter);
+
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+
 
         //add product list in listview
 
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
 
+     //   String s= String.valueOf(arrayList.get(0));
+     //   Toast.makeText(this, ""+s, Toast.LENGTH_SHORT).show();
+   /*     productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
+        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
+        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));*/
 
-        productlistadepter adapter = new productlistadepter(this,R.layout.product_listview, productList);
-        listView.setAdapter(adapter);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab3 = (FloatingActionButton) findViewById(R.id.fab3);
         fab4 = (FloatingActionButton) findViewById(R.id.fab4);
 
+        for(int i=1;i<arrayList.size();i++) {
+            Toast.makeText(admin_view_product.this, "" + arrayList.get(i), Toast.LENGTH_SHORT).show();
+        }
 
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fab_open);
@@ -111,6 +165,8 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 showProductDialog();
                 break;
             case R.id.fab4:
+                Intent i=new Intent(this,agent_login.class);
+                startActivity(i);
 
                 Log.d("a", "Fab 4");
                 break;
@@ -127,18 +183,15 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_view_product.this);
 
         View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
 
 
-        //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
-        final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
-        final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
-        final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
+        final EditText edtnm = view.findViewById(R.id.edtnm);
+        final EditText edtprice = view.findViewById(R.id.edtprice);
+        final EditText edtdetail = view.findViewById(R.id.edtdetail);
+
 
 
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
@@ -151,20 +204,35 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         });
 
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
 
         view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Firebase ref;
+
+                ref = new Firebase(url);
+
+                //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
+                // DatabaseReference usersRef = ref.child("users");
+
+                String pnm=edtnm.getText().toString();
+                String price=edtprice.getText().toString();
+                String detail=edtdetail.getText().toString();
 
 
+                Map<String, String> users = new HashMap<>();
+                users.put("Product_name",pnm);
+                users.put("Product_Price",price);
+                users.put("Product_detail",detail);
+                ref.child("Product_data").push().setValue(users);
+
+                // ref.child()
+
+                //   ref.setValue(users);
+                Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
             }
         });
 
@@ -201,13 +269,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         });
 
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
 
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,18 +291,18 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         AlertDialog.Builder builder = new AlertDialog.Builder(admin_view_product.this);
 
         View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
 
 
         //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
+        final EditText edtnm = view.findViewById(R.id.edtnm);
         final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
+        final EditText edtadd = view.findViewById(R.id.edtname);
         final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
         final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
+        //final ImageView imgview=view.findViewById(R.id.imgview);
 
 
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
@@ -250,7 +311,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 //set all client display activity
                 Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);
-
             }
         });
 
@@ -262,31 +322,38 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             }
         });
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
-
         view.findViewById(R.id.btnaddclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Firebase ref;
 
+                ref = new Firebase(url);
 
+                //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
+                // DatabaseReference usersRef = ref.child("users");
+                String nm=edtnm.getText().toString();
+                String mob=edtmob.getText().toString();
+                String add=edtadd.getText().toString();
+                String add2=edtadd2.getText().toString();
+                String qrcode=edtbarcode.getText().toString();
 
+                Map<String, String> users = new HashMap<>();
+                users.put("Customer_name",nm);
+                users.put("Mobile_number",mob);
+                users.put("Address ",add);
+                users.put("Local_address ",add2);
+                users.put("Customer_qrcode",qrcode);
+                ref.child("Customer_data").push().setValue(users);
+
+                // ref.child()
+
+                //   ref.setValue(users);
+                Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
 
 
-        view.findViewById(R.id.tvuploadfile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //for image selec code here
-
-            }
-        });
 
 
 

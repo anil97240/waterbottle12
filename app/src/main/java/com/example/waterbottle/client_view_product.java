@@ -2,6 +2,7 @@ package com.example.waterbottle;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -126,9 +127,10 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
 
         AlertDialog.Builder builder = new AlertDialog.Builder(client_view_product.this);
 
-        LayoutInflater inflater = LayoutInflater.from(client_view_product.this);
-        View view = inflater.inflate(R.layout.dialong_customer_profile, null);
-        builder.setView(view);
+        View view = getLayoutInflater().inflate(R.layout.dialong_customer_profile, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
 
 
         //get all edittext in dialog_customer_add
@@ -140,8 +142,6 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
-        final AlertDialog dialog = builder.create();
-        dialog.show();
         //client profile
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +149,6 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
                 //set all client display activity
              /*   Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);*/
-                dialog.dismiss();
             }
         });
 
@@ -161,31 +160,19 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
             }
         });
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
 
-            }
-        });
 
         view.findViewById(R.id.btnaddclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                dialog.dismiss();
-            }
-        });
-
-
-        view.findViewById(R.id.tvuploadfile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //for image selec code here
 
             }
         });
+
+
+
 
 
 

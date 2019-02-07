@@ -18,9 +18,6 @@
         <activity android:name=".customer_order"> </activity>
         <activity android:name=".client_view_product" />
         <activity android:name=".client_dashboard">
-
-
-
         </activity>
         <activity android:name=".client_mobile_verification" />
         <activity android:name=".client_login">
@@ -37,11 +34,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
 
         <activity android:name=".admin_agent_side.agent_add_bottle">
       </activity>
         <activity android:name=".admin_agent_side.agent_barcode" >
+
 
        </activity>
         <activity android:name=".admin_agent_side.agent_login" >

@@ -4,71 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backscreen"
+    android:background="@drawable/uibackgroud"
     tools:context=".admin_agent_side.agent_add_bottle">
 
     <TextView
         android:id="@+id/tvbottledetails"
         android:layout_width="163dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="124dp"
-        android:layout_marginRight="124dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="20dp"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btnadd"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="goback"/>
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/titlelogo" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="189dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginBottom="40dp"
-        android:text="Bottle Details"
-        android:textColor="#0011FF"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/indicator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/colorFAB1"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/backicon" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            app:srcCompat="@drawable/titlelogo" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="173dp"
+            android:layout_height="51dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="86dp"
+            android:text="Order"
+            android:textColor="@color/colorText"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
-        android:layout_width="301dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="281dp"
+        android:layout_height="283dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvbottledetails"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"

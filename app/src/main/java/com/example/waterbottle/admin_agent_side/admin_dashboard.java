@@ -7,21 +7,28 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.Model.MyListAdapter;
 import com.example.waterbottle.admin_agent_side.Model.agent;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class admin_dashboard extends AppCompatActivity implements View.OnClickListener{
 
@@ -30,10 +37,13 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     List<agent> agentList;
-
+    MyListAdapter adapter;
     //the listview
     ListView listView;
 
+    String url="https://waterbottle12-e6aa9.firebaseio.com/";
+//search
+    EditText inputSearch;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +54,21 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         setContentView(R.layout.activity_admin_dashboard);
         agentList = new ArrayList<>();
+
+        Firebase.setAndroidContext(this);
+
         listView = (ListView) findViewById(R.id.listView);
     //listview add values using arraaylist
         agentList.add(new agent("abc", "5", "500"));
-        agentList.add(new agent("abc", "5", "500"));
-        agentList.add(new agent("abc", "5", "500"));
-        agentList.add(new agent("abc", "5", "500"));
-        agentList.add(new agent("abc", "5", "500"));
+        agentList.add(new agent("mohit", "1", "200"));
+        agentList.add(new agent("anil", "2", "100"));
+        agentList.add(new agent("ajaz", "3", "10"));
+        agentList.add(new agent("sagar", "5", "20"));
         agentList.add(new agent("abc", "5", "500"));
         agentList.add(new agent("abc", "5", "500"));
 
+
+        inputSearch=findViewById(R.id.inputSearch);
 
 
 
@@ -61,16 +76,16 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
 
 
-        MyListAdapter adapter = new MyListAdapter(this, R.layout.my_custom_list, agentList);
-
+        adapter  = new MyListAdapter(this, R.layout.my_custom_list, agentList);
+        listView.setTextFilterEnabled(true);
         listView.setAdapter(adapter);
 
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
-        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
-        fab4 = (FloatingActionButton) findViewById(R.id.fab4);
+        fab =  findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 =  findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
+        fab4 = findViewById(R.id.fab4);
 
 
 
@@ -84,6 +99,28 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
 
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //admin_dashboard.this.adapter.getFilter().filter(s);
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               // listView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               // listView.setAdapter(adapter);
+                //String text = inputSearch.getText().toString().toLowerCase(Locale.getDefault());
+               admin_dashboard.this.adapter.getFilter().filter(s.toString());
+
+            }
+        });
 
     }
 
@@ -98,6 +135,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             case R.id.fab1:
 
                 Log.d("Raj", "Fab 1");
+
                 showCustomDialog();
                 break;
             case R.id.fab2:
@@ -107,31 +145,94 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
             case R.id.fab3:
                 Log.d("Raj", "Fab 3");
-           //     Toast.makeText(this, "fab 3", Toast.LENGTH_SHORT).show();
+                //     Toast.makeText(this, "fab 3", Toast.LENGTH_SHORT).show();
                 showProductDialog();
                 break;
-                
-            case R.id.fab4:
 
+            case R.id.fab4:
+                Intent i=new Intent(this,agent_login.class);
+                startActivity(i);
                 Log.d("Raj", "Fab 4");
                 break;
 
         }
-}
+    }
 
-    private void showProductDialog() {
+        public void showProductDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
 
-        View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
-        dialog.setContentView(view);
-        dialog.show();
-
-
+            View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
+            final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+            dialog.setContentView(view);
+            dialog.show();
 
 
-        //get all edittext in dialog_customer_add
+            //get all edittext in dialog_customer_add
+       final EditText edtnm = view.findViewById(R.id.edtnm);
+        final EditText edtprice = view.findViewById(R.id.edtprice);
+        final EditText edtdetail = view.findViewById(R.id.edtdetail);
+
+
+            view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //set all client display activity
+                    //display all product page
+
+                    Intent i = new Intent(getApplicationContext(), admin_view_product.class);
+                    startActivity(i);
+                    //dialog.dismiss();
+                }
+            });
+
+
+            view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+
+                    Firebase ref;
+
+                    ref = new Firebase(url);
+
+                    //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
+                    // DatabaseReference usersRef = ref.child("users");
+
+                    String pnm=edtnm.getText().toString();
+                    String price=edtprice.getText().toString();
+                    String detail=edtdetail.getText().toString();
+
+
+                    Map<String, String> users = new HashMap<>();
+                    users.put("Product_name",pnm);
+                    users.put("Product_Price",price);
+                    users.put("Product_detail",detail);
+                    ref.child("Product_data").push().setValue(users);
+
+                    // ref.child()
+
+                    //   ref.setValue(users);
+                    Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+
+                    dialog.dismiss();
+                }
+            });
+
+        }
+
+        public void showAgentDialog(){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+
+            View view = getLayoutInflater().inflate(R.layout.dialong_agent_add, null);
+            BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+            dialog.setContentView(view);
+            dialog.show();
+
+
+            //get all edittext in dialog_customer_add
       /*  final EditText edtnm = view.findViewById(R.id.edtnm);
         final EditText edtmob = view.findViewById(R.id.edtmob);
         final EditText edtadd = view.findViewById(R.id.tvaddress);
@@ -140,164 +241,102 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         final ImageView imgview=view.findViewById(R.id.imgview);*/
 
 
+            view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //set all client display activity
+                    //Intent i = new Intent(getApplicationContext(),admin_dashboard.class);
+                    //startActivity(i);
+
+                }
+            });
+
+            view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
-        view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //set all client display activity
-                //display all product page
+                }
+            });
+        }
 
-                Intent i = new Intent(getApplicationContext(),admin_view_product.class);
-                startActivity(i);
-                //dialog.dismiss();
-            }
-        });
+        public void showCustomDialog() {
 
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
-
-        view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
+            final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+            dialog.setContentView(view);
+            dialog.show();
 
 
-                //dialog.dismiss();
-            }
-        });
-
-    }
-
-    private void showAgentDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
-
-        View view = getLayoutInflater().inflate(R.layout.dialong_agent_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
-        dialog.setContentView(view);
-        dialog.show();
-
-
-        //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
+            //get all edittext in dialog_customer_add
+       final EditText edtnm = view.findViewById(R.id.edtnm);
         final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
+        final EditText edtadd = view.findViewById(R.id.edtname);
         final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
         final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
+        //final ImageView imgview=view.findViewById(R.id.imgview);
 
 
+            view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //set all client display activity
+                    Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
+                    startActivity(i);
+
+                }
+            });
+
+            view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //add barcode scann code herer
+                    //Toast.makeText(Admin_view_all_client.this, "barcode scanner", Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
-        view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //set all client display activity
-                //Intent i = new Intent(getApplicationContext(),admin_dashboard.class);
-                //startActivity(i);
-
-            }
-        });
+            view.findViewById(R.id.btnaddclient).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
+                  //  Toast.makeText(admin_dashboard.this, ""+edtnm.getText().toString(), Toast.LENGTH_SHORT).show();
+                  Firebase ref;
 
-            }
-        });
+                    ref = new Firebase(url);
 
-        view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
+                    // DatabaseReference usersRef = ref.child("users");
+                        String nm=edtnm.getText().toString();
+                        String mob=edtmob.getText().toString();
+                       String add=edtadd.getText().toString();
+                        String add2=edtadd2.getText().toString();
+                        String qrcode=edtbarcode.getText().toString();
 
+                    Map<String, String> users = new HashMap<>();
+                    users.put("Customer_name",nm);
+                  users.put("Mobile_number",mob);
+                   users.put("Address ",add);
+                   users.put("Local_address ",add2);
+                  users.put("Customer_qrcode",qrcode);
+                    ref.child("Customer_data").push().setValue(users);
 
-            }
-        });
+                    // ref.child()
 
-
-
-
-
-
-
-    }
-
-    private void showCustomDialog() {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
-        dialog.setContentView(view);
-        dialog.show();
+                    //   ref.setValue(users);
+                    Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
 
 
-
-        //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
-        final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
-        final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
-        final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
+                }
+            });
 
 
+        }
 
-        view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //set all client display activity
-                Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
-                startActivity(i);
-
-            }
-        });
-
-        view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //add barcode scann code herer
-                //Toast.makeText(Admin_view_all_client.this, "barcode scanner", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
-
-        view.findViewById(R.id.btnaddclient).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-            }
-        });
-
-
-        view.findViewById(R.id.tvuploadfile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //for image selec code here
-
-            }
-        });
-
-
-
-    }
 
 
     private void animateFAB() {
@@ -337,4 +376,5 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
         }
     }
+
 }

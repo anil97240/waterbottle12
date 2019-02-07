@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backscreen"
+    android:background="@drawable/uibackgroud"
     tools:context=".admin_agent_side.admin_dashboard">
 
     <RelativeLayout
@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="10dp"
-        android:background="@color/colorBackgroud">
+        android:background="@color/colorFAB1">
 
         <Button
             android:id="@+id/button2"
@@ -22,7 +21,7 @@
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="17dp"
-            android:background="@drawable/back" />
+            android:background="@drawable/backicon" />
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="60dp"
@@ -35,21 +34,22 @@
         android:layout_marginRight="18dp"
         app:srcCompat="@drawable/titlelogo" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="173dp"
-        android:layout_height="51dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginRight="86dp"
-        android:text="Product"
-        android:textColor="@color/default_circle_indicator_fill_color"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="173dp"
+            android:layout_height="51dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="86dp"
+            android:text="Product"
+            android:textColor="@color/colorText"
+            android:textSize="30sp"
+            android:textStyle="bold" />
     </RelativeLayout>
+
 
 
     <android.support.design.widget.FloatingActionButton
@@ -63,9 +63,8 @@
         android:layout_toStartOf="@+id/fab"
         android:layout_toLeftOf="@+id/fab"
         android:src="@drawable/cart"
-        android:tint="@color/colorfab"
+        app:backgroundTint="@color/colorFAB1"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -80,9 +79,8 @@
         android:layout_marginRight="104dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/cus"
-        android:tint="@color/colorfab"
+        app:backgroundTint="@color/colorFAB1"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -98,10 +96,8 @@
         android:layout_marginRight="53dp"
         android:layout_marginBottom="84dp"
         android:src="@drawable/desc"
-        android:tint="@color/colorfab"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
-
+        app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -117,9 +113,8 @@
         android:layout_marginRight="0dp"
         android:layout_marginBottom="75dp"
         android:src="@drawable/logout"
-        android:tint="@color/colorfab"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -130,12 +125,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/add"
-        android:tint="@color/colorfab"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 

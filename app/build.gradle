@@ -45,7 +45,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-firestore:16.0.2'
     implementation 'com.firebase:firebase-client-android:2.5.2'
-
+    //for edittext design
+    implementation 'com.android.support:design:22.2.0'
 
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
 }

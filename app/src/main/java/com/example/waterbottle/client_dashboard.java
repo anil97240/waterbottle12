@@ -209,13 +209,6 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
 
         view.findViewById(R.id.btnaddclient).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,13 +220,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
         });
 
 
-        view.findViewById(R.id.tvuploadfile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //for image selec code here
 
-            }
-        });
 
 
 

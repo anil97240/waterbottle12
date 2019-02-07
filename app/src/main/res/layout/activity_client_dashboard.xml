@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backscreen">
+    android:background="@drawable/uibackgroud">
 
 
 
@@ -13,23 +13,22 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="10dp"
         android:orientation="vertical"
 
-        android:background="@color/colorBackgroud">
+        android:background="@color/colorFAB1">
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="253dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="26dp"
-            android:layout_marginEnd="131dp"
-            android:layout_marginRight="131dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="130dp"
+            android:layout_marginRight="80dp"
             android:text="DashBoard"
-            android:textColor="@color/default_circle_indicator_fill_color"
+            android:textColor="@color/colorText"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -181,7 +180,6 @@
                 android:textStyle="bold" />
 
             <ListView
-
                 android:id="@+id/listpadding3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -202,9 +200,8 @@
         android:layout_toStartOf="@+id/fab"
         android:layout_toLeftOf="@+id/fab"
         android:src="@drawable/cart"
-        android:tint="@color/colorfab"
+        app:backgroundTint="@color/colorFAB1"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -219,9 +216,8 @@
         android:layout_marginRight="104dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/cus"
-        android:tint="@color/colorfab"
+        app:backgroundTint="@color/colorFAB1"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -237,10 +233,8 @@
         android:layout_marginRight="53dp"
         android:layout_marginBottom="84dp"
         android:src="@drawable/desc"
-        android:tint="@color/colorfab"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
-
+        app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -256,9 +250,8 @@
         android:layout_marginRight="0dp"
         android:layout_marginBottom="75dp"
         android:src="@drawable/logout"
-        android:tint="@color/colorfab"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -274,9 +267,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/add"
-        android:tint="@color/colorfab"
-
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 

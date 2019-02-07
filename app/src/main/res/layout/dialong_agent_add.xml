@@ -4,35 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout3"
     android:layout_width="match_parent"
-    android:layout_height="520dp"
-    android:paddingBottom="8dp"
-    android:textAlignment="center"
-    android:background="@drawable/dialog_corner">
+    android:layout_height="wrap_content"
+    android:background="@color/colorDialog"
+    android:paddingBottom="5dp"
+    android:textAlignment="center">
 
     <EditText
-        android:id="@+id/edtaddress"
+        android:id="@+id/edtname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="387dp"
-        android:drawableRight="@drawable/address"
+        android:layout_marginTop="212dp"
+        android:drawableRight="@drawable/nm"
         android:ems="10"
-        android:hint="Enter Address"
+        android:hint="Enter Name"
         android:inputType="textPersonName"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="8dp" />
 
     <ImageView
         android:id="@+id/imgview"
-        android:layout_width="164dp"
-        android:layout_height="127dp"
+        android:layout_width="152dp"
+        android:layout_height="111dp"
         android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -40,43 +38,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cus" />
 
-    <Button
-        android:id="@+id/btnupload"
-        android:layout_width="132dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="248dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/button"
-        android:text="Upload Image"
-        android:textColor="@color/default_circle_indicator_fill_color"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvuploadfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="252dp"
-        android:text="Add Image"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="114dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
         android:text="Add Agent"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorText"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,27 +55,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/btnallagent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:background="@drawable/button"
+        android:background="@color/colorFAB1"
         android:text="All Agent"
-        android:textColor="@color/default_circle_indicator_fill_color"
+        android:textColor="@color/common_google_signin_btn_text_light_pressed"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edtnm"
+        android:id="@+id/edtemail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="297dp"
+        android:layout_marginTop="264dp"
         android:drawableRight="@drawable/nm"
         android:ems="10"
-        android:hint="Enter Name"
+        android:hint="Enter gmail"
+        android:inputType="textPersonName"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="4dp" />
+
+    <EditText
+        android:id="@+id/edtpass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="316dp"
+        android:drawableRight="@drawable/ic_lock"
+        android:ems="10"
+        android:hint="Enter Password"
         android:inputType="textPersonName"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
@@ -117,7 +103,7 @@
         android:id="@+id/edtmob"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="341dp"
+        android:layout_marginTop="376dp"
         android:drawableRight="@drawable/call"
         android:ems="10"
         android:hint="Enter Mobile Number"
@@ -133,10 +119,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="454dp"
-        android:background="@drawable/button"
+        android:layout_marginTop="428dp"
+        android:background="@color/colorFAB1"
         android:text="ADD"
-        android:textColor="@color/default_circle_indicator_fill_color"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

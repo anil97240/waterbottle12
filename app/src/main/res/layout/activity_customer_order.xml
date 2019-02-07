@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backscreen"
+    android:background="@drawable/uibackgroud"
     tools:context=".admin_agent_side.agent_add_bottle">
 
     <TextView
@@ -24,10 +24,9 @@
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorBackgroud"
+        android:background="@color/colorFAB1"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,7 +37,7 @@
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="17dp"
-            android:background="@drawable/back" />
+            android:background="@drawable/backicon" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -60,7 +59,7 @@
         android:layout_marginTop="41dp"
         android:layout_marginBottom="36dp"
         android:text="Bottle Details"
-        android:textColor="#0011FF"
+        android:textColor="@color/colorfab"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/indicator"
@@ -74,10 +73,9 @@
         android:layout_width="96dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
         android:layout_marginBottom="15dp"
         android:text="Order"
-        android:textColor="#0011FF"
+        android:textColor="@color/colorText"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"

@@ -20,16 +20,19 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.example.waterbottle.client_side.client_model.client;
 import com.example.waterbottle.client_side.client_model.clientlistAdepter;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class Admin_view_all_client extends AppCompatActivity implements View.OnClickListener{
@@ -40,6 +43,9 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
     //the listview
     ListView listView;
+
+    String url="https://waterbottle12-e6aa9.firebaseio.com/";
+
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2,fab3, fab4;
@@ -61,7 +67,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         listView = (ListView) findViewById(R.id.listView1);
 
        //add client list in listview
-
+        Firebase.setAndroidContext(this);
 
         clientList.add(new client(R.drawable.agent, "abc", "972452165","asdas123","rajkot"));
         clientList.add(new client(R.drawable.agent, "abc", "972452165","asdas123","rajkot"));
@@ -138,6 +144,8 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                 showProductDialog();
                 break;
             case R.id.fab4:
+                Intent i=new Intent(this,agent_login.class);
+                startActivity(i);
 
                 Log.d("a", "Fab 4");
                 break;
@@ -150,17 +158,14 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         AlertDialog.Builder builder = new AlertDialog.Builder(Admin_view_all_client.this);
 
         View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
 
-        //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
-        final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
-        final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
-        final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
+        final EditText edtnm = view.findViewById(R.id.edtnm);
+        final EditText edtprice = view.findViewById(R.id.edtprice);
+        final EditText edtdetail = view.findViewById(R.id.edtdetail);
+
 
 
 
@@ -176,23 +181,37 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             }
         });
 
-
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
-
         view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Firebase ref;
+
+                ref = new Firebase(url);
+
+                //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
+                // DatabaseReference usersRef = ref.child("users");
+
+                String pnm=edtnm.getText().toString();
+                String price=edtprice.getText().toString();
+                String detail=edtdetail.getText().toString();
 
 
+                Map<String, String> users = new HashMap<>();
+                users.put("Product_name",pnm);
+                users.put("Product_Price",price);
+                users.put("Product_detail",detail);
+                ref.child("Product_data").push().setValue(users);
+
+                // ref.child()
+
+                //   ref.setValue(users);
+                Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
             }
         });
+
 
 
     }
@@ -227,13 +246,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         });
 
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
-
-            }
-        });
 
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,18 +269,17 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         AlertDialog.Builder builder = new AlertDialog.Builder(Admin_view_all_client.this);
 
         View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
 
         //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
+        final EditText edtnm = view.findViewById(R.id.edtnm);
         final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
+        final EditText edtadd = view.findViewById(R.id.edtname);
         final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
         final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
-
+        //final ImageView imgview=view.findViewById(R.id.imgview);
 
 
 
@@ -290,30 +301,42 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             }
         });
 
-        view.findViewById(R.id.btnupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //write code for image upload and Display image
 
-            }
-        });
 
      view.findViewById(R.id.btnaddclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Firebase ref;
 
+                ref = new Firebase(url);
+
+                //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
+                // DatabaseReference usersRef = ref.child("users");
+                String nm=edtnm.getText().toString();
+                String mob=edtmob.getText().toString();
+                String add=edtadd.getText().toString();
+                String add2=edtadd2.getText().toString();
+                String qrcode=edtbarcode.getText().toString();
+
+                Map<String, String> users = new HashMap<>();
+                users.put("Customer_name",nm);
+                users.put("Mobile_number",mob);
+                users.put("Address ",add);
+                users.put("Local_address ",add2);
+                users.put("Customer_qrcode",qrcode);
+                ref.child("Customer_data").push().setValue(users);
+
+                // ref.child()
+
+                //   ref.setValue(users);
+                Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
 
 
-        view.findViewById(R.id.tvuploadfile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //for image selec code here
 
-            }
-        });
 
 
 
