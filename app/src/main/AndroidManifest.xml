@@ -11,29 +11,22 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".customer_order"> </activity>
+        <activity android:name=".customer_order"></activity>
         <activity android:name=".client_view_product" />
-        <activity android:name=".client_dashboard">
-        </activity>
+        <activity android:name=".client_dashboard"></activity>
         <activity android:name=".client_mobile_verification" />
-        <activity android:name=".client_login">
-
-        </activity>
-        <activity android:name=".admin_agent_side.admin_view_product" >
+        <activity android:name=".client_login"></activity>
+        <activity android:name=".admin_agent_side.admin_view_product">
 
 
         </activity>
         <activity android:name=".admin_agent_side.Admin_view_all_client" />
-        <activity android:name=".admin_agent_side.admin_dashboard" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".admin_agent_side.admin_dashboard">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
@@ -41,14 +34,21 @@
 
 
         </activity>
-        <activity android:name=".admin_agent_side.agent_barcode" >
+        <activity android:name=".admin_agent_side.agent_barcode">
 
-
-       </activity>
-        <activity android:name=".admin_agent_side.agent_login" >
 
         </activity>
-        <activity android:name=".MainActivity" />
+
+        <activity android:name=".admin_agent_side.agent_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"></activity>
+
     </application>
 
 </manifest>

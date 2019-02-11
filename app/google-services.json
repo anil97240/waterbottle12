@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "306766042036-p1a477flost7bpir0dvha5hk5u6n01ac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.waterbottle",
+            "certificate_hash": "057fc3282522149cde311a1d1c524f78a45762ea"
+          }
+        },
+        {
           "client_id": "306766042036-7jm5cos71gn9jr2g1vnrt6oflp5uqnvv.apps.googleusercontent.com",
           "client_type": 3
         }

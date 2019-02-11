@@ -15,10 +15,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.example.waterbottle.admin_agent_side.Model.agent;
+import com.example.waterbottle.admin_agent_side.agent_login;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,9 +157,19 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.fab4:
-                Intent i4=new Intent(this,client_login.class);
-                startActivity(i4);
-                Log.d("a", "Fab 4");
+                //Logout From cURRENT User
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                if (fAuth != null)
+                {
+                    Intent iq=new Intent(getApplicationContext(), client_login.class);
+                    startActivity(iq);
+                    finish();
+                }
+                else {
+                    Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
         }

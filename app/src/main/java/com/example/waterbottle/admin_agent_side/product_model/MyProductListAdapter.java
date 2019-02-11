@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.waterbottle.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,8 +50,10 @@ public class MyProductListAdapter extends ArrayAdapter<Product> {
         TextView tvpname = view.findViewById(R.id.tvproname);
         TextView tvpprice = view.findViewById(R.id.pprice);
         TextView tvprodetails = view.findViewById(R.id.prodetails);
+        ImageView img1=view.findViewById(R.id.imgproduct);
 
         //getting the hero of the specified position
+
         Product product = productList.get(position);
 
         //adding values to the list item
@@ -57,11 +61,11 @@ public class MyProductListAdapter extends ArrayAdapter<Product> {
         tvpprice.setText(product.getProduct_Price());
         tvprodetails.setText(product.getProduct_detail());
 
-
-
+            Picasso.with(getContext())
+                    .load(product.getImage())
+                    .into(img1);
 
         //finally returning the view
         return view;
-
     }
 }

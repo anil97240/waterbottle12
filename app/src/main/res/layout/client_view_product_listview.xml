@@ -100,5 +100,6 @@
         android:layout_height="89dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="17dp"
+        android:scaleType="fitXY"
         app:srcCompat="@drawable/addcus" />
 </RelativeLayout>

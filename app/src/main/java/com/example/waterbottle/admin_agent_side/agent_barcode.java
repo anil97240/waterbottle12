@@ -20,6 +20,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -86,15 +87,9 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
 
         setContentView(R.layout.activity_agent_barcode);
 
-
-
-
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-
-
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fab_close);
@@ -104,7 +99,6 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
 
-
     }
 
     @Override
@@ -112,22 +106,33 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
         int id = v.getId();
         switch (id) {
             case R.id.fab:
-
                 animateFAB();
                 break;
-            case R.id.fab1:
 
+            case R.id.fab1:
                 Log.d("Raj", "Fab 1");
                 Intent i1=new Intent(this,agent_add_bottle.class);
                startActivity(i1);
                 break;
+
             case R.id.fab2:
-                Intent intent = new Intent(this,agent_login.class);
-                startActivity(intent);
-                Log.d("Raj", "Fab 2");
+
+
+                //Logout From cURRENT User
+
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                if (fAuth != null)
+                {
+                    Intent i=new Intent(getApplicationContext(),agent_login.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+                    Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
-
-
         }
     }
 
@@ -159,12 +164,17 @@ public class agent_barcode extends AppCompatActivity implements  View.OnClickLis
             }
         }
 
-    public void goback(View view) {
+
+        public void goback(View view)
+        {
        /* Intent setIntent = new Intent(Intent.ACTION_MAIN);
         setIntent.addCategory(Intent.CATEGORY_HOME);
         setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(setIntent);*/
-    }
+       finish();
+        }
+
+
     //Getting the scan results
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

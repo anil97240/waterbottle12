@@ -1,11 +1,11 @@
 package com.example.waterbottle.admin_agent_side.product_model;
 
 public class Product {
-    private int image, status;
-    private String Product_name, Product_Price, Product_detail;
+    private int  status;
+    private String Product_name, Product_Price, Product_detail,image;
 
-    public Product(int image, int status, String product_name, String product_Price, String product_detail) {
-        this.image = image;
+    public Product(String image,int status, String product_name, String product_Price, String product_detail) {
+        image = image;
         this.status = status;
         Product_name = product_name;
         Product_Price = product_Price;
@@ -15,11 +15,11 @@ public class Product {
     public Product() {
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

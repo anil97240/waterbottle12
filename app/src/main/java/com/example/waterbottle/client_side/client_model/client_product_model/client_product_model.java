@@ -1,45 +1,49 @@
 package com.example.waterbottle.client_side.client_model.client_product_model;
 
 public class client_product_model {
-    int image;
-    String name, price,details;
 
-    public client_product_model(int image, String name, String price, String details) {
-        this.image = image;
-        this.name = name;
-        this.price = price;
-        this.details = details;
+        private String Product_Price,Product_detail,Product_name;
+        String image;
+
+    public String getProduct_price() {
+        return Product_Price;
     }
 
-    public int getImage() {
+    public void setProduct_price(String product_price) {
+        Product_Price = product_price;
+    }
+
+    public String getProduct_detail() {
+        return Product_detail;
+    }
+
+    public void setProduct_detail(String product_detail) {
+        Product_detail = product_detail;
+    }
+
+    public String getProduct_name() {
+        return Product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        Product_name = product_name;
+    }
+
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    public String getName() {
-        return name;
+    public client_product_model() {
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
+    public client_product_model(String product_price, String product_detail, String product_name, String image) {
+        Product_Price = product_price;
+        Product_detail = product_detail;
+        Product_name = product_name;
+        this.image = image;
     }
 }

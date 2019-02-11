@@ -2,19 +2,18 @@ package com.example.waterbottle.admin_agent_side;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-
 import com.example.waterbottle.R;
+import com.example.waterbottle.client_login;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -58,7 +57,7 @@ public class agent_login extends AppCompatActivity {
     }*/
 
     public void register(View view) {
-        String email = edtmail.getText().toString();
+        final String email = edtmail.getText().toString();
         final String password = edtpass.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
@@ -70,8 +69,6 @@ public class agent_login extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
 
         //authenticate user
         auth.signInWithEmailAndPassword(email, password)
@@ -90,16 +87,30 @@ public class agent_login extends AppCompatActivity {
                                 Toast.makeText(agent_login.this, "Auth Faild", Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            Intent intent = new Intent(agent_login.this, agent_add_bottle.class);
-                            startActivity(intent);
-                            finish();
+                            if (email.equals("admin@gmail.com") && password.equals("123456")) {
+                                Intent intent = new Intent(agent_login.this, admin_dashboard.class);
+                                startActivity(intent);
+                                finish();
+
+                            } else {
+
+                                Intent intent = new Intent(agent_login.this, agent_barcode.class);
+                                startActivity(intent);
+                                finish();
+
+
+                            }
+
                         }
                     }
                 });
     }
 
     public void godashboard(View view) {
-        Intent intent = new Intent(this,admin_dashboard.class);
+        Intent intent = new Intent(getApplicationContext(), client_login.class);
         startActivity(intent);
+        finish();
     }
+
+
 }

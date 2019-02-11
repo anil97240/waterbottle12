@@ -11,9 +11,9 @@
 
     <EditText
         android:id="@+id/edtname"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
+        android:layout_marginTop="104dp"
         android:drawableRight="@drawable/nm"
         android:ems="10"
         android:hint="Enter Name"
@@ -21,22 +21,9 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp" />
-
-    <ImageView
-        android:id="@+id/imgview"
-        android:layout_width="152dp"
-        android:layout_height="111dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cus" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
@@ -71,9 +58,9 @@
 
     <EditText
         android:id="@+id/edtemail"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="156dp"
         android:drawableRight="@drawable/nm"
         android:ems="10"
         android:hint="Enter gmail"
@@ -81,14 +68,15 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="4dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edtpass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="316dp"
+        android:layout_marginTop="212dp"
         android:drawableRight="@drawable/ic_lock"
         android:ems="10"
         android:hint="Enter Password"
@@ -103,7 +91,7 @@
         android:id="@+id/edtmob"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="376dp"
+        android:layout_marginTop="272dp"
         android:drawableRight="@drawable/call"
         android:ems="10"
         android:hint="Enter Mobile Number"
@@ -119,7 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="428dp"
+        android:layout_marginTop="332dp"
         android:background="@color/colorFAB1"
         android:text="ADD"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"

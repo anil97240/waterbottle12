@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.agrawalsuneet.squareloaderspack.loaders.SquareGridLoader
+        android:id="@+id/squareGridLoader"
+        android:layout_width="262dp"
+        android:layout_height="205dp"
+        android:layout_marginTop="174dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:squaregrid_animDelay="80"
+        app:squaregrid_animDuration="400"
+        app:squaregrid_interpolator="@android:interpolator/linear"
+        app:squaregrid_sqaureColor="@color/blue"
+        app:squaregrid_squareCount="5"
+        app:squaregrid_squareLength="24dp" />
+
+</android.support.constraint.ConstraintLayout>

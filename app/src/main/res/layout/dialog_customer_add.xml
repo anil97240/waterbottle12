@@ -54,9 +54,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="110dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginRight="112dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="61dp"
+        android:layout_marginRight="195dp"
         android:background="@drawable/button"
         app:srcCompat="@drawable/cus" />
 
@@ -112,6 +112,23 @@
         android:layout_marginRight="12dp"
         android:background="@drawable/button"
         android:text="Scan"
+
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnuploadimg"
+        android:layout_width="71dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="89dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:background="@drawable/button"
+        android:text="Upload"
+
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textStyle="bold" />
 

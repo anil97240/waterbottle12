@@ -8,6 +8,19 @@ public class Client{
     private String Customer_name, Mobile_number, Address, Local_address, Customer_qrcode;
 
     public Client() {
+
+    }
+
+    public Client(String image, String customer_name, String mobile_number, String address) {
+        this.image = image;
+        Customer_name = customer_name;
+        Mobile_number = mobile_number;
+        Address = address;
+    }
+
+    public Client(String image, String customer_name) {
+        this.image = image;
+        Customer_name = customer_name;
     }
 
     public Client(String image, String customer_name, String mobile_number, String address, String local_address, String customer_qrcode) {

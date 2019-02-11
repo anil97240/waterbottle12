@@ -40,13 +40,24 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
     //firebase libratimplementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation 'com.google.android.gms:play-services-gcm:11.0.1'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.google.firebase:firebase-database:16.0.6'
+
     //for edittext design
+    //image upload
+    //firebase upload images
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-storage:10.2.0'
+    implementation 'com.google.firebase:firebase-database:10.2.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.squareup.picasso:picasso:2.5.0'
 
 
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
+    //progressbar
+
+    implementation 'com.agrawalsuneet.androidlibs:squareloaderspack:0.4'
 }
 apply plugin: 'com.google.gms.google-services'

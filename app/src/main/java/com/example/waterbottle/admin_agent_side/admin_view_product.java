@@ -1,6 +1,7 @@
 package com.example.waterbottle.admin_agent_side;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.product_model.MyProductListAdapter;
 import com.example.waterbottle.admin_agent_side.product_model.Product;
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,10 +39,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = "Mohit";
     //the list values in the List of type hero
-    ListView listView;
+    ListView myListView;
     //list to store uploads data
     List<Product> productList;
     ArrayList arrayList = new ArrayList<String>();
+    ArrayList arrayList1 = new ArrayList<String>();
     //Firebase Url Get INstance
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
     private DatabaseReference mDatabaseReference;
@@ -58,11 +62,18 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         setContentView(R.layout.activity_admin_view_product);
 
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();//displays the progress bar
+
 
         //initializing objects
 
         productList = new ArrayList<>();
-        listView = (ListView) findViewById(R.id.listView1);
+        myListView = (ListView) findViewById(R.id.productlistview);
+
+
         Firebase.setAndroidContext(this);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Product_data");
 
@@ -71,11 +82,12 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
+                    progressDialog.dismiss();
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Product upload = postSnapshot.getValue(Product.class);
                         productList.add(upload);
+                        //arrayList1.add(postSnapshot.getKey());
                     }
-
                     String[] uploads = new String[productList.size()];
 
                     for (int i = 0; i < uploads.length; i++) {
@@ -83,66 +95,29 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                         Log.e(TAG, "onDataChange: " + uploads[i].toString());
                     }
                     //displaying it to list
-                    MyProductListAdapter adapter = new MyProductListAdapter(getApplicationContext(), R.layout.product_listview, productList);
+                    final MyProductListAdapter adapter = new MyProductListAdapter(getApplicationContext(), R.layout.product_listview, productList);
+                    myListView.setAdapter(adapter);
 
-                    listView.setAdapter(adapter);
+                        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Toast.makeText(admin_view_product.this, "dfdfd", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    
 
-
+                    //select product for delete
                 } catch (Exception e) {
                     Log.e(TAG, "onDataChange: " + e);
                 }
-
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
             }
         });
-
-
-
-/*
-             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference();
-
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Product post = dataSnapshot.getValue(Product.class);
-                    productList.add(post);
-                    Log.e(TAG, "onDataChange: "+post );
-                    String[] uploads = new String[productList.size()];
-
-                    for (int i = 0; i < uploads.length; i++) {
-                        uploads[i] = productList.get(i).getName();
-                        Log.e(TAG, "onDataChange: "+i );
-                    }
-
-                    }
-
-
-
-
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.out.println("The read failed: " + databaseError.getMessage());
-                }
-            });
-            */
-
-
-// Attach a listener to read the data at our posts reference
-
-
-        //   String s= String.valueOf(arrayList.get(0));
-        //   Toast.makeText(this, ""+s, Toast.LENGTH_SHORT).show();
-   /*     productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));
-        productList.add(new product(R.drawable.logo, 0, "abc","1000","50 L"));*/
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
@@ -195,10 +170,20 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 showProductDialog();
                 break;
             case R.id.fab4:
-                Intent i = new Intent(this, agent_login.class);
-                startActivity(i);
+                //Logout From cURRENT User
 
-                Log.d("a", "Fab 4");
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                if (fAuth != null)
+                {
+                    Intent i=new Intent(getApplicationContext(),agent_login.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+                    Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
         }

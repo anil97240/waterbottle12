@@ -175,6 +175,7 @@ String userName;
        // DatabaseReference usersRef = ref.child("users");
 
         Map<String, String> users = new HashMap<>();
+
         users.put("Botttle",edtbottle.getText().toString() );
         users.put("QR_code",userName.toString());
         users.put("Bottle_type",tvdetails.getText().toString());

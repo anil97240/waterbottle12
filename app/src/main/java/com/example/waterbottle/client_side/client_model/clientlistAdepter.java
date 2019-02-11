@@ -2,6 +2,8 @@ package com.example.waterbottle.client_side.client_model;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.waterbottle.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
@@ -47,8 +52,8 @@ public class clientlistAdepter extends ArrayAdapter<Client> {
         TextView tvnm = view.findViewById(R.id.tvcnm);
         TextView tvmob = view.findViewById(R.id.tvmobno);
         TextView tvbar = view.findViewById(R.id.tvbarcode);
-        TextView tvadd = view.findViewById(R.id.tvaddress);
-
+        TextView tvadd1 = view.findViewById(R.id.tvaddress);
+        ImageView img=view.findViewById(R.id.imgclient);
 
         //getting the hero of the specified position
         Client client = clientList.get(position);
@@ -57,13 +62,16 @@ public class clientlistAdepter extends ArrayAdapter<Client> {
         tvnm.setText(client.getCustomer_name());
         tvmob.setText(client.getMobile_number());
         tvbar.setText(client.getCustomer_qrcode());
-        tvadd.setText(client.getAddress());
+        tvadd1.setText(client.getAddress());
 
+        Picasso.with(getContext())
+                .load(client.getImage())
+                .into(img);
 
         Log.e(TAG, "getView: "+client.getCustomer_name());
         Log.e(TAG, "getView: "+client.getMobile_number());
         Log.e(TAG, "getView: "+client.getCustomer_qrcode());
-        Log.e(TAG, "getView: "+client.getAddress());
+        Log.e("tag", "getView: "+client.getImage());
 
         return view;
     }

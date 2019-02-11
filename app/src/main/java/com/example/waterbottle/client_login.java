@@ -8,6 +8,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.example.waterbottle.admin_agent_side.agent_login;
 
 public class client_login extends AppCompatActivity {
 
@@ -15,6 +18,8 @@ public class client_login extends AppCompatActivity {
     Button btSignIn;
     //user mobile number
     private EditText editTextMobile;
+    TextView tv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,15 @@ public class client_login extends AppCompatActivity {
 
         btSignIn = findViewById(R.id.btnlogin);
         editTextMobile = findViewById(R.id.edtmob);
+        tv=findViewById(R.id.tv);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(getApplicationContext(), agent_login.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         btSignIn.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -45,5 +59,6 @@ public class client_login extends AppCompatActivity {
         }
     });
     }
+
 
 }

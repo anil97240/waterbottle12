@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 
 import com.example.waterbottle.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -58,12 +59,12 @@ public class client_product_listadepter extends ArrayAdapter<client_product_mode
 
         client_product_model product= productList.get(position);
 
-        tvnm.setText(product.name);
-        tvprice.setText(product.price);
-        tvdetails.setText(product.details);
-
-
-        imgproduct.setImageDrawable(context.getResources().getDrawable(product.getImage()));
+        tvnm.setText(product.getProduct_name());
+        tvprice.setText(product.getProduct_price());
+        tvdetails.setText(product.getProduct_detail());
+        Picasso.with(getContext())
+                .load(product.getImage())
+                .into(imgproduct);
 
         return view;
     }

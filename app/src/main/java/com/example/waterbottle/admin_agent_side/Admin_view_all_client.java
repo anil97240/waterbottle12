@@ -2,12 +2,15 @@ package com.example.waterbottle.admin_agent_side;
 
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -23,6 +26,8 @@ import com.example.waterbottle.R;
 import com.example.waterbottle.client_side.client_model.Client;
 import com.example.waterbottle.client_side.client_model.clientlistAdepter;
 import com.firebase.client.Firebase;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,13 +73,22 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_admin_view_all_client);
 
 
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();//displays the progress bar
+
+        FirebaseApp.initializeApp(this);
+
         clientList = new ArrayList<>();
-        listView = (ListView) findViewById(R.id.listView1);
+        listView = (ListView) findViewById(R.id.Adminviewallclient);
 
         //add Client list in listview
-        Firebase.setAndroidContext(this);
+
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Customer_data");
         //retrieving upload data from firebase database
+
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,7 +96,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Client client = postSnapshot.getValue(Client.class);
                         clientList.add(client);
-
+                        arrayList.add(postSnapshot.getKey());
                     }
 
                     String[] uploads = new String[clientList.size()];
@@ -91,16 +105,56 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                         uploads[i] = clientList.get(i).getMobile_number();
                         Log.e(TAG, "onDataChange: " + uploads[i]);
                     }
+                    progressDialog.dismiss();
                     //displaying it to list
-                    clientlistAdepter adapter = new clientlistAdepter(getApplicationContext(), R.layout.my_custom_listview_customer, clientList);
 
+                    final clientlistAdepter adapter = new clientlistAdepter(getApplicationContext(), R.layout.my_custom_listview_customer, clientList);
                     listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                            final int p = position;
+
+
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(Admin_view_all_client.this);
+                            builder.setMessage("Are You Sure ?");
+
+                            builder.setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Delete</font>YES</font>"), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    mDatabaseReference.child(String.valueOf(arrayList.get(p))).removeValue();
+                                    Toast.makeText(Admin_view_all_client.this, "" + arrayList.get(position), Toast.LENGTH_SHORT).show();
+                                    //  Toast.makeText(Admin_view_all_client.this, "data remove", Toast.LENGTH_SHORT).show();
+                                    clientList.remove(p);
+                                    adapter.notifyDataSetChanged();
+                                    //do things
+
+                                }
+                            });
+
+                            builder.setNegativeButton(Html.fromHtml("<font color='#FF7F27'>Cancle</font>YES</font>"), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //do things
+                                }
+                            });
+
+                            builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //do things
+                                }
+                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+
+
+                        }
+                    });
 
 
                 } catch (Exception e) {
                     Log.e(TAG, "onDataChange: " + e);
                 }
-
 
             }
 
@@ -120,15 +174,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
                 Client c = clientList.get(position);
-                /*String s = c.getNo();
 
-
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + s));
-                startActivity(intent);
-
-                Toast.makeText(Admin_view_all_client.this, "" + s.toString(), Toast.LENGTH_SHORT).show();
-                */
             }
         });
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -153,6 +199,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
+        Firebase.setAndroidContext(this);
         int id = v.getId();
         switch (id) {
             case R.id.fab:
@@ -177,10 +224,20 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                 showProductDialog();
                 break;
             case R.id.fab4:
-                Intent i = new Intent(this, agent_login.class);
-                startActivity(i);
+                //Logout From cURRENT User
 
-                Log.d("a", "Fab 4");
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                if (fAuth != null)
+                {
+                    Intent i=new Intent(getApplicationContext(),agent_login.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+                    Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
         }

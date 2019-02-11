@@ -135,11 +135,11 @@
         app:pressedTranslationZ="12dp" />
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/Clientviewproduct"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginTop="88dp"
-        android:dividerHeight="20.0sp"/>
+        android:dividerHeight="20.0sp" />
 
 </RelativeLayout>
