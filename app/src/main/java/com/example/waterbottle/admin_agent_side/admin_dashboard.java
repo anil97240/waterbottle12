@@ -419,6 +419,22 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         edtbarcode = view.findViewById(R.id.edtbarcode);
         final Button btnadd = view.findViewById(R.id.btnaddclient);
         imgview = view.findViewById(R.id.imgview);
+        final  Button btnuploadimg=view.findViewById(R.id.btnuploadimg);
+
+    //image chooser
+        imgview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
+        //image upload
+        btnuploadimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadFile();
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

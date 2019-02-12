@@ -2,6 +2,8 @@ package com.example.waterbottle.admin_agent_side;
 
 import android.content.Context;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.waterbottle.R;
+import com.example.waterbottle.admin_agent_side.product_model.Product;
 
 
 import java.util.ArrayList;
@@ -20,8 +23,7 @@ import java.util.List;
 
 public class SlidingImage_Adapter extends PagerAdapter {
 
-
-   // private ArrayList<Integer> IMAGES;
+    // private ArrayList<Integer> IMAGES;
     private LayoutInflater inflater;
     private Context context;
     List<sliding_image> totalList;
@@ -48,13 +50,10 @@ public class SlidingImage_Adapter extends PagerAdapter {
         View imageLayout = inflater.inflate(R.layout.slidingimages_layout, view, false);
 
         assert imageLayout != null;
-        final ImageView imageView = (ImageView) imageLayout
-                .findViewById(R.id.image);
+        final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
         final Button Buttonadd = (Button) imageLayout.findViewById(R.id.btnadd2);
         final Button buttonmin = (Button) imageLayout.findViewById(R.id.btnmin2);
-
-        final EditText edtbottle= (EditText) imageLayout
-                .findViewById(R.id.edtadd2);
+        final EditText edtbottle= (EditText) imageLayout.findViewById(R.id.edtadd2);
 
         edtbottle.setText(""+0);
 //        tvtotal.setText(""+0);
@@ -76,7 +75,8 @@ public class SlidingImage_Adapter extends PagerAdapter {
                 sliding_image slid =new sliding_image();
                 slid.setTotal(ed);
 
-                Toast.makeText(context, ""+slid.getTotal(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "nkgf"+slid.getTotal(), Toast.LENGTH_SHORT).show();
+
             }
         });
         buttonmin.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +91,14 @@ public class SlidingImage_Adapter extends PagerAdapter {
                     int b = 1;
                     a = a-b;
                     edtbottle.setText("" + a);
+
+                    sliding_image d=new sliding_image();
+                    d.setTotal(String.valueOf(6));
                     String ed=edtbottle.getText().toString();
                     sliding_image slid =new sliding_image();
                     Toast.makeText(context, ""+slid.getTotal(), Toast.LENGTH_SHORT).show();
+
+
                 }
             }
         });
@@ -119,6 +124,19 @@ public class SlidingImage_Adapter extends PagerAdapter {
         return null;
     }
 
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

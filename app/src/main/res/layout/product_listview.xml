@@ -15,7 +15,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="74dp"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         app:srcCompat="@drawable/addcus" />
 
     <TableLayout
@@ -47,7 +47,6 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="Price"
                 android:textColor="@color/colorBackgroud"
                 android:textSize="18sp"
@@ -68,7 +67,6 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="Status"
                 android:textColor="@color/colorBackgroud"
                 android:textSize="18sp"
@@ -108,17 +106,12 @@
                 android:maxLength="5"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="05 L"
+                android:text="05L"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <Switch
-                android:id="@+id/switchstatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="off"
-                android:textOn="on" />
+
         </TableRow>
 
     </TableLayout>

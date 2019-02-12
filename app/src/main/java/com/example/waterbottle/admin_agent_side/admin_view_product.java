@@ -2,34 +2,54 @@ package com.example.waterbottle.admin_agent_side;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.product_model.MyProductListAdapter;
 import com.example.waterbottle.admin_agent_side.product_model.Product;
+import com.example.waterbottle.client_side.client_model.Client;
 import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +58,7 @@ import java.util.Map;
 public class admin_view_product extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "Mohit";
+    private static final int PICK_IMAGE_REQUEST = 234;
     //the list values in the List of type hero
     ListView myListView;
     //list to store uploads data
@@ -46,11 +67,14 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
     ArrayList arrayList1 = new ArrayList<String>();
     //Firebase Url Get INstance
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
+    int p = 0;
     private DatabaseReference mDatabaseReference;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
-
+    private StorageReference storageReference;
+    private Uri filePath;
+    String filedownloadpath;
 
     @SuppressLint("ResourceType")
     @Override
@@ -86,29 +110,66 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Product upload = postSnapshot.getValue(Product.class);
                         productList.add(upload);
-                        //arrayList1.add(postSnapshot.getKey());
+                        arrayList.add(postSnapshot.getKey());
+                        Log.e(TAG, "onDataChange: "+productList );
+
+
                     }
                     String[] uploads = new String[productList.size()];
 
                     for (int i = 0; i < uploads.length; i++) {
                         uploads[i] = productList.get(i).getProduct_name();
-                        Log.e(TAG, "onDataChange: " + uploads[i].toString());
+                        Log.e(TAG, "onDataChange: " + uploads[i]);
                     }
                     //displaying it to list
                     final MyProductListAdapter adapter = new MyProductListAdapter(getApplicationContext(), R.layout.product_listview, productList);
+
                     myListView.setAdapter(adapter);
 
-                        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(admin_view_product.this, "dfdfd", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    
 
+                    myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                            p = position;
+
+
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(admin_view_product.this);
+                            builder.setMessage("Are You Sure ?");
+
+                            builder.setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Delete</font>YES</font>"), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    mDatabaseReference.child(String.valueOf(arrayList.get(p))).removeValue();
+                                    Toast.makeText(admin_view_product.this, "" + arrayList.get(position), Toast.LENGTH_SHORT).show();
+                                    //  Toast.makeText(Admin_view_all_client.this, "data remove", Toast.LENGTH_SHORT).show();
+                                    productList.remove(p);
+
+                                    //do things
+
+                                }
+                            });
+
+                            builder.setNegativeButton(Html.fromHtml("<font color='#FF7F27'>Edit</font>YES</font>"), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //Calling An Update Product Dialge
+                                    UpdatewProductDialog();
+
+                                }
+                            });
+
+                            builder.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //natureln  Buttom
+
+                                }
+                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    });
                     //select product for delete
                 } catch (Exception e) {
-                    Log.e(TAG, "onDataChange: " + e);
+                    Log.e(TAG, "db Exception: " + e);
                 }
 
             }
@@ -174,13 +235,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 fAuth.signOut();
-                if (fAuth != null)
-                {
-                    Intent i=new Intent(getApplicationContext(),agent_login.class);
+                if (fAuth != null) {
+                    Intent i = new Intent(getApplicationContext(), agent_login.class);
                     startActivity(i);
                     finish();
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
                 }
 
@@ -250,6 +309,74 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
     }
 
+    //Update An Existing Product
+    private void UpdatewProductDialog() {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(admin_view_product.this);
+
+        View view = getLayoutInflater().inflate(R.layout.dialong_product_add, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
+
+
+        final EditText edtnm = view.findViewById(R.id.edtnm);
+        final EditText edtprice = view.findViewById(R.id.edtprice);
+        final EditText edtdetail = view.findViewById(R.id.edtdetail);
+        final ImageView imgchoose =view.findViewById(R.id.pro_image);
+        final Button uploadig=view.findViewById(R.id.btnuploadimage);
+
+
+        view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set all Client display activity
+                //display all product page
+
+            }
+        });
+
+        //image chooser
+        imgchoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
+        //upload image
+        uploadig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             uploadFile();
+            }
+        });
+
+        view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pnm = edtnm.getText().toString();
+                String price = edtprice.getText().toString();
+                String detail = edtdetail.getText().toString();
+
+
+                Map<String, String> users = new HashMap<>();
+                users.put("Product_name", pnm);
+                users.put("Product_Price", price);
+                users.put("Product_detail", detail);
+                users.put("image", filedownloadpath);
+                mDatabaseReference.child(String.valueOf(arrayList.get(p))).setValue(users);
+
+                Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+            }
+        });
+
+
+    }
+
+
     //for agent add
     private void showAgentDialog() {
 
@@ -259,37 +386,19 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
-
-        //get all edittext in dialog_customer_add
-      /*  final EditText edtnm = view.findViewById(R.id.edtnm);
-        final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.tvaddress);
-        final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
-        final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        final ImageView imgview=view.findViewById(R.id.imgview);*/
-
-        //for agent add
-
         view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //set all Client display activity
                 Intent i = new Intent(getApplicationContext(), admin_dashboard.class);
                 startActivity(i);
-
             }
         });
-
-
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
             }
         });
-
-
     }
 
     private void showCustomDialog() {
@@ -307,7 +416,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         final EditText edtadd = view.findViewById(R.id.edtname);
         final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
         final EditText edtbarcode = view.findViewById(R.id.edtbarcode);
-        //final ImageView imgview=view.findViewById(R.id.imgview);
+        final ImageView imgview=view.findViewById(R.id.imgview);
 
 
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
@@ -397,5 +506,97 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             Log.d("Raj", "open");
 
         }
+    }
+
+    public String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile() {
+        final String STORAGE_PATH_UPLOADS = "uploads/";
+        final String DATABASE_PATH_UPLOADS = "Customer_data";
+        DatabaseReference mDatabase;
+        storageReference = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_UPLOADS);
+
+        //checking if file is available
+        if (filePath != null) {
+            //displaying progress dialog while image is uploading
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.show();
+
+            //getting the storage reference
+
+            StorageReference sRef = storageReference.child(STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(filePath));
+
+            //adding the file to reference
+            sRef.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //dismissing the progress dialog
+                            progressDialog.dismiss();
+
+                            //displaying success toast
+                            Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+
+                            //creating the upload object to store uploaded image details
+                            Client cn = new Client();
+                            //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
+
+                            filedownloadpath = taskSnapshot.getDownloadUrl().toString();
+
+                            //adding an upload to firebase database
+                          /*  String uploadId = mDatabase.push().getKey();
+                            mDatabase.child(uploadId).setValue(upload);*/
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            //displaying the upload progress
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                        }
+                    });
+        } else {
+            //display an error if no file is selected
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            filePath = data.getData();
+            try {
+                Bitmap bitmap, bitmap2;
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void showFileChooser() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.waterbottle.R;
@@ -33,6 +34,7 @@ public class MyProductListAdapter extends ArrayAdapter<Product> {
         super(context, resource, productList);
         this.context = context;
         this.resource = resource;
+
         this.productList = productList;
     }
 
@@ -40,7 +42,7 @@ public class MyProductListAdapter extends ArrayAdapter<Product> {
 
 
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View lconvertView, @NonNull ViewGroup parent) {
         //we need to get the view of the xml for our list item
         //And for this we need a layoutinflater
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -51,6 +53,7 @@ public class MyProductListAdapter extends ArrayAdapter<Product> {
         TextView tvpprice = view.findViewById(R.id.pprice);
         TextView tvprodetails = view.findViewById(R.id.prodetails);
         ImageView img1=view.findViewById(R.id.imgproduct);
+
 
         //getting the hero of the specified position
 
