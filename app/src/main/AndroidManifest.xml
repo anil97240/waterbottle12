@@ -16,10 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".customer_order">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".client_view_product">
         </activity>
@@ -28,12 +25,18 @@
         <activity android:name=".client_mobile_verification">
         </activity>
         <activity android:name=".client_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".admin_agent_side.admin_view_product">
+
         </activity>
         <activity android:name=".admin_agent_side.Admin_view_all_client">
         </activity>
         <activity android:name=".admin_agent_side.admin_dashboard">
+
         </activity>
         <activity android:name=".admin_agent_side.agent_add_bottle">
         </activity>

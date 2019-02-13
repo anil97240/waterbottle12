@@ -1,38 +1,60 @@
 package com.example.waterbottle.admin_agent_side;
 
 public class sliding_image {
-    String total;
-    int IMAGE;
+    private String Product_name, Product_Price, Product_detail, Qry, image;
 
     public sliding_image() {
     }
 
-    public sliding_image(String total) {
-        this.total = total;
+    public sliding_image(String product_name, String product_Price, String product_detail, String qry, String image) {
+        Product_name = product_name;
+        Product_Price = product_Price;
+        Product_detail = product_detail;
+        Qry = qry;
+        this.image = image;
     }
 
-    public sliding_image(int IMAGE) {
-        this.IMAGE = IMAGE;
+    public sliding_image(String image) {
+        this.image = image;
     }
 
-    public sliding_image(String total, int IMAGE) {
-        this.total = total;
-        this.IMAGE = IMAGE;
+    public String getProduct_name() {
+        return Product_name;
     }
 
-    public String getTotal() {
-        return total;
+    public void setProduct_name(String product_name) {
+        Product_name = product_name;
     }
 
-    public void setTotal(String total) {
-        this.total = total;
+    public String getProduct_Price() {
+        return Product_Price;
     }
 
-    public int getIMAGE() {
-        return IMAGE;
+    public void setProduct_Price(String product_Price) {
+        Product_Price = product_Price;
     }
 
-    public void setIMAGE(int IMAGE) {
-        this.IMAGE = IMAGE;
+    public String getProduct_detail() {
+        return Product_detail;
+    }
+
+    public void setProduct_detail(String product_detail) {
+        Product_detail = product_detail;
+    }
+
+    public String getQry() {
+        return Qry;
+    }
+
+    public void setQry(String qry) {
+        Qry = qry;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

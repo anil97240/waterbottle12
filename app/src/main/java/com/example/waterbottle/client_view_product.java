@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.waterbottle.client_side.client_model.client_product_model.client_product_listadepter;
@@ -34,6 +35,7 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
     private static final String TAG = "Mohit";
     List<client_product_model> productList;
     //for  fab buttton
+    private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
     //the listview
     ListView listView;
     private Boolean isFabOpen = false;
@@ -52,6 +54,11 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
 
         setContentView(R.layout.activity_client_view_product);
 
+
+        tvhide=findViewById(R.id.tvhide);
+        tvagenthide=findViewById(R.id.tvagenthide);
+        tvproducthide=findViewById(R.id.tvhideproduct);
+        tvlogouthide=findViewById(R.id.tvhidelogout);
         productList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.Clientviewproduct);
         Firebase.setAndroidContext(this);
@@ -218,6 +225,14 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
             fab3.startAnimation(fab_close);
             fab4.startAnimation(fab_close);
 
+
+
+
+            tvhide.startAnimation(fab_close);
+            tvagenthide.startAnimation(fab_close);
+            tvproducthide.startAnimation(fab_close);
+            tvlogouthide.startAnimation(fab_close);
+
             fab1.setClickable(false);
             fab2.setClickable(false);
             fab3.setClickable(false);
@@ -233,6 +248,13 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
             fab2.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
+
+
+            tvhide.startAnimation(fab_open);
+            tvagenthide.startAnimation(fab_open);
+            tvproducthide.startAnimation(fab_open);
+            tvlogouthide.startAnimation(fab_open);
+
 
             fab1.setClickable(true);
             fab2.setClickable(true);

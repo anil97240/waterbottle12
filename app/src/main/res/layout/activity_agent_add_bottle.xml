@@ -65,21 +65,22 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="18dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="3dp"
             app:srcCompat="@drawable/titlelogo" />
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="173dp"
-            android:layout_height="51dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginRight="86dp"
+            android:layout_width="228dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="2dp"
+            android:layout_toStartOf="@+id/imageView3"
+            android:layout_toEndOf="@+id/button2"
             android:text="Order"
+            android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="30sp"
             android:textStyle="bold" />

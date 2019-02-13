@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.waterbottle.R;
@@ -75,6 +76,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
     private StorageReference storageReference;
     private Uri filePath;
     String filedownloadpath;
+    private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
 
     @SuppressLint("ResourceType")
     @Override
@@ -93,6 +95,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
 
         //initializing objects
+        tvhide=findViewById(R.id.tvhide);
+        tvagenthide=findViewById(R.id.tvagenthide);
+        tvproducthide=findViewById(R.id.tvhideproduct);
+        tvlogouthide=findViewById(R.id.tvhidelogout);
+
 
         productList = new ArrayList<>();
         myListView = (ListView) findViewById(R.id.productlistview);
@@ -480,6 +487,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             fab3.startAnimation(fab_close);
             fab4.startAnimation(fab_close);
 
+            tvhide.startAnimation(fab_close);
+            tvagenthide.startAnimation(fab_close);
+            tvproducthide.startAnimation(fab_close);
+            tvlogouthide.startAnimation(fab_close);
+
             fab1.setClickable(false);
             fab2.setClickable(false);
             fab3.setClickable(false);
@@ -495,6 +507,13 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             fab2.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
+
+
+            tvhide.startAnimation(fab_open);
+            tvagenthide.startAnimation(fab_open);
+            tvproducthide.startAnimation(fab_open);
+            tvlogouthide.startAnimation(fab_open);
+
 
             fab1.setClickable(true);
             fab2.setClickable(true);

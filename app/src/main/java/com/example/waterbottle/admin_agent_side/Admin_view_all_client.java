@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.waterbottle.R;
@@ -74,6 +75,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
     private DatabaseReference mDatabaseReference;
 
     @SuppressLint("ResourceType")
@@ -101,6 +103,10 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         listView = (ListView) findViewById(R.id.Adminviewallclient);
 
         //add Client list in listview
+        tvhide=findViewById(R.id.tvhide);
+        tvagenthide=findViewById(R.id.tvagenthide);
+        tvproducthide=findViewById(R.id.tvhideproduct);
+        tvlogouthide=findViewById(R.id.tvhidelogout);
 
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Customer_data");
@@ -127,6 +133,8 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
                     final clientlistAdepter adapter = new clientlistAdepter(getApplicationContext(), R.layout.my_custom_listview_customer, clientList);
                     listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -144,6 +152,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                                     //  Toast.makeText(Admin_view_all_client.this, "data remove", Toast.LENGTH_SHORT).show();
                                     clientList.remove(p);
                                     adapter.notifyDataSetChanged();
+
                                     //do things
 
                                 }
@@ -517,6 +526,11 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             fab3.setClickable(false);
             fab4.setClickable(false);
 
+            tvhide.startAnimation(fab_close);
+            tvagenthide.startAnimation(fab_close);
+            tvproducthide.startAnimation(fab_close);
+            tvlogouthide.startAnimation(fab_close);
+
             isFabOpen = false;
             Log.d("Raj", "close");
 
@@ -527,6 +541,11 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             fab2.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
+
+            tvhide.startAnimation(fab_open);
+            tvagenthide.startAnimation(fab_open);
+            tvproducthide.startAnimation(fab_open);
+            tvlogouthide.startAnimation(fab_open);
 
             fab1.setClickable(true);
             fab2.setClickable(true);
