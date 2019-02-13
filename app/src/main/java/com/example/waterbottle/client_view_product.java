@@ -41,6 +41,7 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+
     private DatabaseReference mDatabaseReference;
 
     @SuppressLint("ResourceType")

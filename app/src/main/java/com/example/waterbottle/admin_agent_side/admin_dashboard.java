@@ -595,10 +595,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
 
-            tvhide.startAnimation(fab_open);
-            tvagenthide.startAnimation(fab_open);
-            tvproducthide.startAnimation(fab_open);
-            tvlogouthide.startAnimation(fab_open);
 
 
 

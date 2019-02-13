@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -38,6 +39,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
     List<agent> agentList;
 
     //the listview
@@ -53,6 +55,10 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
 
         setContentView(R.layout.activity_client_dashboard);
+        tvhide=findViewById(R.id.tvhide);
+        tvagenthide=findViewById(R.id.tvagenthide);
+        tvproducthide=findViewById(R.id.tvhideproduct);
+        tvlogouthide=findViewById(R.id.tvhidelogout);
 
 
 
@@ -242,6 +248,11 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             fab3.startAnimation(fab_close);
             fab4.startAnimation(fab_close);
 
+            tvhide.startAnimation(fab_close);
+            tvagenthide.startAnimation(fab_close);
+            tvproducthide.startAnimation(fab_close);
+            tvlogouthide.startAnimation(fab_close);
+
             fab1.setClickable(false);
             fab2.setClickable(false);
             fab3.setClickable(false);
@@ -257,6 +268,14 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             fab2.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
+
+
+            tvhide.startAnimation(fab_open);
+            tvagenthide.startAnimation(fab_open);
+            tvproducthide.startAnimation(fab_open);
+            tvlogouthide.startAnimation(fab_open);
+
+
 
             fab1.setClickable(true);
             fab2.setClickable(true);

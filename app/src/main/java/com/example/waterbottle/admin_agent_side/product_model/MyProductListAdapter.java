@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MyProductListAdapter extends ArrayAdapter<Product> {
+public class   MyProductListAdapter extends ArrayAdapter<Product> {
 
     //the list values in the List of type hero
     List<Product> productList;

@@ -53,21 +53,21 @@
     </RelativeLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginBottom="53dp"
-        android:layout_toStartOf="@+id/fab"
-        android:layout_toLeftOf="@+id/fab"
-        android:src="@drawable/agent"
-        android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB1"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp" />
+    android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab2"
+    android:layout_width="65dp"
+    android:layout_height="65dp"
+    android:layout_alignParentBottom="true"
+    android:layout_marginEnd="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginBottom="53dp"
+    android:layout_toStartOf="@+id/fab"
+    android:layout_toLeftOf="@+id/fab"
+    android:src="@drawable/cart"
+    android:visibility="invisible"
+    app:backgroundTint="@color/colorFAB1"
+    app:elevation="6dp"
+    app:pressedTranslationZ="12dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab1"
@@ -91,15 +91,13 @@
         android:layout_height="65dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="53dp"
-        android:layout_marginRight="53dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="40dp"
         android:layout_marginBottom="84dp"
-        android:src="@drawable/add"
+        android:src="@drawable/desc"
         android:visibility="invisible"
         app:backgroundTint="@color/colorFAB1"
-
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -113,7 +111,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="77dp"
         android:src="@drawable/logout"
         android:visibility="invisible"
         app:backgroundTint="@color/colorFAB1"
@@ -135,6 +133,66 @@
         app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
+
+    <TextView
+        android:id="@+id/tvhide"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toStartOf="@+id/fab3"
+        android:background="@drawable/profilename"
+        android:backgroundTint="@color/fabtext"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tvagenthide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="64dp"
+        android:layout_toStartOf="@+id/fab3"
+        android:background="@drawable/ordername"
+        android:backgroundTint="@color/fabtext"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tvhideproduct"
+        android:layout_width="60dp"
+        android:layout_height="41dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="114dp"
+        android:background="@drawable/logoutname"
+        android:backgroundTint="@color/fabtext"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tvhidelogout"
+        android:layout_width="67dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-52dp"
+        android:layout_marginBottom="111dp"
+        android:layout_toStartOf="@+id/fab3"
+        android:background="@drawable/productname"
+        android:backgroundTint="@color/fabtext"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
     <ListView
         android:id="@+id/Clientviewproduct"

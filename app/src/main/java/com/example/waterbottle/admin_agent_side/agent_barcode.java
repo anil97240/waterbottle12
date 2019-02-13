@@ -71,6 +71,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private IntentIntegrator qrScan;
+    private static final String TAG ="Mohit" ;
 
     private DatabaseReference mDatabase;
 
@@ -355,6 +356,8 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
             //adding the file to reference
             sRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //dismissing the progress dialog
@@ -364,10 +367,17 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
 
                             //creating the upload object to store uploaded image details
-                            Client cn = new Client();
-                            //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
 
-                            filedownloadpath = taskSnapshot.getDownloadUrl().toString();
+                            //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
+                            try {
+                                Client cn = new Client();
+                                filedownloadpath = taskSnapshot.getDownloadUrl().toString();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(TAG, "Uri Not found: "+e.getMessage() );
+                            }
+
 
                             //adding an upload to firebase database
                           /*  String uploadId = mDatabase.push().getKey();
@@ -391,6 +401,7 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
                     });
         } else {
             //display an error if no file is selected
+            Toast.makeText(this, "No File Selected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -434,7 +445,7 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
                     if (toTest.equals("")) {
 
                     } else {
-                        edtbarcode.setText(toTest.toString());
+                        edtbarcode.setText(toTest);
                     }
                 }
             }
