@@ -56,6 +56,7 @@ public class client_login extends AppCompatActivity {
             Intent intent = new Intent(client_login.this, client_mobile_verification.class);
             intent.putExtra("mobile", mobile);
             startActivity(intent);
+            finish();
         }
     });
     }

@@ -21,14 +21,15 @@
         <activity android:name=".client_view_product">
         </activity>
         <activity android:name=".client_dashboard">
-        </activity>
-        <activity android:name=".client_mobile_verification">
-        </activity>
-        <activity android:name=".client_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".client_mobile_verification">
+        </activity>
+        <activity android:name=".client_login">
+
         </activity>
         <activity android:name=".admin_agent_side.admin_view_product">
 

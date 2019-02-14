@@ -189,7 +189,7 @@
     </RelativeLayout>
 
 
-    android.support.design.widget.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
     android:id="@+id/fab2"
     android:layout_width="65dp"
     android:layout_height="65dp"

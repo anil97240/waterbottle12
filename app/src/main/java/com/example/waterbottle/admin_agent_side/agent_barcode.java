@@ -3,28 +3,23 @@ package com.example.waterbottle.admin_agent_side;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,11 +29,10 @@ import android.widget.Toast;
 
 import com.example.waterbottle.R;
 import com.example.waterbottle.client_side.client_model.Client;
-import com.example.waterbottle.client_side.client_model.clientlistAdepter;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,58 +51,45 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.yavski.fabspeeddial.FabSpeedDial;
-import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
-
 public class agent_barcode extends AppCompatActivity implements View.OnClickListener {
 
-    private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fab1, fab2, fab3, fab4;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
-    private IntentIntegrator qrScan;
-    private static final String TAG ="Mohit" ;
-
-    private DatabaseReference mDatabase;
-
-    private Firebase mRef;
-    private StorageReference storageRef;
-    private DatabaseReference mDatabaseReference;
+    public static final String STORAGE_PATH_UPLOADS = "uploads/";
+    public static final String DATABASE_PATH_UPLOADS = "Customer_data";
+    public static final String DATABASE_PATH_UPLOADS1 = "Product_data";
+    private static final String TAG = "Mohit";
+    private static final int PICK_IMAGE_REQUEST = 234, PICK_IMAGE_REQUEST1 = 234;
     String[] uploads;
     ArrayList arrayList = new ArrayList<String>();
     ArrayList arrbaarcode = new ArrayList<String>();
     List<Client> clientList;
-
-    private StorageReference storageReference;
-    private FirebaseAuth mAuth;
-
-
     ListView listView;
     String filedownloadpath;
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
     //search
     //qr Scanner
     EditText edtbarcode, edtemail, edtpass;
-    TextView tvhide,tvloguot;
-
-    private Uri filePath;
-
-    public static final String STORAGE_PATH_UPLOADS = "uploads/";
-    public static final String DATABASE_PATH_UPLOADS = "Customer_data";
-    public static final String DATABASE_PATH_UPLOADS1 = "Product_data";
-
-    private static final int PICK_IMAGE_REQUEST = 234, PICK_IMAGE_REQUEST1 = 234;
+    TextView tvhide, tvloguot;
     Bitmap bitmap, bitmap2;
     ImageView imgview;
     ImageView img_pro;
     String toTest;
     EditText inputSearch;
-
     ArrayList arrayList1 = new ArrayList<String>();
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab, fab1, fab2, fab3, fab4;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private IntentIntegrator qrScan;
+    private DatabaseReference mDatabase;
+    private Firebase mRef;
+    private StorageReference storageRef;
+    private DatabaseReference mDatabaseReference;
+    private StorageReference storageReference;
+    private FirebaseAuth mAuth;
+    private Uri filePath;
 
     @SuppressLint("ResourceType")
     @Override
@@ -125,8 +106,8 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        tvloguot=findViewById(R.id.tvhidelogout);
-        tvhide=findViewById(R.id.tvhide);
+        tvloguot = findViewById(R.id.tvhidelogout);
+        tvhide = findViewById(R.id.tvhide);
 
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fab_open);
@@ -136,6 +117,53 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
+
+
+
+
+
+
+
+        Firebase.setAndroidContext(this);
+
+        FirebaseApp.initializeApp(this);
+
+        clientList = new ArrayList<>();
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Customer_data");
+        //retrieving upload data from firebase database
+
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                try {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Client client = postSnapshot.getValue(Client.class);
+                        clientList.add(client);
+
+                    }
+
+                    String[] uploads = new String[clientList.size()];
+
+                    for (int i = 0; i < uploads.length; i++) {
+                        uploads[i]=clientList.get(i).getCustomer_qrcode();
+                        arrayList1.add(uploads[i]);
+
+                    }
+
+                } catch (Exception e) {
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
 
     }
@@ -188,9 +216,8 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
 
             fab1.setClickable(false);
             fab2.setClickable(false);
-
-
             isFabOpen = false;
+
             Log.d("Raj", "close");
 
         } else {
@@ -246,7 +273,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         }
 
 
-view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 qrScan = new IntentIntegrator(agent_barcode.this);
@@ -331,13 +358,14 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
-//upload image extension
+    //upload image extension
     public String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-//for upload images
+
+    //for upload images
     private void uploadFile() {
         storageReference = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_UPLOADS);
@@ -372,10 +400,8 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
                             try {
                                 Client cn = new Client();
                                 filedownloadpath = taskSnapshot.getDownloadUrl().toString();
-                            }
-                            catch (Exception e)
-                            {
-                                Log.e(TAG, "Uri Not found: "+e.getMessage() );
+                            } catch (Exception e) {
+                                Log.e(TAG, "Uri Not found: " + e.getMessage());
                             }
 
 
@@ -438,19 +464,44 @@ view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListe
                     // textViewAddress.setText(obj.getString("address"));
 
 
+
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
 
                     toTest = result.getContents();
-                    if (toTest.equals("")) {
 
+                    if (toTest.equals("")) {
+                        Toast.makeText(this, "Cant read Code", Toast.LENGTH_SHORT).show();
                     } else {
-                        edtbarcode.setText(toTest);
+
+
+                      //  edtbarcode.setText(toTest);
+
+
                     }
+
+                    String toTest = result.getContents();
+                    Toast.makeText(this, "qrcode:"+arrayList1, Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(this, "data:"+datarr, Toast.LENGTH_SHORT).show();
+                    if (arrayList1.contains(toTest)) {
+                        //   Toast.makeText(this, "1:" + arrayList.get(i) + "2:" + toTest, Toast.LENGTH_SHORT).show();
+                        Intent i1 = new Intent(getApplicationContext(), agent_add_bottle.class);
+                        i1.putExtra("qrcode", result.getContents());
+                        startActivity(i1);
+                    }
+                    else {
+
+                        Toast.makeText(this, "QR Not found", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+
         }
 
         //firebase add new Agent Accont

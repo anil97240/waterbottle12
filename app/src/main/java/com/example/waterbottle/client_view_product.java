@@ -140,6 +140,8 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
                 // showAgentDialog();
                 Intent i1 = new Intent(this, customer_order.class);
                 startActivity(i1);
+
+
                 break;
 
             case R.id.fab3:
@@ -147,6 +149,8 @@ public class client_view_product extends AppCompatActivity implements View.OnCli
                 Log.d("a", "Fab 3");
                 Intent i = new Intent(this, client_view_product.class);
                 startActivity(i);
+                finish();
+
                 break;
             case R.id.fab4:
                 //Logout From cURRENT User

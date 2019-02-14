@@ -1,11 +1,12 @@
 package com.example.waterbottle;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -18,32 +19,44 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.waterbottle.admin_agent_side.Model.agent;
-import com.example.waterbottle.admin_agent_side.agent_login;
+import com.example.waterbottle.client_side.client_model.Bottle_delivered;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 
 public class client_dashboard extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "Mohit";
     // inside Activity
 
     ExpandableRelativeLayout expandableLayout1, expandableLayout2, expandableLayout3, expandableLayout4, expandableLayout5;
+    List<agent> agentList;
+    ArrayList arrayList = new ArrayList<String>();
+    ArrayList arrayList1 = new ArrayList<String>();
 
+
+    //the listview
+    ListView listView, listView1, listView2;
+    //database reference to get uploads data
+    DatabaseReference mDatabaseReference;
+    List<Bottle_delivered> bottle_deliveredList;
+    Bottle_delivered upload;
     //for  fab buttton
+    StringBuffer sb;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
-    private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
-    List<agent> agentList;
+    private TextView tvhide, tvagenthide, tvproducthide, tvlogouthide;
 
-    //the listview
-    ListView listView,listView1,listView2;
 
     @SuppressLint("ResourceType")
     @Override
@@ -55,48 +68,18 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
 
         setContentView(R.layout.activity_client_dashboard);
-        tvhide=findViewById(R.id.tvhide);
-        tvagenthide=findViewById(R.id.tvagenthide);
-        tvproducthide=findViewById(R.id.tvhideproduct);
-        tvlogouthide=findViewById(R.id.tvhidelogout);
-
+        tvhide = findViewById(R.id.tvhide);
+        tvagenthide = findViewById(R.id.tvagenthide);
+        tvproducthide = findViewById(R.id.tvhideproduct);
+        tvlogouthide = findViewById(R.id.tvhidelogout);
 
 
         Date d = new Date();
-        CharSequence s  = DateFormat.format("dd-MM-yyyy ", d.getTime());
+        CharSequence s = DateFormat.format("dd-MM-yyyy ", d.getTime());
 
         listView = (ListView) findViewById(R.id.listpadding);
         listView1 = (ListView) findViewById(R.id.listpadding1);
         listView2 = (ListView) findViewById(R.id.listpadding3);
-
-        // Initializing a new String Array
-        String[] fruits = new String[] {
-                s.toString() +"                    $300",
-                s.toString() +"                    $300",
-                s.toString() +"                    $300",
-                s.toString() +"                    $300",
-                s.toString() +"                    $300",
-                s.toString() +"                    $300",
-        };
-
-
-        // Create a List from String Array elements
-        final List<String> fruits_list = new ArrayList<String>(Arrays.<String>asList(fruits));
-     //   final List<String> fruits_list1 = new ArrayList<String>(Arrays.<String>asList(price));
-        List<String> combined = new ArrayList<String>();
-        combined.addAll(fruits_list);
-        //combined.addAll(fruits_list1);
-
-        // Create an ArrayAdapter from List
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, combined);
-
-        // DataBind ListView with items from ArrayAdapter
-        listView.setAdapter(arrayAdapter);
-        listView1.setAdapter(arrayAdapter);
-        listView2.setAdapter(arrayAdapter);
-
-
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
@@ -114,6 +97,53 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
+
+        bottle_deliveredList = new ArrayList<>();
+        //getting the database reference
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Bottle_delivered");
+        Log.e(TAG, "onCreate: " + mDatabaseReference);
+        //retrieving upload data from firebase database
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    upload = postSnapshot.getValue(Bottle_delivered.class);
+                    bottle_deliveredList.add(upload);
+
+
+                }
+
+                String[] uploads = new String[bottle_deliveredList.size()];
+
+                for (int i = 0; i < uploads.length; i++) {
+                    String a = uploads[i] = bottle_deliveredList.get(i).getDelivry_date();
+
+                    arrayList.add(bottle_deliveredList.get(i).getDelivry_date());
+                    arrayList1.add(bottle_deliveredList.get(i).getAmount_collected());
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.append( arrayList1+ arrayList);
+                    Log.e(TAG, "onDataChange: " + arrayList);
+
+
+                }
+
+
+                //displaying it to list
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList1);
+
+
+                listView2.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+
     }
 
 
@@ -138,7 +168,6 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
         int id = v.getId();
         switch (id) {
             case R.id.fab:
-
                 animateFAB();
                 break;
             case R.id.fab1:
@@ -151,14 +180,14 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             case R.id.fab2:
                 //Toast.makeText(this, "log1", Toast.LENGTH_SHORT).show();
                 Log.d("a", "Fab 2");
-                Intent i1=new Intent(this,customer_order.class);
+                Intent i1 = new Intent(this, customer_order.class);
                 startActivity(i1);
 
                 break;
 
             case R.id.fab3:
                 Log.d("a", "Fab 3");
-                Intent i=new Intent(this,client_view_product.class);
+                Intent i = new Intent(this, client_view_product.class);
                 startActivity(i);
 
                 break;
@@ -166,13 +195,11 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
                 //Logout From cURRENT User
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 fAuth.signOut();
-                if (fAuth != null)
-                {
-                    Intent iq=new Intent(getApplicationContext(), client_login.class);
+                if (fAuth != null) {
+                    Intent iq = new Intent(getApplicationContext(), client_login.class);
                     startActivity(iq);
                     finish();
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
                 }
 
@@ -186,7 +213,6 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(client_dashboard.this);
-
 
 
         View view = getLayoutInflater().inflate(R.layout.dialong_customer_profile, null);
@@ -228,13 +254,8 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             public void onClick(View v) {
 
 
-
             }
         });
-
-
-
-
 
 
     }
@@ -274,7 +295,6 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
             tvagenthide.startAnimation(fab_open);
             tvproducthide.startAnimation(fab_open);
             tvlogouthide.startAnimation(fab_open);
-
 
 
             fab1.setClickable(true);

@@ -82,7 +82,7 @@ public class agent_login extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             // there was an error
                             if (password.length() < 6) {
-                                edtpass.setError("Validate PAssword");
+                                edtpass.setError("Validate Password");
                             } else {
                                 Toast.makeText(agent_login.this, "Auth Faild", Toast.LENGTH_LONG).show();
                             }
