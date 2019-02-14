@@ -40,14 +40,9 @@ public class agent_login extends AppCompatActivity {
         edtmail = findViewById(R.id.edtusername1);
         edtpass = findViewById(R.id.edtpass1);
         //Get FirebetInstance();ase auth instance
+
         FirebaseApp.initializeApp(this);
-
-        auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(agent_login.this, agent_barcode.class));
-            finish();
-        }
-
+        auth=FirebaseAuth.getInstance();
 
     }
 
@@ -87,12 +82,14 @@ public class agent_login extends AppCompatActivity {
                                 Toast.makeText(agent_login.this, "Auth Faild", Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            if (email.equals("admin@gmail.com") && password.equals("123456")) {
+                           if (email.equals("admin@gmail.com") && password.equals("123456")) {
                                 Intent intent = new Intent(agent_login.this, admin_dashboard.class);
+                               intent.putExtra("id",email);
                                 startActivity(intent);
                                 finish();
 
                             } else {
+                                Toast.makeText(agent_login.this, "Notc orrect", Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(agent_login.this, agent_barcode.class);
                                 startActivity(intent);

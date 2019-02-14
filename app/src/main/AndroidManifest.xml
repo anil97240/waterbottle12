@@ -18,34 +18,36 @@
         <activity android:name=".customer_order">
 
         </activity>
-        <activity android:name=".client_view_product">
-        </activity>
-        <activity android:name=".client_dashboard">
+        <activity android:name=".client_view_product"></activity>
+        <activity android:name=".client_dashboard"></activity>
+        <activity android:name=".client_mobile_verification"></activity>
+        <activity android:name=".client_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".client_mobile_verification">
-        </activity>
-        <activity android:name=".client_login">
+
 
         </activity>
         <activity android:name=".admin_agent_side.admin_view_product">
 
         </activity>
-        <activity android:name=".admin_agent_side.Admin_view_all_client">
-        </activity>
+        <activity android:name=".admin_agent_side.Admin_view_all_client"></activity>
         <activity android:name=".admin_agent_side.admin_dashboard">
 
+
         </activity>
-        <activity android:name=".admin_agent_side.agent_add_bottle">
-        </activity>
+        <activity android:name=".admin_agent_side.agent_add_bottle"></activity>
         <activity android:name=".admin_agent_side.agent_barcode">
+
         </activity>
-        <activity android:name=".admin_agent_side.agent_login">
+        <activity android:name=".admin_agent_side.agent_login"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".admin_agent_side.order_delivered">
+
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".admin_agent_side.admin_view_order" >
+
         </activity>
     </application>
 

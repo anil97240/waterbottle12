@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -36,16 +35,12 @@ import com.example.waterbottle.admin_agent_side.Model.MyListAdapter;
 import com.example.waterbottle.admin_agent_side.Model.agent;
 import com.example.waterbottle.client_side.client_model.Client;
 import com.firebase.client.Firebase;
-import com.firebase.client.authentication.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -59,7 +54,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,44 +61,38 @@ import java.util.Map;
 
 public class admin_dashboard extends AppCompatActivity implements View.OnClickListener {
 
-    private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fab1, fab2, fab3, fab4;
-    private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
-
-    private StorageReference storageReference;
-    private DatabaseReference mDatabase;
-
-    private Firebase mRef;
-    private StorageReference storageRef;
-
-
-    private FirebaseAuth mAuth;
-
-
-
+    public static final String STORAGE_PATH_UPLOADS = "uploads/";
+    public static final String DATABASE_PATH_UPLOADS = "Customer_data";
+    public static final String DATABASE_PATH_UPLOADS1 = "Product_data";
+    private static final String TAG = "Mohit";
+    private static final int PICK_IMAGE_REQUEST = 234, PICK_IMAGE_REQUEST1 = 234;
     List<agent> agentList;
     MyListAdapter adapter;
     //the listview
     ListView listView;
     String filedownloadpath;
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
-    //search
-    //qr Scanner
-    private IntentIntegrator qrScan;
-    EditText edtbarcode,edtemail,edtpass;
-    private Uri filePath;
-
-    public static final String STORAGE_PATH_UPLOADS = "uploads/";
-    public static final String DATABASE_PATH_UPLOADS = "Customer_data";
-    public static final String DATABASE_PATH_UPLOADS1 = "Product_data";
-
-    private static final int PICK_IMAGE_REQUEST = 234, PICK_IMAGE_REQUEST1 = 234;
+    EditText edtbarcode, edtemail, edtpass;
     Bitmap bitmap, bitmap2;
     ImageView imgview;
     ImageView img_pro;
     String toTest;
     EditText inputSearch;
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab, fab1, fab2, fab3, fab4;
+    private TextView tvhide, tvagenthide, tvproducthide, tvlogouthide;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private StorageReference storageReference;
+    private DatabaseReference mDatabase;
+    private Firebase mRef;
+    private StorageReference storageRef;
+    private FirebaseAuth mAuth;
+
+
+    //search
+    //qr Scanner
+    private IntentIntegrator qrScan;
+    private Uri filePath;
 
     @SuppressLint("ResourceType")
     @Override
@@ -117,7 +105,14 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_admin_dashboard);
 
         mAuth = FirebaseAuth.getInstance();
-
+        if (mAuth==null)
+        {
+            Intent i=new Intent(getApplicationContext(),agent_login.class);
+            startActivity(i);
+            finish();
+        }else {
+            Toast.makeText(this, "dfduhtg", Toast.LENGTH_SHORT).show();
+        }
 
 
         agentList = new ArrayList<>();
@@ -140,10 +135,10 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
 
         //initializing objects
-        tvhide=findViewById(R.id.tvhide);
-        tvagenthide=findViewById(R.id.tvagenthide);
-        tvproducthide=findViewById(R.id.tvhideproduct);
-        tvlogouthide=findViewById(R.id.tvhidelogout);
+        tvhide = findViewById(R.id.tvhide);
+        tvagenthide = findViewById(R.id.tvagenthide);
+        tvproducthide = findViewById(R.id.tvhideproduct);
+        tvlogouthide = findViewById(R.id.tvhidelogout);
 
         adapter = new MyListAdapter(this, R.layout.my_custom_list, agentList);
         listView.setTextFilterEnabled(true);
@@ -209,7 +204,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.fab2:
                 Log.d("Raj", "Fab 2");
-                     showAgentDialog();
+                showAgentDialog();
                 break;
 
             case R.id.fab3:
@@ -220,21 +215,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
             case R.id.fab4:
 
-
-                    //Logout From cURRENT User
-
-                FirebaseAuth fAuth = FirebaseAuth.getInstance();
-                fAuth.signOut();
-                if (fAuth != null)
-                {
-                    Intent i=new Intent(getApplicationContext(),agent_login.class);
-                    startActivity(i);
-                    finish();
-                }
-                else {
-                    Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
-                }
-
+                logout();
 
                 break;
 
@@ -323,13 +304,10 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         dialog.setContentView(view);
         dialog.show();
 
-       edtemail=view.findViewById(R.id.edtemail);
-         edtpass=view.findViewById(R.id.edtpass);
-        final EditText edtname=view.findViewById(R.id.edtname);
-        final EditText edtmob=view.findViewById(R.id.edtmob);
-
-
-
+        edtemail = view.findViewById(R.id.edtemail);
+        edtpass = view.findViewById(R.id.edtpass);
+        final EditText edtname = view.findViewById(R.id.edtname);
+        final EditText edtmob = view.findViewById(R.id.edtmob);
 
 
         view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
@@ -345,25 +323,22 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
 
 
-
-
-
-
                 Firebase ref;
                 ref = new Firebase(url);
 
 
-                String email=edtemail.getText().toString();
-                String pass=edtpass.getText().toString();
-                String name=edtname.getText().toString();
-                String mob=edtmob.getText().toString();
+                String email = edtemail.getText().toString();
+                String pass = edtpass.getText().toString();
+                String name = edtname.getText().toString();
+                String mob = edtmob.getText().toString();
 
                 //insert Agent in firebase
                 Map<String, String> users = new HashMap<>();
-                users.put("Agent_email",email);
+                users.put("Agent_email", email);
                 users.put("Agent_password", pass);
                 users.put("Agent_name", name);
                 users.put("Agent_mobile", mob);
+                users.put("Type", "admin");
                 ref.child("Agent_data").push().setValue(users);
 
                 Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
@@ -377,21 +352,20 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
     private void registerUser() {
 
         String email = edtemail.getText().toString();
-        String password  = edtpass.getText().toString();
+        String password = edtpass.getText().toString();
 
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
 
 
-
-        mAuth.createUserWithEmailAndPassword(email,password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -426,9 +400,9 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         edtbarcode = view.findViewById(R.id.edtbarcode);
         final Button btnadd = view.findViewById(R.id.btnaddclient);
         imgview = view.findViewById(R.id.imgview);
-        final  Button btnuploadimg=view.findViewById(R.id.btnuploadimg);
+        final Button btnuploadimg = view.findViewById(R.id.btnuploadimg);
 
-    //image chooser
+        //image chooser
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -476,7 +450,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
 
                 showFileChooser();
-
 
 
             }
@@ -595,7 +568,10 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
 
-
+            tvhide.startAnimation(fab_open);
+            tvagenthide.startAnimation(fab_open);
+            tvproducthide.startAnimation(fab_open);
+            tvlogouthide.startAnimation(fab_open);
 
 
             fab1.setClickable(true);
@@ -775,9 +751,20 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         }
 
         //firebase add new Agent Accont
+    }
 
-
+    public void logout() {
+        //Logout From cURRENT User
+       FirebaseAuth.getInstance().signOut();
+        if (mAuth == null) {
+            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
+        }
 
     }
+
+
+
 }
 

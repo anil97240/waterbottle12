@@ -3,6 +3,7 @@ package com.example.waterbottle;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -21,17 +22,23 @@ import android.widget.Toast;
 
 import com.example.waterbottle.admin_agent_side.Model.agent;
 import com.example.waterbottle.client_side.client_model.Bottle_delivered;
+import com.firebase.client.FirebaseError;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class client_dashboard extends AppCompatActivity implements View.OnClickListener {
@@ -50,7 +57,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
     //database reference to get uploads data
     DatabaseReference mDatabaseReference;
     List<Bottle_delivered> bottle_deliveredList;
-    Bottle_delivered upload;
+
     //for  fab buttton
     StringBuffer sb;
     private Boolean isFabOpen = false;
@@ -102,14 +109,14 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
         bottle_deliveredList = new ArrayList<>();
         //getting the database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Bottle_delivered");
-        Log.e(TAG, "onCreate: " + mDatabaseReference);
+
         //retrieving upload data from firebase database
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    upload = postSnapshot.getValue(Bottle_delivered.class);
+                    Bottle_delivered   upload = postSnapshot.getValue(Bottle_delivered.class);
                     bottle_deliveredList.add(upload);
 
 
@@ -118,27 +125,28 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
                 String[] uploads = new String[bottle_deliveredList.size()];
 
                 for (int i = 0; i < uploads.length; i++) {
-                    String a = uploads[i] = bottle_deliveredList.get(i).getDelivry_date();
+                    String acollect = uploads[i] = bottle_deliveredList.get(i).getAmount_collected();
+                    String pending = uploads[i] = bottle_deliveredList.get(i).getPadding_amount();
+                    String ddate = uploads[i] = bottle_deliveredList.get(i).getDelivry_date();
+                    String totl= uploads[i] = bottle_deliveredList.get(i).getTotal_amount();
+
+
                     //Fore get Total
-                    arrayList.add(bottle_deliveredList.get(i).getDelivry_date().toString()),bottle_deliveredList.get(i).getAmount_collected());
-                    Log.e(TAG, "onDataChange: "+arrayList );
-
-
-
-
-
-
-
-
+                    arrayList.add(ddate + "                            " + acollect);
+                    arrayList1.add(ddate + "                           " + pending);
+                    all.add(ddate + "                           " + totl);
                 }
+
                 //displaying it to list
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList);
                 listView2.setAdapter(adapter);
 
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList1);
+                listView.setAdapter(adapter1);
 
 
-
-
+                ArrayAdapter<String> allad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, all);
+                listView1.setAdapter(allad);
 
             }
 
@@ -149,7 +157,32 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
         });
 
 
+
+
+        mDatabaseReference=FirebaseDatabase.getInstance().getReference().child("Bottle_delivered");
+        Query query = mDatabaseReference.orderByChild("Order_date").limitToLast(7);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    Log.e(TAG, "onDataChange: "+child.getKey() );
+                    Log.e(TAG, "onDataChange: "+child.getValue().toString());
+
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+       });;
+
     }
+
 
 
     public void expandableButton1(View view) {

@@ -3,7 +3,9 @@ package com.example.waterbottle.admin_agent_side;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -97,8 +99,6 @@ public class agent_add_bottle extends AppCompatActivity {
 
                     for (int i = 0; i < uploads.length; i++) {
                         String s = (uploads[i]);
-                        Toast.makeText(getApplicationContext(), "" + uploads[i], Toast.LENGTH_SHORT).show();
-
                         mPager = (ViewPager) findViewById(R.id.pager);
 
                         tvdetails = findViewById(R.id.tvbottledetails);
@@ -136,7 +136,6 @@ public class agent_add_bottle extends AppCompatActivity {
 
                                 sliding_image slid = new sliding_image();
                                 String a = slid.getQry();
-                                Toast.makeText(getApplicationContext(), "qty:" + a, Toast.LENGTH_SHORT).show();
 
                                 tvdetails.setText(slid_img.get(position).getProduct_name());
                                 tvtotalbottle.setText(slid_img.get(position).getProduct_Price());
@@ -157,8 +156,6 @@ public class agent_add_bottle extends AppCompatActivity {
 
                     }
 
-                    Toast.makeText(agent_add_bottle.this, "askd" + arrayList1.size(), Toast.LENGTH_SHORT).show();
-
                 } catch (Exception e) {
                 }
 
@@ -177,7 +174,7 @@ public class agent_add_bottle extends AppCompatActivity {
             userName = extras.getString("qrcode");
 
         }
-        Toast.makeText(this, "" + userName, Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -187,31 +184,85 @@ public class agent_add_bottle extends AppCompatActivity {
     }
 //get all product from firebase
 
+    //add dialog
+    public void showpaymentamount() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+
+        View view = getLayoutInflater().inflate(R.layout.paymet_agent_dialog, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+
+        dialog.show();
+
+        final EditText edtamount = view.findViewById(R.id.edtamount);
+        final EditText edtpaddingamount = view.findViewById(R.id.edtpaddingamount);
+        final TextView tvtotal = view.findViewById(R.id.tvtotalamount);
+
+
+        view.findViewById(R.id.btnclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        view.findViewById(R.id.btnaddorder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                try {
+                    int a = 0, t = 0, p = 0;
+
+                    String s,s1;
+                    s = edtamount.getText().toString();
+                    s1 = edtpaddingamount.getText().toString();
+
+                    if(!s.equals("")) {
+                        a = Integer.parseInt(s);
+
+                    }
+                    else if(!s1.equals(""))
+                    {
+                        p = Integer.parseInt(s1);
+                    }
+
+                    t = a + p;
+
+
+
+
+
+                    Firebase ref;
+
+                    ref = new Firebase(url);
+                    String date;
+                    date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                    Map<String, String> users = new HashMap<>();
+
+                    users.put("Botttle_total", tvtotalbottle.getText().toString());
+                    users.put("Amount_collected", String.valueOf(a));
+                    users.put("Padding_amount", String.valueOf(p));
+                    users.put("Delivry_date", date);
+                    users.put("QR_code", userName);
+                    users.put("Total_amount", String.valueOf(t));
+                    users.put("Bottle_type", tvdetails.getText().toString());
+                    ref.child("Bottle_delivered").push().setValue(users);
+
+                    Toast.makeText(getApplicationContext(), "Order Successfully Delivered", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+
+            }
+        });
+    }
+
     public void btnok(View view) {
-        Firebase.setAndroidContext(this);
-        Firebase ref;
-
-        ref = new Firebase(url);
-
-        /*int b= Integer.parseInt(tvtotalbottle.getText().toString());
-        a=a+b;*/
-        //set date for database
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-        //data add in fire base
-
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-        Map<String, String> users = new HashMap<>();
-        //users.put("Botttle_qty", String.valueOf(a));
-        users.put("QR_code", userName);
-        users.put("Order_complate_date", date);
-        users.put("Bottle_type", tvdetails.getText().toString());
-        users.put("bottle_price", tvtotalbottle.getText().toString());
-        // users.put("all_Total", String.valueOf(b));
-
-        ref.child("Bottle_delivered").push().setValue(users);
-
-        Toast.makeText(this, "Order Successfully Delivered", Toast.LENGTH_SHORT).show();
+        showpaymentamount();
 
     }
 
