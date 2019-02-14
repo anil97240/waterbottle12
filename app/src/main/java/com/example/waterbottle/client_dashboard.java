@@ -42,6 +42,7 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
     List<agent> agentList;
     ArrayList arrayList = new ArrayList<String>();
     ArrayList arrayList1 = new ArrayList<String>();
+    ArrayList all = new ArrayList<String>();
 
 
     //the listview
@@ -118,23 +119,27 @@ public class client_dashboard extends AppCompatActivity implements View.OnClickL
 
                 for (int i = 0; i < uploads.length; i++) {
                     String a = uploads[i] = bottle_deliveredList.get(i).getDelivry_date();
+                    //Fore get Total
+                    arrayList.add(bottle_deliveredList.get(i).getDelivry_date().toString()),bottle_deliveredList.get(i).getAmount_collected());
+                    Log.e(TAG, "onDataChange: "+arrayList );
 
-                    arrayList.add(bottle_deliveredList.get(i).getDelivry_date());
-                    arrayList1.add(bottle_deliveredList.get(i).getAmount_collected());
-                    StringBuilder sb = new StringBuilder();
 
-                    sb.append( arrayList1+ arrayList);
-                    Log.e(TAG, "onDataChange: " + arrayList);
+
+
+
+
 
 
                 }
-
-
                 //displaying it to list
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList1);
-
-
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList);
                 listView2.setAdapter(adapter);
+
+
+
+
+
+
             }
 
             @Override
