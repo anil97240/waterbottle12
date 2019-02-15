@@ -103,6 +103,10 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_agent_barcode);
         Firebase.setAndroidContext(this);
 
+
+        mAuth = FirebaseAuth.getInstance();
+
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);

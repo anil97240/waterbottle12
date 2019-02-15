@@ -3,133 +3,139 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_view_corner"
+    android:paddingLeft="10dp"
     android:paddingBottom="10dp">
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/imgclient"
-        android:layout_width="106dp"
-        android:layout_height="104dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginRight="305dp"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/cus" />
-
-    <TableLayout
-        android:layout_width="294dp"
-        android:layout_height="wrap_content"
+        android:layout_width="86dp"
+        android:layout_height="96dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/cus"
+        app:civ_border_color="@color/fabtext"
+        app:civ_border_width="3dp" />
 
+    <RelativeLayout
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/list_view_corner"
+        android:orientation="horizontal">
 
-        <TableRow
-            android:layout_width="match_parent"
+        <TableLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp">
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="99dp"
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" Name"
-                android:textColor="@color/colorBackgroud"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:paddingLeft="10dp">
 
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="154dp"
+                    android:layout_height="match_parent"
+                    android:text=" Name"
+                    android:textColor="@color/colorBackgroud"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="99dp"
-                android:layout_height="match_parent"
-                android:text="Barcode no"
-                android:textColor="@color/colorBackgroud"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="138dp"
+                    android:layout_height="match_parent"
+                    android:text="Barcode no"
+                    android:textColor="@color/colorBackgroud"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
+            </TableRow>
 
-        </TableRow>
+            <TableRow
+                android:layout_width="425dp"
+                android:layout_height="49dp"
+                android:paddingLeft="10dp">
 
-        <TableRow
-            android:layout_width="425dp"
-            android:layout_height="49dp"
-            android:paddingLeft="10dp">
+                <TextView
+                    android:id="@+id/tvcnm"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+                    android:text="abc"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvcnm"
-                android:layout_width="106dp"
-                android:layout_height="wrap_content"
-                android:text="abc"
-                android:textAlignment="viewStart"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvbarcode"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="1234545"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvbarcode"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:text="1234545"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            </TableRow>
 
+            <TableRow
+                android:layout_width="425dp"
+                android:layout_height="49dp"
+                android:paddingLeft="10dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="99dp"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile No"
+                    android:textColor="@color/colorBackgroud"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <TableRow
-            android:layout_width="425dp"
-            android:layout_height="49dp"
-            android:paddingLeft="10dp">
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="99dp"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:text="Address"
+                    android:textColor="@color/colorBackgroud"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </TableRow>
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="99dp"
-                android:layout_height="wrap_content"
-                android:text="Mobile No"
-                android:textColor="@color/colorBackgroud"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            <TableRow
+                android:layout_width="425dp"
+                android:layout_height="14dp"
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="99dp"
-                android:layout_height="match_parent"
-                android:paddingLeft="10dp"
-                android:text="Address"
-                android:textColor="@color/colorBackgroud"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </TableRow>
+                android:paddingLeft="10dp">
 
-        <TableRow
-            android:layout_width="425dp"
-            android:layout_height="14dp"
-            android:paddingLeft="10dp">
+                <TextView
+                    android:id="@+id/tvmobno"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
 
-            <TextView
-                android:id="@+id/tvmobno"
-                android:layout_width="110dp"
-                android:layout_height="match_parent"
+                    android:text="9751212120"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                android:text="9751212120"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvaddress"
+                    android:layout_width="99dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Rajkot"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvaddress"
-                android:layout_width="99dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="Rajkot"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            </TableRow>
 
-        </TableRow>
+        </TableLayout>
 
-    </TableLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>

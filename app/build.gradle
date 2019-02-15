@@ -59,5 +59,9 @@ dependencies {
     //progressbar
 
     implementation 'com.agrawalsuneet.androidlibs:squareloaderspack:0.4'
+
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.agrawalsuneet.androidlibs:loaderspack:1.2.2'
+
 }
 apply plugin: 'com.google.gms.google-services'

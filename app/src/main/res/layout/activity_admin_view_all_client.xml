@@ -149,6 +149,27 @@
         android:dividerHeight="20.0sp"
         android:paddingRight="10dp" />
 
+    <com.agrawalsuneet.loaderspack.loaders.CurvesLoader
+
+        android:id="@+id/curvesLoader"
+        android:layout_width="182dp"
+        android:layout_height="214dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="289dp"
+        android:layout_marginEnd="144dp"
+        app:curves_animDuration="1000"
+        app:curves_curveColor="@color/colorFAB2"
+        app:curves_curveSweepAngle="160"
+        app:curves_curveWidth="5dp"
+        app:curves_distanceBetweenCurves="5dp"
+        app:curves_interpolator="@android:anim/linear_interpolator"
+        app:curves_noOfCurves="5"
+        app:curves_outermostCurveRadius="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvhide"
         android:layout_width="wrap_content"

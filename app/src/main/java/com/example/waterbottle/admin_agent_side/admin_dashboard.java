@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -105,13 +106,20 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_admin_dashboard);
 
         mAuth = FirebaseAuth.getInstance();
-        if (mAuth==null)
-        {
-            Intent i=new Intent(getApplicationContext(),agent_login.class);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser user =mAuth.getCurrentUser();
+        String provider = user.getProviders().get(0);
+
+
+
+
+        if (mAuth == null) {
+            Intent i = new Intent(getApplicationContext(), agent_login.class);
             startActivity(i);
             finish();
-        }else {
-            Toast.makeText(this, "dfduhtg", Toast.LENGTH_SHORT).show();
+        } else {
+
         }
 
 
@@ -373,8 +381,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
                         } else {
 
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -755,15 +762,17 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
     public void logout() {
         //Logout From cURRENT User
-       FirebaseAuth.getInstance().signOut();
+        FirebaseAuth.getInstance().signOut();
         if (mAuth == null) {
-            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(getApplicationContext(), agent_login.class);
+            startActivity(i);
+            finish();
+
         } else {
             Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
         }
 
     }
-
 
 
 }

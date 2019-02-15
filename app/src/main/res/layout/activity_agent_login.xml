@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/uibackgroud"
@@ -89,9 +90,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="6dp"
+        android:onClick="godashboard"
         android:text="I am Client"
         android:textAlignment="center"
-        android:onClick="godashboard"
         android:textColor="?attr/colorBackgroundFloating"
         android:textSize="25sp" />
 
