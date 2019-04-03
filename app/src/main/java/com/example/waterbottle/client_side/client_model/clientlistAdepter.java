@@ -63,10 +63,15 @@ public class clientlistAdepter extends ArrayAdapter<Client> {
         tvmob.setText(client.getMobile_number());
         tvbar.setText(client.getCustomer_qrcode());
         tvadd1.setText(client.getAddress());
-
-        Picasso.with(getContext())
-                .load(client.getImage())
-                .into(img);
+try {
+    Picasso.with(getContext())
+            .load(client.getImage())
+            .into(img);
+}
+catch (Exception    e)
+{
+    Log.e(TAG, "getView: "+e);
+}
 
         Log.e(TAG, "getView: "+client.getCustomer_name());
         Log.e(TAG, "getView: "+client.getMobile_number());

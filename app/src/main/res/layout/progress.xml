@@ -8,11 +8,9 @@
 
     <com.agrawalsuneet.squareloaderspack.loaders.SquareGridLoader
         android:id="@+id/squareGridLoader"
-        android:layout_width="262dp"
-        android:layout_height="205dp"
-        android:layout_marginTop="174dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        android:layout_width="191dp"
+        android:layout_height="197dp"
+        android:layout_marginStart="144dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:squaregrid_animDelay="80"

@@ -42,17 +42,11 @@ public class MyListAdapter extends ArrayAdapter<agent> {
         TextView tvnm = view.findViewById(R.id.tvagentnm);
         TextView tvtotal = view.findViewById(R.id.tvbottletotle);
         TextView tvcoll = view.findViewById(R.id.tvcollection);
-
-
-
         agent agent = agentList.get(position);
 
-
-        tvnm.setText(agent.aname);
-        tvtotal.setText(agent.bottle);
-        tvcoll.setText(agent.collected);
-
-
+        tvnm.setText(agent.getAgent_mobile());
+        tvtotal.setText(agent.getAgent_name());
+        tvcoll.setText(agent.getType());
         return view;
     }
 

@@ -44,16 +44,11 @@ public class order_adepter extends ArrayAdapter<order> {
         TextView tvbottle = view.findViewById(R.id.tvbottle);
 
 
+        order ord = orderList.get(position);
 
-        order ord= orderList.get(position);
-
-
-        tvbottletype.setText(ord.getBottle_type());
-        //tvcustomer.setText(ord.get);
-       tvbottle.setText(ord.getBottle_price());
-
-
-
+        tvbottletype.setText(ord.getOrder_date());
+        tvcustomer.setText(ord.getCustomer_name());
+        tvbottle.setText(ord.getBotttle_qty());
 
         return view;
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,9 +52,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class agent_barcode extends AppCompatActivity implements View.OnClickListener {
@@ -70,9 +75,17 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
     String filedownloadpath;
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
     //search
+    boolean scanndata=false;
+     EditText edtnm;
+     EditText edtmob;
+     EditText edtadd;
+     EditText edtadd2;
+
+
+
     //qr Scanner
-    EditText edtbarcode, edtemail, edtpass;
-    TextView tvhide, tvloguot;
+    EditText edtbarcode, edtemail, edtpass,edtqrdcode;
+    TextView tvhide, tvloguot, tv_wallet;
     Bitmap bitmap, bitmap2;
     ImageView imgview;
     ImageView img_pro;
@@ -80,7 +93,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
     EditText inputSearch;
     ArrayList arrayList1 = new ArrayList<String>();
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fab1, fab2, fab3, fab4;
+    private FloatingActionButton fab, fab1, fab2, fab3;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private IntentIntegrator qrScan;
     private DatabaseReference mDatabase;
@@ -90,7 +103,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
     private StorageReference storageReference;
     private FirebaseAuth mAuth;
     private Uri filePath;
-
+    Client client;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +123,12 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
+
         tvloguot = findViewById(R.id.tvhidelogout);
         tvhide = findViewById(R.id.tvhide);
-
+        tv_wallet = findViewById(R.id.tv_wallet);
+        edtqrdcode=findViewById(R.id.edtqr);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fab_close);
@@ -121,12 +137,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
-
-
-
-
-
-
+        fab3.setOnClickListener(this);
 
         Firebase.setAndroidContext(this);
 
@@ -142,23 +153,19 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                 try {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Client client = postSnapshot.getValue(Client.class);
+                         client = postSnapshot.getValue(Client.class);
                         clientList.add(client);
-
                     }
-
                     String[] uploads = new String[clientList.size()];
-
                     for (int i = 0; i < uploads.length; i++) {
-                        uploads[i]=clientList.get(i).getCustomer_qrcode();
-                        arrayList1.add(uploads[i]);
+                        uploads[i] = clientList.get(i).getCustomer_qrcode();
 
+                        arrayList1.add(uploads[i]);
                     }
 
                 } catch (Exception e) {
 
                 }
-
             }
 
             @Override
@@ -166,10 +173,6 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
 
             }
         });
-
-
-
-
     }
 
 
@@ -179,6 +182,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         switch (id) {
             case R.id.fab:
                 animateFAB();
+
                 break;
 
             case R.id.fab1:
@@ -186,25 +190,22 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
                /* Intent i1 = new Intent(this, agent_add_bottle.class);
                 startActivity(i1);*/
                 showCustomDialog();
-                break;
 
+                break;
             case R.id.fab2:
                 //Logout From cURRENT User
-
-                FirebaseAuth fAuth = FirebaseAuth.getInstance();
-                fAuth.signOut();
-                if (fAuth != null) {
-                    Intent i = new Intent(getApplicationContext(), agent_login.class);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Toast.makeText(this, "Cant Logout", Toast.LENGTH_SHORT).show();
-                }
-
+                Intent i = new Intent(getApplicationContext(), agent_login.class);
+                SharedPreferences preferences = getSharedPreferences("agent", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.commit();
+                startActivity(i);
+                FirebaseAuth.getInstance().signOut();
+                finish();
                 break;
-            case R.id.fab3:
-                Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
 
+            case R.id.fab3:
+                showpaymentamount();
                 break;
         }
     }
@@ -215,31 +216,25 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
+            fab3.startAnimation(fab_close);
             tvhide.startAnimation(fab_close);
             tvloguot.startAnimation(fab_close);
-
+            tv_wallet.startAnimation(fab_close);
             fab1.setClickable(false);
             fab2.setClickable(false);
             isFabOpen = false;
-
-            Log.d("Raj", "close");
-
         } else {
-
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
+            fab3.startAnimation(fab_open);
             tvhide.startAnimation(fab_open);
             tvloguot.startAnimation(fab_open);
-
-
+            tv_wallet.startAnimation(fab_open);
             fab1.setClickable(true);
             fab2.setClickable(true);
-
-
+            fab3.setClickable(true);
             isFabOpen = true;
-            Log.d("Raj", "open");
-
         }
     }
 
@@ -248,8 +243,11 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
     }
 
     public void btnscanner(View view) {
+        scanndata=true;
         qrScan = new IntentIntegrator(this);
         qrScan.initiateScan();
+
+
     }
 
     public void showCustomDialog() {
@@ -258,16 +256,16 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
-
-
         //get all edittext in dialog_customer_add
-        final EditText edtnm = view.findViewById(R.id.edtnm);
-        final EditText edtmob = view.findViewById(R.id.edtmob);
-        final EditText edtadd = view.findViewById(R.id.edtname);
-        final EditText edtadd2 = view.findViewById(R.id.edtaddresstwo);
+        edtnm = view.findViewById(R.id.edtnm);
+        edtmob = view.findViewById(R.id.edtmob);
+        edtadd = view.findViewById(R.id.edtname);
+        edtadd2 = view.findViewById(R.id.edtaddresstwo);
         edtbarcode = view.findViewById(R.id.edtbarcode);
         final Button btnadd = view.findViewById(R.id.btnaddclient);
         imgview = view.findViewById(R.id.imgview);
+
+        edtnm.requestFocus();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -275,7 +273,6 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
             // and get whatever type user account id is
             // edtbarcode.setText(userName.toString());
         }
-
 
         view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,72 +284,28 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
         });
 
         //upload image
-        view.findViewById(R.id.imgview).setOnClickListener(new View.OnClickListener() {
+        /*view.findViewById(R.id.imgview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showFileChooser();
-
-
             }
-        });
+        });*/
+
+
         view.findViewById(R.id.btnuploadimg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                uploadFile();
-                imgview.setImageBitmap(bitmap);
+                showFileChooser();
             }
         });
 
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                //  Toast.makeText(admin_dashboard.this, ""+edtnm.getText().toString(), Toast.LENGTH_SHORT).show();
-                Firebase ref;
-                ref = new Firebase(url);
-
-                //  Toast.makeText(this, "Add Successfully", Toast.LENGTH_SHORT).show();
-                // DatabaseReference usersRef = ref.child("users");
-
-                String nm = edtnm.getText().toString();
-                String mob = edtmob.getText().toString();
-                String add = edtadd.getText().toString();
-                String add2 = edtadd2.getText().toString();
-                String qrcode = edtbarcode.getText().toString();
-
-
-                //for data get using client
-                Client client = new Client();
-                client.setCustomer_name(nm);
-                client.setMobile_number(mob);
-                client.setAddress(add);
-                client.setCustomer_qrcode(qrcode);
-
-                Map<String, String> users = new HashMap<>();
-                users.put("Customer_name", nm);
-                users.put("Mobile_number", mob);
-                users.put("Address", add);
-                users.put("Local_address", add2);
-                users.put("image", filedownloadpath);
-                users.put("Customer_qrcode", qrcode);
-                ref.child("Customer_data").push().setValue(users);
-
-                // ref.child()
-
-                //   ref.setValue(users);
-                Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-
+                uploadFile();
             }
         });
-
-
     }
-
-
     //image chooser
     private void showFileChooser() {
 
@@ -402,8 +355,18 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
 
                             //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
                             try {
-                                Client cn = new Client();
+
                                 filedownloadpath = taskSnapshot.getDownloadUrl().toString();
+                                if(filedownloadpath=="")
+                                {
+                                    filedownloadpath=client.getImage();
+                                    adddata();
+                                    Toast.makeText(agent_barcode.this, "no image ", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(agent_barcode.this, "with image", Toast.LENGTH_SHORT).show();
+                                    adddata();
+                                }
                             } catch (Exception e) {
                                 Log.e(TAG, "Uri Not found: " + e.getMessage());
                             }
@@ -431,10 +394,107 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
                     });
         } else {
             //display an error if no file is selected
-            Toast.makeText(this, "No File Selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "File Not Selected", Toast.LENGTH_SHORT).show();
+            noimagedata();
         }
     }
 
+    public void adddata() {
+        Firebase ref;
+        ref = new Firebase(url);
+
+
+        String nm = edtnm.getText().toString();
+        String mob = edtmob.getText().toString();
+        String add = edtadd.getText().toString();
+        String add2 = edtadd2.getText().toString();
+        String qrcode = edtbarcode.getText().toString();
+
+        Validation_text valid = new Validation_text();
+
+        if (!valid.isValidName(nm)) {
+            edtnm.setError("Invalid Name");
+        } else if (!valid.isValidMobile(mob)) {
+            edtmob.setError("Invalid Mobile Number");
+        } else if (!valid.isValidName(add)) {
+            edtadd.setError("Invalid Address");
+        } else if (!valid.isValidName(add2)) {
+            edtadd2.setError("Invalid Address");
+        } else if (!valid.isValidName(qrcode)) {
+            edtbarcode.setError("Invalid Qrcode");
+        } else {
+
+                //for data get using client
+                Client client = new Client();
+                client.setCustomer_name(nm);
+                client.setMobile_number(mob);
+                client.setAddress(add);
+                client.setCustomer_qrcode(qrcode);
+
+
+                Map<String, String> users = new HashMap<>();
+
+                users.put("Customer_name", nm);
+                //users.put("Agent_email",mFirebaseUser.getEmail());
+                users.put("Mobile_number", mob);
+                users.put("Address", add);
+                users.put("Local_address", add2);
+                users.put("image",filedownloadpath);
+                users.put("Customer_qrcode", qrcode);
+                ref.child("Customer_data").child("+91" + mob).setValue(users);
+                //ref.child()
+                //ref.setValue(users);
+                Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+            }
+
+    }
+    public void noimagedata() {
+        Firebase ref;
+        ref = new Firebase(url);
+
+        String nm = edtnm.getText().toString();
+        String mob = edtmob.getText().toString();
+        String add = edtadd.getText().toString();
+        String add2 = edtadd2.getText().toString();
+        String qrcode = edtbarcode.getText().toString();
+
+        Validation_text valid = new Validation_text();
+
+        if (!valid.isValidName(nm)) {
+            edtnm.setError("Invalid Name");
+        } else if (!valid.isValidMobile(mob)) {
+            edtmob.setError("Invalid Mobile Number");
+        } else if (!valid.isValidName(add)) {
+            edtadd.setError("Invalid Address");
+        } else if (!valid.isValidName(add2)) {
+            edtadd2.setError("Invalid Address");
+        } else if (!valid.isValidName(qrcode)) {
+            edtbarcode.setError("Invalid Qrcode");
+        } else {
+
+            //for data get using client
+            Client client = new Client();
+            client.setCustomer_name(nm);
+            client.setMobile_number(mob);
+            client.setAddress(add);
+            client.setCustomer_qrcode(qrcode);
+
+
+            Map<String, String> users = new HashMap<>();
+            users.put("Customer_name", nm);
+            //users.put("Agent_email",mFirebaseUser.getEmail());
+            users.put("Mobile_number", mob);
+            users.put("Address", add);
+            users.put("Local_address", add2);
+            users.put("image","");
+            users.put("Customer_qrcode", qrcode);
+            ref.child("Customer_data").child("+91" + mob).setValue(users);
+            //ref.child()
+            //ref.setValue(users);
+            Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -444,8 +504,10 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
 
             filePath = data.getData();
             try {
+
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imgview.setImageBitmap(bitmap);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -467,9 +529,19 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
                     // textViewName.setText(obj.getString("name"));
                     // textViewAddress.setText(obj.getString("address"));
 
+                    Toast.makeText(this, "" + obj.getString("name"), Toast.LENGTH_SHORT).show();
 
 
+                 /*    toTest = result.getContents();
+                    if (toTest.equals("")) {
+                        Toast.makeText(this, "Cant read Code", Toast.LENGTH_SHORT).show();
+                    } else
 
+                        {
+
+                        //  edtbarcode.setText(toTest);
+
+                    }*/
 
 
                 } catch (JSONException e) {
@@ -477,40 +549,144 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
 
                     toTest = result.getContents();
 
-                    if (toTest.equals("")) {
-                        Toast.makeText(this, "Cant read Code", Toast.LENGTH_SHORT).show();
-                    } else {
+                    //for scanner button
+                    if(scanndata==true) {
 
-
-                      //  edtbarcode.setText(toTest);
-
-
+                        if (arrayList1.contains(toTest)) {
+                            client.getMobile_number();
+                            String s=client.getCustomer_name();
+                            Toast.makeText(this, ""+client.getMobile_number().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(this, "" + result.getContents(), Toast.LENGTH_SHORT).show();
+                            Intent i1 = new Intent(getApplicationContext(), agent_add_bottle.class);
+                            i1.putExtra("qrcode", toTest);
+                            startActivity(i1);
+                        } else {
+                            Toast.makeText(this, "QR Not found", Toast.LENGTH_SHORT).show();
+                        }
                     }
-
-                    String toTest = result.getContents();
-                    Toast.makeText(this, "qrcode:"+arrayList1, Toast.LENGTH_SHORT).show();
-                    //   Toast.makeText(this, "data:"+datarr, Toast.LENGTH_SHORT).show();
-                    if (arrayList1.contains(toTest)) {
-                        //   Toast.makeText(this, "1:" + arrayList.get(i) + "2:" + toTest, Toast.LENGTH_SHORT).show();
-                        Intent i1 = new Intent(getApplicationContext(), agent_add_bottle.class);
-                        i1.putExtra("qrcode", result.getContents());
-                        startActivity(i1);
-                    }
-                    else {
-
-                        Toast.makeText(this, "QR Not found", Toast.LENGTH_SHORT).show();
-                    }
-
+                    /**
+                     * set here if condition change data
+                     * putextra pass change here
+                     *
+                     */
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
 
         }
-
         //firebase add new Agent Accont
-
-
     }
+
+    public void showpaymentamount() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+
+        final View view = getLayoutInflater().inflate(R.layout.paymet_agent_dialog, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
+
+        final EditText edtamount = view.findViewById(R.id.edtamount);
+        final EditText edtpaddingamount = view.findViewById(R.id.edtpaddingamount);
+        final TextView tvtotal = view.findViewById(R.id.tvtotalamount);
+        final EditText edtqrcode = view.findViewById(R.id.edtbarcode);
+        edtamount.requestFocus();
+
+        view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qrScan = new IntentIntegrator(agent_barcode.this);
+                qrScan.initiateScan();
+                if (toTest == null) {
+                    Toast.makeText(agent_barcode.this, "qr not Found", Toast.LENGTH_SHORT).show();
+                } else {
+                    edtqrcode.setText(toTest);
+                }
+            }
+        });
+        view.findViewById(R.id.btnclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        view.findViewById(R.id.btnaddorder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    int a = 0, t = 0, p = 0;
+                    String s, s1;
+                    s = edtamount.getText().toString();
+                    s1 = edtpaddingamount.getText().toString();
+
+                    if (!s.equals("")) {
+                        a = Integer.parseInt(s);
+                    }
+                    if (!s1.equals("")) {
+                        p = Integer.parseInt(s1);
+                    }
+                    t = a + p;
+                    // mDatabaseReference = FirebaseDatabase.getInstance().getReference("collected_amount_agent");
+
+                    Firebase ref;
+                    ref = new Firebase(url);
+                    String date;
+                    date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                    Map<String, String> users = new HashMap<>();
+
+                    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+                    FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+
+                        String s11 = edtqrcode.getText().toString();
+
+                        if (arrayList1.contains(s11)){
+
+                            edtqrcode.setText(s11);
+                            users.put("QR_code", edtqrcode.getText().toString());
+                            users.put("Customer_name", client.getCustomer_name());
+                            users.put("Agent_email", mFirebaseUser.getEmail().toString());
+                            users.put("Amount_total", String.valueOf(t));
+                            users.put("Amount_collected", String.valueOf(a).toString());
+                            users.put("Padding_amount", String.valueOf(p));
+                            users.put("Collected_Date", date.toString());
+                            ref.child("collected_amount").push().setValue(users);
+
+                            Toast.makeText(agent_barcode.this, "data added", Toast.LENGTH_SHORT).show();
+                       } else {
+
+                            Toast.makeText(agent_barcode.this, "QR Not Found", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
+            }
+        });
+    }
+
+    public void gotoaddbottles(View view) {
+        String s = edtqrdcode.getText().toString();
+
+
+        Validation_text valid = new Validation_text();
+
+        if (!valid.isValidName(s)) {
+            edtqrdcode.setError("Invalid Qrcode");
+        } else {
+
+            if (arrayList1.contains(s)) {
+                //Toast.makeText(this, "" + result.getContents(), Toast.LENGTH_SHORT).show();
+                Intent i1 = new Intent(getApplicationContext(), agent_add_bottle.class);
+                i1.putExtra("qrcode", s);
+                startActivity(i1);
+            } else {
+                Toast.makeText(this, "QR Not found", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
 }
 

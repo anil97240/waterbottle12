@@ -20,6 +20,20 @@
         android:inputType="textPersonName"
         android:textStyle="bold" />
 
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imgview"
+        android:layout_width="wrap_content"
+        android:layout_height="116dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="76dp"
+        android:src="@drawable/cus"
+        app:civ_border_color="@color/fabtext"
+        app:civ_border_width="3dp" />
+
     <EditText
         android:id="@+id/edtaddresstwo"
         android:layout_width="match_parent"
@@ -36,7 +50,7 @@
 
     <EditText
         android:id="@+id/edtbarcode"
-        android:layout_width="309dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/edtname"
         android:layout_alignParentTop="true"
@@ -47,19 +61,6 @@
         android:hint="Enter Barcode No"
         android:inputType="textPersonName"
         android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imgview"
-        android:layout_width="188dp"
-        android:layout_height="119dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="46dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginRight="176dp"
-        android:background="@drawable/button"
-        app:srcCompat="@drawable/cus" />
 
     <EditText
         android:id="@+id/edtnm"
@@ -105,21 +106,19 @@
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textStyle="bold" />
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnuploadimg"
-        android:layout_width="71dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="71dp"
-        android:layout_marginEnd="79dp"
-        android:layout_marginRight="79dp"
-        android:background="@drawable/button"
-        android:text="Upload"
-
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textStyle="bold" />
+        android:layout_marginTop="99dp"
+        android:layout_marginEnd="132dp"
+        android:clickable="true"
+        android:tint="@color/colorText"
+        app:backgroundTint="@color/colorFAB1"
+        app:rippleColor="@color/common_google_signin_btn_text_dark_focused"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <Button
         android:id="@+id/btnaddclient"

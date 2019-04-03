@@ -4,9 +4,14 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
-
+   <uses-permission android:name="android.permission.CAMERA"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,40 +20,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".customer_order">
-
-        </activity>
-        <activity android:name=".client_view_product"></activity>
-        <activity android:name=".client_dashboard"></activity>
-        <activity android:name=".client_mobile_verification"></activity>
-        <activity android:name=".client_login">
+        <activity android:name=".agent_view_client_details"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.admin_view_product"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.Admin_view_all_client"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.admin_dashboard"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.agent_add_bottle"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.agent_barcode"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.agent_login"
+            android:screenOrientation="portrait">
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
-
-
         </activity>
-        <activity android:name=".admin_agent_side.admin_view_product">
-
-        </activity>
-        <activity android:name=".admin_agent_side.Admin_view_all_client"></activity>
-        <activity android:name=".admin_agent_side.admin_dashboard">
-
-
-        </activity>
-        <activity android:name=".admin_agent_side.agent_add_bottle"></activity>
-        <activity android:name=".admin_agent_side.agent_barcode">
-
-        </activity>
-        <activity android:name=".admin_agent_side.agent_login"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".admin_agent_side.order_delivered">
-
-        </activity>
-        <activity android:name=".admin_agent_side.admin_view_order" >
-
-        </activity>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.order_delivered"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".admin_agent_side.admin_view_order"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

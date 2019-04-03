@@ -5,19 +5,22 @@ import android.content.Context;
 import java.util.List;
 
 public class deliver_order {
-  private   String Amount_collected,Bottle_type,Botttle_total,Delivry_date,Padding_amount,QR_code,Total_amount;
+    private String Amount_collected, Bottle_type, Botttles, Collected_Date, Padding_amount, QR_code, Amount_total, Agent_email, Payment_Method;
+
 
     public deliver_order() {
     }
 
-    public deliver_order(String amount_collected, String bottle_type, String botttle_total, String delivry_date, String padding_amount, String QR_code, String total_amount) {
+    public deliver_order(String amount_collected, String bottle_type, String botttles, String collected_Date, String padding_amount, String QR_code, String amount_total, String agent_email, String payment_Method) {
         Amount_collected = amount_collected;
         Bottle_type = bottle_type;
-        Botttle_total = botttle_total;
-        Delivry_date = delivry_date;
+        Botttles = botttles;
+        Collected_Date = collected_Date;
         Padding_amount = padding_amount;
         this.QR_code = QR_code;
-        Total_amount = total_amount;
+        Amount_total = amount_total;
+        Agent_email = agent_email;
+        Payment_Method = payment_Method;
     }
 
     public String getAmount_collected() {
@@ -36,20 +39,20 @@ public class deliver_order {
         Bottle_type = bottle_type;
     }
 
-    public String getBotttle_total() {
-        return Botttle_total;
+    public String getBotttles() {
+        return Botttles;
     }
 
-    public void setBotttle_total(String botttle_total) {
-        Botttle_total = botttle_total;
+    public void setBotttles(String botttles) {
+        Botttles = botttles;
     }
 
-    public String getDelivry_date() {
-        return Delivry_date;
+    public String getCollected_Date() {
+        return Collected_Date;
     }
 
-    public void setDelivry_date(String delivry_date) {
-        Delivry_date = delivry_date;
+    public void setCollected_Date(String collected_Date) {
+        Collected_Date = collected_Date;
     }
 
     public String getPadding_amount() {
@@ -68,11 +71,28 @@ public class deliver_order {
         this.QR_code = QR_code;
     }
 
-    public String getTotal_amount() {
-        return Total_amount;
+    public String getAmount_total() {
+        return Amount_total;
     }
 
-    public void setTotal_amount(String total_amount) {
-        Total_amount = total_amount;
+    public void setAmount_total(String amount_total) {
+        Amount_total = amount_total;
+    }
+
+    public String getAgent_email() {
+        return Agent_email;
+    }
+
+    public void setAgent_email(String agent_email) {
+        Agent_email = agent_email;
+    }
+
+    public String getPayment_Method() {
+        return Payment_Method;
+    }
+
+    public void setPayment_Method(String payment_Method) {
+        Payment_Method = payment_Method;
     }
 }
+

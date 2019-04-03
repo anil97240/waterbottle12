@@ -18,6 +18,7 @@
         android:ems="10"
         android:hint="Enter Address"
         android:inputType="textPersonName"
+        android:minEms="5"
         android:textStyle="bold" />
 
     <EditText
@@ -32,11 +33,12 @@
         android:ems="10"
         android:hint="Enter Local Address"
         android:inputType="textPersonName"
+        android:minEms="5"
         android:textStyle="bold" />
 
     <EditText
         android:id="@+id/edtbarcode"
-        android:layout_width="wrap_content"
+        android:layout_width="222dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/edtname"
         android:layout_alignParentTop="true"
@@ -44,22 +46,39 @@
         android:layout_marginTop="388dp"
         android:drawableRight="@drawable/qrcode"
         android:ems="10"
-        android:hint="Enter Barcode No"
+        android:hint="Enter QRCode No"
         android:inputType="textPersonName"
+        android:minEms="3"
         android:textStyle="bold" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/imgview"
-        android:layout_width="188dp"
-        android:layout_height="119dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="116dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="27dp"
-        android:layout_marginTop="61dp"
-        android:layout_marginRight="195dp"
-        android:background="@drawable/button"
-        app:srcCompat="@drawable/cus" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="81dp"
+        android:src="@drawable/cus"
+        app:civ_border_color="@color/fabtext"
+        app:civ_border_width="3dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnuploadimg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="113dp"
+        android:layout_marginEnd="122dp"
+        android:clickable="true"
+        android:tint="@color/colorText"
+        app:backgroundTint="@color/colorFAB1"
+        app:rippleColor="@color/common_google_signin_btn_text_dark_focused"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
 
     <Button
         android:id="@+id/btnallclient"
@@ -85,6 +104,7 @@
         android:ems="10"
         android:hint="Enter Name"
         android:inputType="textPersonName"
+        android:minEms="3"
         android:textStyle="bold" />
 
     <EditText
@@ -98,7 +118,9 @@
         android:drawableRight="@drawable/call"
         android:ems="10"
         android:hint="Enter Mobile Number"
-        android:inputType="textPersonName|phone"
+        android:inputType="phone"
+        android:maxEms="12"
+        android:minEms="10"
         android:textStyle="bold" />
 
     <Button
@@ -113,23 +135,6 @@
         android:layout_marginRight="12dp"
         android:background="@drawable/button"
         android:text="Scan"
-
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btnuploadimg"
-        android:layout_width="71dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="89dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
-        android:background="@drawable/button"
-        android:text="Upload"
-
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textStyle="bold" />
 

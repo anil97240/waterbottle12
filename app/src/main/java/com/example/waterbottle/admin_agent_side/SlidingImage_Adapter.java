@@ -20,6 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlidingImage_Adapter extends PagerAdapter {
+    public static ImageView imageView;
+    public static Object data;
+
+    int total;
+
+
 
     // private ArrayList<Integer> IMAGES;
     private LayoutInflater inflater;
@@ -30,6 +36,10 @@ public class SlidingImage_Adapter extends PagerAdapter {
         this.context = context;
         this.totalList=totalList;
         inflater = LayoutInflater.from(context);
+    }
+
+    public SlidingImage_Adapter() {
+
     }
 
     @Override
@@ -43,70 +53,77 @@ public class SlidingImage_Adapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup view, final int position) {
-        View imageLayout = inflater.inflate(R.layout.slidingimages_layout, view, false);
+    public Object instantiateItem(final ViewGroup view, final int position) {
+        final View imageLayout = inflater.inflate(R.layout.slidingimages_layout, view, false);
 
-        assert imageLayout != null;
-        final ImageView imageView = (ImageView) imageLayout
-                .findViewById(R.id.image);
-        final Button Buttonadd = (Button) imageLayout.findViewById(R.id.btnadd2);
-        final Button buttonmin = (Button) imageLayout.findViewById(R.id.btnmin2);
 
-        final EditText edtbottle= (EditText) imageLayout
-                .findViewById(R.id.edtadd2);
+        imageView = (ImageView) imageLayout.findViewById(R.id.image);
+        Button add=imageLayout.findViewById(R.id.btnadd);
+        Button min=imageLayout.findViewById(R.id.btnmin);
+        final TextView edtbottle=imageLayout.findViewById(R.id.edtbottle);
 
-        edtbottle.setText(""+0);
-//        tvtotal.setText(""+0);
+
+
         final sliding_image sliding_image= totalList.get(position);
+        Picasso.with(context)
+                .load(sliding_image.getImage())
+                .into(imageView);
 
+        if(sliding_image.getQry()=="")
+        {
+            edtbottle.setText(sliding_image.getQry());
+        }
+        if(sliding_image.getQry()==null)
+        {
+            edtbottle.setText("0");
+        }
+        else {
+            edtbottle.setText(sliding_image.getQry());
+        }
 
-        Buttonadd.setOnClickListener(new View.OnClickListener() {
+        data=edtbottle.getText().toString();
+
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int a= Integer.parseInt(edtbottle.getText().toString());
-                int b=1;
-                a=b+a;
+
+                int b = 1;
+                a = a+b;
 
                 edtbottle.setText(""+a);
+                sliding_image.setQry(edtbottle.getText().toString());
+                data=edtbottle.getText().toString();
+                agent_add_bottle.add();
 
-                edtbottle.setText("" + a);
-                String ed=edtbottle.getText().toString();
-                sliding_image slid =new sliding_image();
-                slid.setQry(ed);
-
-                Toast.makeText(context, ""+slid.getQry(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        buttonmin.setOnClickListener(new View.OnClickListener() {
+        min.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 int a= Integer.parseInt(edtbottle.getText().toString());
                 if(a==0)
                 {
                     Toast.makeText(v.getContext(), "No Bottle In Cart", Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else
+                {
                     int b = 1;
                     a = a-b;
-                    edtbottle.setText("" + a);
-                    String ed=edtbottle.getText().toString();
-                    sliding_image slid =new sliding_image();
-                    slid.setQry(ed);
-                    Toast.makeText(context, ""+slid.getQry(), Toast.LENGTH_SHORT).show();
-
+                    agent_add_bottle.min();
                 }
+
+                edtbottle.setText(""+a);
+                data=edtbottle.getText().toString();
+                sliding_image.setQry(edtbottle.getText().toString());
+
+
+
             }
         });
 
-        //imageView.setImageResource(Integer.parseInt(sliding_image.getImage()));
-
-        Picasso.with(context)
-                .load(sliding_image.getImage())
-                .into(imageView);
         view.addView(imageLayout, 0);
-
         return imageLayout;
     }
 
@@ -121,8 +138,10 @@ public class SlidingImage_Adapter extends PagerAdapter {
 
     @Override
     public Parcelable saveState() {
+
         return null;
     }
+
 
 }
 
