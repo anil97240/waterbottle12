@@ -1,19 +1,19 @@
 package com.example.waterbottle.admin_agent_side.Model;
 
 public class order {
-    private String Customer_id, Order_date, Botttle_qty, bottle_price, total_cost, Bottle_type, Customer_name;
-
-    public order(String customer_id, String order_date, String botttle_qty, String bottle_price, String total_cost, String bottle_type, String customer_name) {
-        Customer_id = customer_id;
-        Order_date = order_date;
-        Botttle_qty = botttle_qty;
-        this.bottle_price = bottle_price;
-        this.total_cost = total_cost;
-        Bottle_type = bottle_type;
-        Customer_name = customer_name;
-    }
+    private String Customer_id, Order_date,Order_id,Status, Botttle_qty, total_cost,Customer_name;
 
     public order() {
+    }
+
+    public order(String customer_id, String order_date, String order_id, String status, String botttle_qty, String total_cost, String customer_name) {
+        Customer_id = customer_id;
+        Order_date = order_date;
+        Order_id = order_id;
+        Status = status;
+        Botttle_qty = botttle_qty;
+        this.total_cost = total_cost;
+        Customer_name = customer_name;
     }
 
     public String getCustomer_id() {
@@ -32,6 +32,22 @@ public class order {
         Order_date = order_date;
     }
 
+    public String getOrder_id() {
+        return Order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        Order_id = order_id;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
     public String getBotttle_qty() {
         return Botttle_qty;
     }
@@ -40,28 +56,12 @@ public class order {
         Botttle_qty = botttle_qty;
     }
 
-    public String getBottle_price() {
-        return bottle_price;
-    }
-
-    public void setBottle_price(String bottle_price) {
-        this.bottle_price = bottle_price;
-    }
-
     public String getTotal_cost() {
         return total_cost;
     }
 
     public void setTotal_cost(String total_cost) {
         this.total_cost = total_cost;
-    }
-
-    public String getBottle_type() {
-        return Bottle_type;
-    }
-
-    public void setBottle_type(String bottle_type) {
-        Bottle_type = bottle_type;
     }
 
     public String getCustomer_name() {

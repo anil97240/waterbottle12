@@ -71,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
 
     }
+
+    public void logout(View view) {
+
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(getApplicationContext(), agent_login.class);
+        SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+        startActivity(i);
+        finish();
+    }
 }
 
 

@@ -205,7 +205,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                 } catch (Exception e) {
                     Log.e(TAG, "db Exception: " + e);
                 }
-
             }
 
             @Override
@@ -291,6 +290,14 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         FloatingActionButton uploadproimage = view.findViewById(R.id.btnuploadimg);
         edtpnm.requestFocus();
 
+        view.findViewById(R.id.btnproclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -363,6 +370,14 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             Log.e(TAG, "UpdateProductDialog: "+e);
         }
 
+        view.findViewById(R.id.btnproclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,7 +415,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
             //getting the storage reference
             StorageReference sRef = storageReference.child(STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(filePath));
-
             //adding the file to reference
             sRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -415,7 +429,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                             //creating the upload object to store uploaded image details
                             Client cn = new Client();
                             //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
-
                             filedownloadpath = taskSnapshot.getDownloadUrl().toString();
                             updateproductdata();
                             //adding an upload to firebase database
@@ -502,11 +515,8 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             users.put("Product_detail", detail);
             users.put("image",filedownloadpath);
             ref.child("Product_data").child(arrayList.get(p).toString()).setValue(users);
-
             Toast.makeText(getApplicationContext(),"Product add", Toast.LENGTH_SHORT).show();
-
         }
-
     }
 
     //for agent add
@@ -525,28 +535,32 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         spd = view.findViewById(R.id.spinnerid);
         edtname.requestFocus();
 
+        view.findViewById(R.id.btnclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         spd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 type[0] = parent.getSelectedItem().toString();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-        view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnviewallagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(admin_view_product.this,admin_dashboard.class);
+                Intent i = new Intent(getApplicationContext(), admin_dashboard.class);
                 startActivity(i);
-
+                dialog.dismiss();
             }
         });
-
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -554,15 +568,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
                 Firebase ref;
                 ref = new Firebase(url);
-
-
                 String email = edtemail.getText().toString();
                 String pass = edtpass.getText().toString();
                 String name = edtname.getText().toString();
                 String mob = edtmob.getText().toString();
-
                 Validation_text valid = new Validation_text();
-
                 if (!valid.isValidName(name)) {
                     edtname.setError("Invalid Name");
                 }
@@ -641,6 +651,13 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         edtnm.requestFocus();
         //image chooser
 
+
+        view.findViewById(R.id.btncloseclient).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         //image upload
         btnuploadimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -719,25 +736,20 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
 
-
             tvhide.startAnimation(fab_open);
             tvagenthide.startAnimation(fab_open);
             tvproducthide.startAnimation(fab_open);
             tvlogouthide.startAnimation(fab_open);
-
 
             fab1.setClickable(true);
             fab2.setClickable(true);
             fab3.setClickable(true);
             fab4.setClickable(true);
 
-
             isFabOpen = true;
             Log.d("Raj", "open");
-
         }
     }
-
     public String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -767,14 +779,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //dismissing the progress dialog
                             progressDialog.dismiss();
-
                             //displaying success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-
                             //creating the upload object to store uploaded image details
                             Client cn = new Client();
                             //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
-
                             filedownloadpath = taskSnapshot.getDownloadUrl().toString();
                             addproductdata();
                             //adding an upload to firebase database
@@ -838,7 +847,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             //displaying progress dialog while image is uploading
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.show();
 
             //getting the storage reference

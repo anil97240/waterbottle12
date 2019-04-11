@@ -29,6 +29,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,14 +37,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
-import com.example.waterbottle.MainActivity;
 import com.example.waterbottle.R;
+import com.example.waterbottle.admin_agent_side.Model.CustomAdepterAgent;
 import com.example.waterbottle.admin_agent_side.Model.MyListAdapter;
 import com.example.waterbottle.admin_agent_side.Model.agent;
-import com.example.waterbottle.admin_agent_side.Model.agent_data;
-import com.example.waterbottle.admin_agent_side.Model.deliver_bottles;
 import com.example.waterbottle.admin_agent_side.Model.deliver_order;
-import com.example.waterbottle.admin_agent_side.Model.deliver_order_adepter;
 import com.example.waterbottle.client_side.client_model.Client;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,7 +50,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,17 +86,15 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
     EditText edtmob;
     EditText edtadd;
     EditText edtadd2;
-Client client;
-     EditText edtpnm;
-     EditText edtprice;
-     EditText edtdetail;
-
+    EditText edtpnm;
+    EditText edtprice;
+    EditText edtdetail;
 
     ListView listView;
     String filedownloadpath;
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
     EditText edtbarcode, edtemail, edtpass;
-    Bitmap bitmap, bitmap2;
+    Bitmap bitmap;
     ImageView imgview;
     ImageView img_pro;
     String toTest;
@@ -117,13 +112,20 @@ Client client;
     //the list values in the List of type hero
     //list to store uploads data
     List<agent> deliver_orderList;
-
+    List<deliver_order> deliver_order_data;
     //search
     private DatabaseReference mDatabaseReference;
     //qr Scanner
     private IntentIntegrator qrScan;
-    private Uri filePath,filePath2;
+    private Uri filePath;
     int p;
+
+    ExpandableListView expandableListView;
+    CustomAdepterAgent customExpandableListViewAdapter;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+    List<String> childItem;
+    int counter = 0;
 
     @SuppressLint("ResourceType")
     @Override
@@ -137,6 +139,7 @@ Client client;
 
         SharedPreferences prfs = getSharedPreferences("auth", MODE_PRIVATE);
         String authname = prfs.getString("authname", "");
+        expandableListView = findViewById(R.id.expandableListView);
         curvesLoader = findViewById(R.id.curvesLoader);
         if (authname == "") {
             Intent intent = new Intent(admin_dashboard.this, agent_login.class);
@@ -149,6 +152,12 @@ Client client;
 
      /*   FirebaseUser user =mAuth.getCurrentUser();
         String provider = user.getProviders().get(0);*/
+
+
+        SetStandardGroups();
+        customExpandableListViewAdapter = new CustomAdepterAgent(this, listDataHeader, listDataChild);
+        expandableListView.setAdapter(customExpandableListViewAdapter);
+        deliver_order_data = new ArrayList<>();
 
         deliver_orderList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.listView);
@@ -183,14 +192,16 @@ Client client;
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             p = position;
-                            String alert1 = "Email  :  "+deliver_orderList.get(p).getAgent_email();
-                            String alert2 = "Mobile No  :  "+deliver_orderList.get(p).getAgent_mobile();
-                            String alert3 = "Name           :  "+deliver_orderList.get(p).getAgent_name();
-                            String alert4 = "Password    :  "+deliver_orderList.get(p).getAgent_password();
-                            String alert5 = "Type           :  "+deliver_orderList.get(p).getType();
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this,R.style.Theme_AppCompat_DayNight_Dialog);
+                            String alert1 = "Email  :  " + deliver_orderList.get(p).getAgent_email();
+                            String alert2 = "Mobile No  :  " + deliver_orderList.get(p).getAgent_mobile();
+                            String alert3 = "Name           :  " + deliver_orderList.get(p).getAgent_name();
+                            String alert4 = "Password    :  " + deliver_orderList.get(p).getAgent_password();
+                            String alert5 = "Type           :  " + deliver_orderList.get(p).getType();
+
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this, R.style.Theme_AppCompat_DayNight_Dialog);
+
                             builder.setTitle("Details");
-                            builder.setMessage(alert1+"\n"+alert2+"\n"+alert3+"\n"+alert4+"\n"+alert5);
+                            builder.setMessage(alert1 + "\n" + alert2 + "\n" + alert3 + "\n" + alert4 + "\n" + alert5);
                             builder.setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Delete</font></font>"), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     mDatabaseReference.child(String.valueOf(arrayList.get(p))).removeValue();
@@ -216,6 +227,7 @@ Client client;
                     Log.e(TAG, "New: " + e.getMessage());
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled:" + databaseError.getMessage());
@@ -254,18 +266,111 @@ Client client;
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // listView.setAdapter(adapter);
                 adapter.getFilter().filter(s.toString());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
+
             }
         });
 
+    }
+
+    private void SetStandardGroups() {
+
+        agentList = new ArrayList<>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Agent_data");
+        //retrieving upload data from firebase database
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> childItem;
+                int counter = 0;
+                // final String headerTitle = dataSnapshot.getKey();
+                //  Toast.makeText(admin_view_order.this, "" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                //    Log.e("TAG", headerTitle);
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    //   String child = (String) ds.getValue();
+                    agent child = ds.getValue(agent.class);
+                    agentList.add(child);
+                    listDataHeader.add("     " + child.getAgent_name() + "                           " + child.getAgent_mobile() + "                      " + child.getType());
+                   /* childItem.add("Price :" + String.valueOf(child.getBottle_price()));
+                    childItem.add("Mobile No :" + String.valueOf(child.getCustomer_id()));
+                    childItem.add("Quantity :" + String.valueOf(child.getBotttle_qty()));
+                    childItem.add("Type :" + String.valueOf(child.getBottle_type()));
+                    childItem.add("Order Date :" + String.valueOf(child.getOrder_date()));
+                    childItem.add("total cost :" + String.valueOf(child.getTotal_cost()));*/
+                }
+                //customer data display order delived
+
+                mDatabaseReference = FirebaseDatabase.getInstance().getReference("collected_amount");
+                //retrieving upload data from firebase database
+                mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<String> childItem;
+                        int counter = 0;
+                        // final String headerTitle = dataSnapshot.getKey();
+                        //  Toast.makeText(admin_view_order.this, "" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                        //    Log.e("TAG", headerTitle);
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            //   String child = (String) ds.getValue();
+                            deliver_order child = ds.getValue(deliver_order.class);
+                            deliver_order_data.add(child);
+                   /* childItem.add("Price :" + String.valueOf(child.getBottle_price()));
+                    childItem.add("Mobile No :" + String.valueOf(child.getCustomer_id()));
+                    childItem.add("Quantity :" + String.valueOf(child.getBotttle_qty()));
+                    childItem.add("Type :" + String.valueOf(child.getBottle_type()));
+                    childItem.add("Order Date :" + String.valueOf(child.getOrder_date()));
+                    childItem.add("total cost :" + String.valueOf(child.getTotal_cost()));*/
+                        }
+                        childItem = new ArrayList<>();
+                        childItem.add("   " + deliver_order_data.get(0).getCollected_Date());
+
+                        for (int i = 0; i < agentList.size(); i++) {
+                            try {
+                                childItem = new ArrayList<>();
+
+                                childItem.add("      Date                     C.Name                   C.Amt");
+
+                                String orderdata = agentList.get(i).getAgent_email();
+                                //  Toast.makeText(admin_view_order.this, ""+orderdata, Toast.LENGTH_SHORT).show();
+                                for (int j = 0; j < deliver_order_data.size(); j++) {
+                                    if (deliver_order_data.get(j).getAgent_email().equals(orderdata)) {
+                                        //  childItem.add("Price :" + String.valueOf(orderList.get(i).getOrder_id() + "        " + "Mobile No :" + String.valueOf(orderList.get(i).getCustomer_id())));
+                                        //  childItem.add("Quantity :" + String.valueOf(orderList.get(i).getBotttle_qty() + "        " + "Status :" + String.valueOf(orderList.get(i).getStatus())));
+                                        childItem.add("   "+deliver_order_data.get(j).getCollected_Date() + "           " + deliver_order_data.get(j).getCustomer_name() + "                         " + deliver_order_data.get(j).getAmount_collected());
+                                        // childItem.add();
+                                        //  childItem.add("Quantity  : "+orderdetailList.get(j).getBotttle_qty()+""+"Price  : "+orderdetailList.get(j).getBottle_price());
+                                    }
+                                    listDataChild.put(listDataHeader.get(i),childItem);
+                                    counter++;
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "onDataChange" + e);
+                            }
+                        }
+                        customExpandableListViewAdapter.notifyDataSetChanged();
+                        curvesLoader.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
@@ -297,14 +402,20 @@ Client client;
         dialog.setContentView(view);
 
         //get all edittext in dialog_customer_add
-         edtpnm = view.findViewById(R.id.edtnm);
-         edtprice = view.findViewById(R.id.edtprice);
-         edtdetail = view.findViewById(R.id.edtdetail);
-         img_pro = view.findViewById(R.id.imgview);
+        edtpnm = view.findViewById(R.id.edtnm);
+        edtprice = view.findViewById(R.id.edtprice);
+        edtdetail = view.findViewById(R.id.edtdetail);
+        img_pro = view.findViewById(R.id.imgview);
 
         FloatingActionButton uploadproimage = view.findViewById(R.id.btnuploadimg);
         edtpnm.requestFocus();
+        view.findViewById(R.id.btnproclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
 
+            }
+        });
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,6 +465,14 @@ Client client;
         final EditText edtmob = view.findViewById(R.id.edtmob);
         edtname.requestFocus();
 
+        view.findViewById(R.id.btnviewallagent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* Intent i = new Intent(getApplicationContext(), admin_dashboard.class);
+                startActivity(i);*/
+                dialog.dismiss();
+            }
+        });
 
         spd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -368,7 +487,7 @@ Client client;
         });
 
 
-        view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnclose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -406,33 +525,27 @@ Client client;
                     ref.child("Agent_data").child("+91" + mob).setValue(users);
                     Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
                     registerUser();
-
                     dialog.dismiss();
-
                     deliver_orderList.remove(p);
                     deliver_orderList.clear();
                     arrayList.clear();
-
                 }
             }
         });
     }
 
-    public void registerUser() {
-
+    public void registerUser()
+    {
         String email = edtemail.getText().toString();
         String password = edtpass.getText().toString();
-
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
-
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -442,19 +555,16 @@ Client client;
                         } else {
                             Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }
 
     public void showCustomDialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
         final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
         dialog.setContentView(view);
         dialog.show();
-
         //get all edittext in dialog_customer_add
         edtnm = view.findViewById(R.id.edtnm);
         edtmob = view.findViewById(R.id.edtmob);
@@ -467,12 +577,17 @@ Client client;
         edtnm.requestFocus();
         //image chooser
 
+        view.findViewById(R.id.btncloseclient).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         //image upload
         btnuploadimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showFileChooser();
-
             }
         });
 
@@ -513,8 +628,7 @@ Client client;
     }
 
 
-
-   private void showFileChooser() {
+    private void showFileChooser() {
         //for image select
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -523,62 +637,60 @@ Client client;
 
     }
 
-    private void showFileChooser1() {
+    private void showFileChooser1()
+    {
         //for image select
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST1);
     }
-    public String getFileExtension(Uri uri) {
+
+    public String getFileExtension(Uri uri)
+    {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-    private void animateFAB() {
-
+    private void animateFAB()
+    {
         if (isFabOpen) {
-
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
             fab3.startAnimation(fab_close);
             fab4.startAnimation(fab_close);
-
             tvhide.startAnimation(fab_close);
             tvagenthide.startAnimation(fab_close);
             tvproducthide.startAnimation(fab_close);
             tvlogouthide.startAnimation(fab_close);
-
             fab1.setClickable(false);
             fab2.setClickable(false);
             fab3.setClickable(false);
             fab4.setClickable(false);
-
             isFabOpen = false;
             Log.d("Raj", "close");
-
-        } else {
+        }
+        else
+            {
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
             fab3.startAnimation(fab_open);
             fab4.startAnimation(fab_open);
-
             tvhide.startAnimation(fab_open);
             tvagenthide.startAnimation(fab_open);
             tvproducthide.startAnimation(fab_open);
             tvlogouthide.startAnimation(fab_open);
-
             fab1.setClickable(true);
             fab2.setClickable(true);
             fab3.setClickable(true);
             fab4.setClickable(true);
             isFabOpen = true;
             Log.d("Raj", "open");
-
         }
     }
+
     private void uploadFile1() {
         storageReference = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_UPLOADS1);
@@ -589,8 +701,6 @@ Client client;
             progressDialog.setTitle("Uploading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.show();//displays the progress bar
-
-
             //getting the storage reference
             StorageReference sRef = storageReference.child(STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(filePath));
 
@@ -601,10 +711,8 @@ Client client;
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //dismissing the progress dialog
                             progressDialog.dismiss();
-
                             //displaying success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-
                             filedownloadpath = taskSnapshot.getDownloadUrl().toString();
                             addproductdata();
                             //adding an upload to firebase database
@@ -634,10 +742,8 @@ Client client;
     }
 
     private void addproductdata() {
-
         Firebase ref;
         ref = new Firebase(url);
-
         String pnm = edtpnm.getText().toString();
         String price = edtprice.getText().toString();
         String detail = edtdetail.getText().toString();
@@ -658,7 +764,6 @@ Client client;
             users.put("image", filedownloadpath);
             ref.child("Product_data").push().setValue(users);
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -672,11 +777,8 @@ Client client;
             progressDialog.setTitle("Uploading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.show();
-
             //getting the storage reference
-
             StorageReference sRef = storageReference.child(STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(filePath));
-
             //adding the file to reference
             sRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -684,33 +786,23 @@ Client client;
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //dismissing the progress dialog
                             progressDialog.dismiss();
-
                             //displaying success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-
                             //creating the upload object to store uploaded image details
                             Client cn = new Client();
                             //   Client upload = new Client(cn.getCustomer_name(),cn.getMobile_number(),cn.getAddress(),taskSnapshot.getDownloadUrl().toString());
-
                             filedownloadpath = taskSnapshot.getDownloadUrl().toString();
-
-
                             try {
 
                                 filedownloadpath = taskSnapshot.getDownloadUrl().toString();
-                                if(filedownloadpath=="")
-                                {
+                                if (filedownloadpath == "") {
                                     Toast.makeText(admin_dashboard.this, "No image Selected", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
+                                } else {
                                     addclientdata();
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, "Uri Not found: " + e.getMessage());
                             }
-
-
-
                             //adding an upload to firebase database
                           /*  String uploadId = mDatabase.push().getKey();
                             mDatabase.child(uploadId).setValue(upload);*/
@@ -769,8 +861,8 @@ Client client;
             users.put("Customer_name", nm);
             users.put("Mobile_number", mob);
             users.put("Address", add);
-            users.put("Local_address",add2);
-            users.put("image","");
+            users.put("Local_address", add2);
+            users.put("image", "");
             // users.put("upload",)
             // mDatabase.child(uploadId).setValue(upload);
             users.put("Customer_qrcode", qrcode);
@@ -778,15 +870,12 @@ Client client;
             // ref.child()
             //   ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
-
-
         }
-        
+
     }
 
     //no image
-
-//with image
+    //with image
     private void addclientdata() {
         Firebase ref;
         ref = new Firebase(url);
@@ -819,18 +908,14 @@ Client client;
             users.put("Customer_name", nm);
             users.put("Mobile_number", mob);
             users.put("Address", add);
-            users.put("Local_address",add2);
-
-                users.put("image", filedownloadpath);
-
+            users.put("Local_address", add2);
+            users.put("image", filedownloadpath);
             // users.put("upload",)
             // mDatabase.child(uploadId).setValue(upload);
             users.put("Customer_qrcode", qrcode);
             ref.child("Customer_data").child("+91" + mob.toString()).setValue(users);
-
             // ref.child()
-            //   ref.setValue(users);
-
+            // ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
         }
     }
@@ -863,13 +948,11 @@ Client client;
                 try {
                     JSONObject obj = new JSONObject(result.getContents());
 
-
                 } catch (JSONException e) {
-                    e.printStackTrace();
 
+                    e.printStackTrace();
                     //get qr result data in toTest var
                     toTest = result.getContents();
-
                     if (toTest.equals("")) {
 
                     } else {
@@ -884,13 +967,12 @@ Client client;
 
         //firebase add new Agent Accont
     }
+
     private void datacall2() {
         try {
             imgview.setImageBitmap(bitmap);
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, "datacall2: "+e);
+        } catch (Exception e) {
+            Log.e(TAG, "datacall2: " + e);
         }
     }
 
@@ -906,7 +988,7 @@ Client client;
         //Logout From Current User
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(getApplicationContext(), agent_login.class);
-        SharedPreferences preferences = getSharedPreferences("auth",MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.commit();

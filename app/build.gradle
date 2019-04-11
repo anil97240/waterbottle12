@@ -34,7 +34,6 @@ dependencies {
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     //for fab buttton
     implementation 'com.github.aakira:expandable-layout:1.4.2@aar'
-
     //scnaer library
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
@@ -44,7 +43,6 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.google.firebase:firebase-database:16.0.6'
-
     //for edittext design
     //image upload
     //firebase upload images
@@ -53,13 +51,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:10.2.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.squareup.picasso:picasso:2.5.0'
-
-
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
     //progressbar
-
     implementation 'com.agrawalsuneet.androidlibs:squareloaderspack:0.4'
-
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.agrawalsuneet.androidlibs:loaderspack:1.2.2'
 

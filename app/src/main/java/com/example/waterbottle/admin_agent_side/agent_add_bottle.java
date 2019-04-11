@@ -55,6 +55,7 @@ public class agent_add_bottle extends AppCompatActivity {
     static TextView tvqty;
 
     String userName;
+    String userName1;
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
     String s;
     Product pro;
@@ -71,8 +72,14 @@ public class agent_add_bottle extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide(); // hide the title bar
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //will hide the title
+
+        getSupportActionBar().hide();
+
+        // hide the title bar
+
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
 
         coordinatorLayout1 = findViewById(R.id.relativeLayout);
@@ -87,22 +94,27 @@ public class agent_add_bottle extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
         // User Name
 
         String Agent_name = mFirebaseUser.getDisplayName();
 
         // User ID
         mFirebaseUser.getUid();
-        // Email-ID
-        mFirebaseUser.getEmail();
-        //User-Profile (if available)
-        mFirebaseUser.getPhotoUrl();
 
+        // Email-ID
+
+        mFirebaseUser.getEmail();
+
+        //User-Profile (if available)
+
+        mFirebaseUser.getPhotoUrl();
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Product_data");
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 try {
                     slid_img = new ArrayList<>();
 
@@ -118,11 +130,11 @@ public class agent_add_bottle extends AppCompatActivity {
 
                     for (int i = 0; i < uploads.length; i++) {
                         String s = (uploads[i]);
+
                         mPager = (ViewPager) findViewById(R.id.pager);
+
                         tvdetails = findViewById(R.id.tvbottledetails);
-
                         mPager.setAdapter(new SlidingImage_Adapter(agent_add_bottle.this, slid_img));
-
                         tvdetails.setText(slid_img.get(0).getProduct_name());
                         tvprice.setText("" + slid_img.get(0).getProduct_Price());
                         priceofcon= Integer.parseInt(tvprice.getText().toString());
@@ -146,10 +158,8 @@ public class agent_add_bottle extends AppCompatActivity {
 
                                 }
                                 mPager.setCurrentItem(currentPage++, true);
-
                             }
                         };
-
                         // Pager listener over indicator
                         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -162,19 +172,17 @@ public class agent_add_bottle extends AppCompatActivity {
                             }
                             @Override
                             public void onPageScrolled(int pos, float arg1, int arg2) {
-
                             }
-
                             @Override
                             public void onPageScrollStateChanged(int pos) {
-
                             }
                         });
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
 
                 }
-
             }
 
             @Override
@@ -182,21 +190,15 @@ public class agent_add_bottle extends AppCompatActivity {
             }
 
         });
-
         pro = new Product();
         Bundle extras = getIntent().getExtras();
-
         if (extras != null) {
             userName = extras.getString("qrcode");
+            userName1 = extras.getString("cnm");
         }
     }
-
-
-
     //get all product from firebase
     //add dialog
-
-
 
   /*  private void dataadd() {
         Snackbar snackbar12 = Snackbar.make(coordinatorLayout1, "Order Successfully.", Snackbar.LENGTH_SHORT);
@@ -204,11 +206,12 @@ public class agent_add_bottle extends AppCompatActivity {
 
     }*/
 
-
     public void goback(View view) {
+
         Intent intent = new Intent(this, agent_barcode.class);
         startActivity(intent);
         finish();
+
     }
     //min bottles for
     public static void min() {
@@ -217,30 +220,31 @@ public class agent_add_bottle extends AppCompatActivity {
 
         int data = Integer.parseInt(tvqty.getText().toString());
 
-        if (data==0) {
+        if (data==0)
+        {
 
-        } else {
+        } else
+            {
+
             int b = Integer.parseInt(tvqty.getText().toString());
             b = b - 1;
-
             int lastprice;//= Integer.parseInt(slid.getProduct_Price());
             lastprice= Integer.parseInt(tv_totalcost.getText().toString());
-
-
-
             int adata= Integer.parseInt(tvprice.getText().toString());
             lastprice=lastprice-adata;
             tvqty.setText("" + b);
             tv_totalcost.setText(""+lastprice);
-        }
 
+            }
     }
     //adding bottles
     public static void add() {
         sliding_image slid=new sliding_image();
         as = SlidingImage_Adapter.data.toString();
+
         int tdata;
         tdata = Integer.parseInt(as);
+
         if (as.equals("0")) {
 
         } else {
@@ -252,30 +256,25 @@ public class agent_add_bottle extends AppCompatActivity {
                 b = b + 0;
                 tvqty.setText("" + b+" 0");
                 tvqty.setText("" + b);
-
-            } else {
-
+            }
+            else
+                {
                 int b = Integer.parseInt(tvqty.getText().toString());
                 b = b + 1;
                 int lastprice;
                 lastprice= Integer.parseInt(tv_totalcost.getText().toString());//= Integer.parseInt(slid.getProduct_Price());
                 int adata= Integer.parseInt(tvprice.getText().toString());
                 lastprice=adata+lastprice;
-
                 tvqty.setText("" + b);
                 tv_totalcost.setText(""+lastprice);
-
-            }
+                }
         }
     }
-
     public void btnadd(View view) {
         //firebase data add
         adddata();
     }
-
     private void adddata() {
-
         Firebase ref;
         ref = new Firebase(url);
         String date;
@@ -287,9 +286,7 @@ public class agent_add_bottle extends AppCompatActivity {
         String data1 = SlidingImage_Adapter.data.toString();
         String qty=tvqty.getText().toString();
         if (qty.equals("0")) {
-            /*   Snackbar snackbar1 = Snackbar.make(coordinatorLayout1, "No Bottles In Cart", Snackbar.LENGTH_SHORT);
-                 snackbar1.show();*/
-            Toast.makeText(agent_add_bottle.this, "No Bottles in Cart", Toast.LENGTH_SHORT).show();
+            Toast.makeText(agent_add_bottle.this, "No Bottles In Cart", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -298,21 +295,28 @@ public class agent_add_bottle extends AppCompatActivity {
             users.put("Botttles", tvqty.getText().toString());
             users.put("Delivry_date", date);
             users.put("QR_code", userName);
+            users.put("Customer_name",userName1);
             users.put("Total_amount", tv_totalcost.getText().toString());
             users.put("Bottle_type", tvdetails.getText().toString());
             ref.child("Bottle_delivered").push().setValue(users);
-            Toast.makeText(this, "Order Added", Toast.LENGTH_SHORT).show();
-            /*Snackbar snackbar1 = Snackbar.make(coordinatorLayout1, "Order Added", Snackbar.LENGTH_SHORT);
-            snackbar1.show();*/
+
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+
+            Toast.makeText(this, "Order Successfully", Toast.LENGTH_SHORT).show();
         }
     }
     //go to  back
     public void backpress(View view) {
         super.onBackPressed();
     }
-    public void view_client_details(View view) {
+
+    public void view_client_details(View view)
+    {
         Intent i1 = new Intent(getApplicationContext(), agent_view_client_details.class);
         i1.putExtra("qrcode",userName);
+        i1.putExtra("cnm",userName1);
         startActivity(i1);
     }
 }

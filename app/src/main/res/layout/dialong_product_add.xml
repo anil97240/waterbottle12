@@ -57,9 +57,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="75dp"
-        android:layout_marginRight="75dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginRight="73dp"
         android:text="Add Product"
         android:textColor="@color/colorText"
         android:textSize="24sp"
@@ -67,12 +67,28 @@
 
     <Button
         android:id="@+id/btnallproduct"
-        android:layout_width="match_parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/list"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+    <Button
+        android:id="@+id/btnproclose"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="353dp"
+        android:layout_marginEnd="0dp"
         android:background="@color/colorFAB1"
-        android:text="All Product"
+        android:text="Close"
         android:textColor="@color/colorText"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -108,13 +124,15 @@
 
     <Button
         android:id="@+id/btnaddproduct"
-        android:layout_width="match_parent"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-
-        android:layout_marginTop="351dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="353dp"
+        android:layout_marginRight="223dp"
         android:background="@color/colorFAB1"
         android:text="ADD"
         android:textColor="@color/colorText"

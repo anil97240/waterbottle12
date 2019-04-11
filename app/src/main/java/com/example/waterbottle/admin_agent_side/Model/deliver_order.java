@@ -5,13 +5,13 @@ import android.content.Context;
 import java.util.List;
 
 public class deliver_order {
-    private String Amount_collected, Bottle_type, Botttles, Collected_Date, Padding_amount, QR_code, Amount_total, Agent_email, Payment_Method;
+    private String Amount_collected, Bottle_type, Botttles, Collected_Date, Padding_amount, QR_code, Amount_total, Agent_email, Payment_Method, Customer_name;
 
 
     public deliver_order() {
     }
 
-    public deliver_order(String amount_collected, String bottle_type, String botttles, String collected_Date, String padding_amount, String QR_code, String amount_total, String agent_email, String payment_Method) {
+    public deliver_order(String amount_collected, String bottle_type, String botttles, String collected_Date, String padding_amount, String QR_code, String amount_total, String agent_email, String payment_Method, String customer_name) {
         Amount_collected = amount_collected;
         Bottle_type = bottle_type;
         Botttles = botttles;
@@ -21,6 +21,7 @@ public class deliver_order {
         Amount_total = amount_total;
         Agent_email = agent_email;
         Payment_Method = payment_Method;
+        Customer_name = customer_name;
     }
 
     public String getAmount_collected() {
@@ -94,5 +95,12 @@ public class deliver_order {
     public void setPayment_Method(String payment_Method) {
         Payment_Method = payment_Method;
     }
-}
 
+    public String getCustomer_name() {
+        return Customer_name;
+    }
+
+    public void setCustomer_name(String customer_name) {
+        Customer_name = customer_name;
+    }
+}

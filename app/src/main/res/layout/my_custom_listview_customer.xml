@@ -121,7 +121,7 @@
 
             <TextView
                 android:id="@+id/tvaddress"
-                android:layout_width="99dp"
+                android:layout_width="106dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="Rajkot"

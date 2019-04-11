@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.example.waterbottle.MainActivity;
@@ -38,7 +39,7 @@ import java.util.List;
 public class agent_login extends AppCompatActivity {
 
     private DatabaseReference mDatabaseReference;
-
+    ProgressBar progressdailog;
     private static final String TAG = "Mo";
     //selected image into stream of byte
     EditText edtmail, edtpass;
@@ -57,7 +58,7 @@ public class agent_login extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         setContentView(R.layout.activity_agent_login);
-
+        progressdailog=findViewById(R.id.progressBar2);
         SharedPreferences prfs = getSharedPreferences("auth", MODE_PRIVATE);
         String authname = prfs.getString("authname", "");
         //admin login
@@ -133,11 +134,13 @@ public class agent_login extends AppCompatActivity {
             return;
         }
 
+
         mAuth = FirebaseAuth.getInstance();
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         // String provider = user.getProviders().get(0);
-
+        progressdailog.setVisibility(View.VISIBLE);
         deliver_orderList = new ArrayList<>();
 
 
@@ -190,9 +193,13 @@ public class agent_login extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             // there was an error
                             if (password.length() < 6) {
+                                progressdailog.setVisibility(View.GONE);
+
                                 edtpass.setError("Validate Password");
                             } else {
-                                Snackbar.make(rv, "Re-check Id or Password", Snackbar.LENGTH_LONG)
+                                progressdailog.setVisibility(View.GONE);
+
+                                Snackbar.make(rv, "Re-check Email or Password", Snackbar.LENGTH_LONG)
                                         .setAction("Action", null)
                                         .show();
                             }
@@ -215,6 +222,7 @@ public class agent_login extends AppCompatActivity {
                                                 if(usersBean.getAgent_password().equals(edtpass.getText().toString().trim())) {
                                                     if(usersBean.getType().equals("Admin"))
                                                     {
+                                                        progressdailog.setVisibility(View.GONE);
                                                         Intent intent = new Intent(agent_login.this, MainActivity.class);
                                                         SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
                                                         SharedPreferences.Editor editor = preferences.edit();
@@ -225,6 +233,7 @@ public class agent_login extends AppCompatActivity {
                                                     }
                                                     else
                                                     {
+                                                        progressdailog.setVisibility(View.GONE);
                                                         Intent intent = new Intent(agent_login.this, agent_barcode.class);
                                                         startActivity(intent);
                                                         SharedPreferences preferences = getSharedPreferences("agent", MODE_PRIVATE);
@@ -246,30 +255,6 @@ public class agent_login extends AppCompatActivity {
 
                                 }
                             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -82,12 +82,27 @@
 
     <Button
         android:id="@+id/btnallclient"
-        android:layout_width="match_parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/list"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btncloseclient"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="9dp"
         android:background="@color/colorFAB1"
-        android:text="All Client"
+        android:text="Close"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -140,13 +155,15 @@
 
     <Button
         android:id="@+id/btnaddclient"
-        android:layout_width="match_parent"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
 
-        android:layout_marginTop="441dp"
-        android:layout_marginRight="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="446dp"
+        android:layout_marginRight="236dp"
         android:background="@color/colorFAB1"
         android:text="ADD"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"

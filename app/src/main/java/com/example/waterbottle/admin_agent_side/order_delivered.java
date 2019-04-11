@@ -1,6 +1,5 @@
 package com.example.waterbottle.admin_agent_side;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,13 +18,12 @@ import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
 import com.example.waterbottle.R;
-import com.example.waterbottle.admin_agent_side.Model.CustomExpandableListAdapter;
 import com.example.waterbottle.admin_agent_side.Model.CustomExpandableorderlist;
-import com.example.waterbottle.admin_agent_side.Model.ExpandableListDataPump;
-import com.example.waterbottle.admin_agent_side.Model.Expandabledatadeliver;
 import com.example.waterbottle.admin_agent_side.Model.deliver_order;
 import com.example.waterbottle.admin_agent_side.Model.deliver_order_adepter;
+import com.example.waterbottle.admin_agent_side.Model.order;
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,15 +42,23 @@ public class order_delivered extends AppCompatActivity {
     //the list values in the List of type hero
     ListView delivryListview;
 
+
+
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+
+
     //list to store uploads data
     List<deliver_order> deliver_orderList;
+    List<String> deliver_orderList1;
+
     ArrayList arrayList = new ArrayList<String>();
     deliver_order_adepter adapter;
     //Firebase Url Get INstance
     String url = "https://waterbottle12-e6aa9.firebaseio.com/";
     ExpandableListView expandableListView;
+    CustomExpandableorderlist customExpandableListViewAdapter;
     //expandlistview
-    CustomExpandableorderlist expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
     private DatabaseReference mDatabaseReference;
@@ -70,42 +76,8 @@ public class order_delivered extends AppCompatActivity {
 
         SharedPreferences prfs = getSharedPreferences("auth", MODE_PRIVATE);
         String authname = prfs.getString("authname", "");
-
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListDetail = Expandabledatadeliver.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new CustomExpandableorderlist(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + "List Expanded.",Toast.LENGTH_SHORT).show();
-                //curvesLoader.setVisibility(View.GONE);
-            }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + "List Collapsed.",Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(getApplicationContext(), expandableListTitle.get(groupPosition) + " -> " + expandableListDetail.get(
-                        expandableListTitle.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
+        expandableListView = findViewById(R.id.expandlist);
+        deliver_orderList1 = new ArrayList<String>();
         if (authname == "") {
             Intent intent = new Intent(order_delivered.this, agent_login.class);
             SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
@@ -114,11 +86,15 @@ public class order_delivered extends AppCompatActivity {
             editor.commit();
             startActivity(intent);
             finish();
-        } else {
-
         }
+        else
+            {
+            }
+        SetStandardGroups();
+        customExpandableListViewAdapter = new CustomExpandableorderlist(this, listDataHeader, listDataChild);
+        expandableListView.setAdapter(customExpandableListViewAdapter);
         //initializing objects
-        deliver_orderList = new ArrayList<>();
+        /* deliver_orderList = new ArrayList<>();*/
         delivryListview = (ListView) findViewById(R.id.ordercompletelistview);
         Firebase.setAndroidContext(this);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("collected_amount");
@@ -136,7 +112,7 @@ public class order_delivered extends AppCompatActivity {
                     String[] uploads = new String[deliver_orderList.size()];
                     for (int i = 0; i < uploads.length; i++) {
                         uploads[i] = deliver_orderList.get(i).getQR_code();
-                        Log.e(TAG, "onDataChange: " + uploads[i].toString());
+                        Log.e(TAG, "onDataChange: " + uploads[i]);
                     }
                     //displaying it to list
                     adapter = new deliver_order_adepter(getApplicationContext(), R.layout.order_complete_listview, deliver_orderList);
@@ -179,14 +155,74 @@ public class order_delivered extends AppCompatActivity {
                     Log.e(TAG, "New: " + e.getMessage());
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled: " + databaseError.getMessage());
             }
         });
     }
+
+    private void SetStandardGroups() {
+        deliver_orderList=new ArrayList<>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("collected_amount");
+        //retrieving upload data from firebase database
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> childItem;
+                int counter = 0;
+                // final String headerTitle = dataSnapshot.getKey();
+              //  Toast.makeText(admin_view_order.this, "" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                //    Log.e("TAG", headerTitle);
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    //   String child = (String) ds.getValue();
+                    deliver_order child = ds.getValue(deliver_order.class);
+                    deliver_orderList.add(child);
+                    listDataHeader.add("        "+child.getCustomer_name()+"                             "+child.getAmount_collected()+"                      "+child.getPadding_amount());
+                   /* childItem.add("Price :" + String.valueOf(child.getBottle_price()));
+                    childItem.add("Mobile No :" + String.valueOf(child.getCustomer_id()));
+                    childItem.add("Quantity :" + String.valueOf(child.getBotttle_qty()));
+                    childItem.add("Type :" + String.valueOf(child.getBottle_type()));
+                    childItem.add("Order Date :" + String.valueOf(child.getOrder_date()));
+                    childItem.add("total cost :" + String.valueOf(child.getTotal_cost()));*/
+                }
+                for(int i=0;i<deliver_orderList.size();i++)
+                {
+                    childItem = new ArrayList<>();
+                    childItem.add("Agent Email :" + String.valueOf(deliver_orderList.get(i).getAgent_email()+"     "));
+                    childItem.add("Collected_date :" + String.valueOf(deliver_orderList.get(i).getCollected_Date()+"     "+"Method :" + String.valueOf(deliver_orderList.get(i).getPayment_Method())));
+                    childItem.add("Total Amount :" + String.valueOf(deliver_orderList.get(i).getAmount_total()+"        C_QR :"+deliver_orderList.get(i).getQR_code()));
+                    listDataChild.put(listDataHeader.get(counter), childItem);
+                    counter++;
+                }
+                customExpandableListViewAdapter.notifyDataSetChanged();
+                curvesLoader.setVisibility(View.GONE);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
     public void gotodash(View view) {
         super.onBackPressed();
+    }
 
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(getApplicationContext(), agent_login.class);
+        SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+        startActivity(i);
+        finish();
     }
 }

@@ -71,14 +71,13 @@
 
 
     <ExpandableListView
-        android:id="@+id/expandableListView"
+        android:id="@+id/expandlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="100dp"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp"
+        android:dividerHeight="10dp"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
     <com.agrawalsuneet.loaderspack.loaders.CurvesLoader
@@ -117,5 +116,21 @@
         android:textStyle="bold"
         android:visibility="gone"
         android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fablogout"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/logout"
+        android:onClick="logout"
+        app:backgroundTint="@color/colorFAB1"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
 
 </RelativeLayout>

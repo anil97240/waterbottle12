@@ -26,7 +26,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -59,6 +58,9 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,14 +80,14 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
     EditText edtmob;
     EditText edtadd;
     EditText edtadd2;
-   EditText edtbarcode;
-   ImageView imgview;
+    EditText edtbarcode;
+    ImageView imgview;
     Client client;
     EditText edtpnm;
     EditText edtprice;
     EditText edtdetail;
 
-
+    private IntentIntegrator qrScan;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     List<Client> clientList;
@@ -136,8 +138,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         tvagenthide = findViewById(R.id.tvagenthide);
         tvproducthide = findViewById(R.id.tvhideproduct);
         tvlogouthide = findViewById(R.id.tvhidelogout);
-
-
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Customer_data");
         //retrieving upload data from firebase database
 
@@ -151,15 +151,11 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                         clientList.add(client);
                         arrayList.add(postSnapshot.getKey());
                     }
-
                     String[] uploads = new String[clientList.size()];
-
                     for (int i = 0; i < uploads.length; i++) {
                         uploads[i] = clientList.get(i).getMobile_number();
                         Log.e(TAG, "onDataChange: " + uploads[i]);
                     }
-
-
                     curvesLoader.setVisibility(View.GONE);
                     //displaying it to list
 
@@ -284,12 +280,20 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         dialog.show();
 
         //get all edittext in dialog_customer_add
-       edtpnm = view.findViewById(R.id.edtnm);
-         edtprice = view.findViewById(R.id.edtprice);
-         edtdetail = view.findViewById(R.id.edtdetail);
+        edtpnm = view.findViewById(R.id.edtnm);
+        edtprice = view.findViewById(R.id.edtprice);
+        edtdetail = view.findViewById(R.id.edtdetail);
         img_pro = view.findViewById(R.id.imgview);
-         FloatingActionButton uploadproimage = view.findViewById(R.id.btnuploadimg);
+        FloatingActionButton uploadproimage = view.findViewById(R.id.btnuploadimg);
         edtpnm.requestFocus();
+
+        view.findViewById(R.id.btnproclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
 
         view.findViewById(R.id.btnallproduct).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -377,7 +381,8 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
         }
     }
-//add product
+
+    //add product
     private void addproductdata() {
 
         Firebase ref;
@@ -403,7 +408,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             users.put("Product_name", pnm);
             users.put("Product_Price", price);
             users.put("Product_detail", detail);
-            users.put("image",filedownloadpath);
+            users.put("image", filedownloadpath);
             ref.child("Product_data").push().setValue(users);
 
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
@@ -411,6 +416,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
         }
     }
+
     private void showFileChooser1() {
 
 
@@ -437,6 +443,21 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         final EditText edtmob = view.findViewById(R.id.edtmob);
         spd = view.findViewById(R.id.spinnerid);
         edtname.requestFocus();
+        view.findViewById(R.id.btnclose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        view.findViewById(R.id.btnviewallagent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), admin_dashboard.class);
+                startActivity(i);
+                dialog.dismiss();
+            }
+        });
         spd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -448,17 +469,12 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
             }
         });
-        view.findViewById(R.id.btnallagent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Admin_view_all_client.this, admin_dashboard.class);
-                startActivity(i);
-            }
-        });
+
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Firebase ref;
+
                 ref = new Firebase(url);
 
                 String email = edtemail.getText().toString();
@@ -477,6 +493,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                 } else if (!valid.isValidMobile(mob)) {
                     edtmob.setError("Invalid Mobile No");
                 } else {
+
                     Map<String, String> users = new HashMap<>();
                     users.put("Agent_email", email);
                     users.put("Agent_password", pass);
@@ -487,11 +504,11 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                     Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
                     registerUser();
                     dialog.dismiss();
+
                 }
             }
         });
     }
-
     private void registerUser() {
         String email = edtemail.getText().toString();
         String password = edtpass.getText().toString();
@@ -534,7 +551,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         edtadd = view.findViewById(R.id.edtname);
         edtadd2 = view.findViewById(R.id.edtaddresstwo);
         edtbarcode = view.findViewById(R.id.edtbarcode);
-       imgview = view.findViewById(R.id.imgview);
+        imgview = view.findViewById(R.id.imgview);
         FloatingActionButton btn = view.findViewById(R.id.btnuploadimg);
 
         edtnm.requestFocus();
@@ -545,19 +562,26 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         edtadd2.setText(c.getAddress());
         edtbarcode.setText(c.getCustomer_qrcode());
 
+        view.findViewById(R.id.btncloseclient).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
         try {
             Picasso.with(getApplicationContext())
                     .load(c.getImage())
                     .into(imgview);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
 
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //set all Client display activity
              /*   Intent i = new Intent(getApplicationContext(), Admin_view_all_client.class);
                 startActivity(i);*/
@@ -567,6 +591,9 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                qrScan = new IntentIntegrator(Admin_view_all_client.this);
+                qrScan.initiateScan();
                 //add barcode scann code herer
                 //Toast.makeText(Admin_view_all_client.this, "barcode scanner", Toast.LENGTH_SHORT).show();
             }
@@ -577,6 +604,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
             }
         });
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -590,7 +618,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
                 uploadFile();
 
-              /*  String nm = edtnm.getText().toString();
+              /*String nm = edtnm.getText().toString();
                 String mob = edtmob.getText().toString();
                 String add = edtadd.getText().toString();
                 String add2 = edtadd2.getText().toString();
@@ -609,8 +637,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                 } else if (!valid.isValidName(qrcode)) {
                     edtbarcode.setError("Invalid Qrcode");
                 } else {
-
-
                     Map<String, String> users = new HashMap<>();
                     users.put("Customer_name", nm);
                     users.put("Mobile_number", mob);
@@ -622,6 +648,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                     } else {
                         users.put("image", filedownloadpath);
                     }
+
                     mDatabaseReference.child(String.valueOf(arrayList.get(p))).setValue(users);
                     Toast.makeText(getApplicationContext(), "Client Updated.", Toast.LENGTH_SHORT).show();
                     clientList.clear();
@@ -643,11 +670,18 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         //get all edittext in dialog_customer_add
         edtnm = view.findViewById(R.id.edtnm);
         edtmob = view.findViewById(R.id.edtmob);
-       edtadd = view.findViewById(R.id.edtname);
+        edtadd = view.findViewById(R.id.edtname);
         edtadd2 = view.findViewById(R.id.edtaddresstwo);
-       edtbarcode = view.findViewById(R.id.edtbarcode);
+        edtbarcode = view.findViewById(R.id.edtbarcode);
         imgview = view.findViewById(R.id.imgview);
         edtnm.requestFocus();
+
+        view.findViewById(R.id.btncloseclient).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -659,7 +693,8 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         view.findViewById(R.id.btnscannbarcode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                qrScan = new IntentIntegrator(Admin_view_all_client.this);
+                qrScan.initiateScan();
             }
         });
 
@@ -738,7 +773,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             //displaying progress dialog while image is uploading
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.show();
 
             //getting the storage reference
@@ -765,11 +800,9 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                             try {
 
                                 filedownloadpath = taskSnapshot.getDownloadUrl().toString();
-                                if(filedownloadpath=="")
-                                {
+                                if (filedownloadpath == "") {
                                     Toast.makeText(getApplicationContext(), "No image Selected", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
+                                } else {
                                     addclientdata();
                                 }
                             } catch (Exception e) {
@@ -836,10 +869,8 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             users.put("Address", add);
             users.put("Local_address", add2);
             try {
-                users.put("image",c.getImage());
-            }
-            catch (Exception e)
-            {
+                users.put("image", c.getImage());
+            } catch (Exception e) {
                 //Toast.makeText(this, ""+e, Toast.LENGTH_SHORT).show();
                 users.put("image", "");
             }
@@ -890,23 +921,18 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             users.put("Customer_name", nm);
             users.put("Mobile_number", mob);
             users.put("Address", add);
-            users.put("Local_address",add2);
-
+            users.put("Local_address", add2);
             users.put("image", filedownloadpath);
-
             // users.put("upload",)
             // mDatabase.child(uploadId).setValue(upload);
             users.put("Customer_qrcode", qrcode);
             ref.child("Customer_data").child("+91" + mob.toString()).setValue(users);
-
             // ref.child()
             //   ref.setValue(users);
-
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
             clientList.clear();
             arrayList.clear();
             adapter.notifyDataSetChanged();
-
         }
 
     }
@@ -928,17 +954,39 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                 e.printStackTrace();
             }
         }
+
+        if (result != null) {
+            //if qrcode has nothing in it
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+            } else {
+
+                try {
+                    JSONObject obj = new JSONObject(result.getContents());
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //get qr result data in toTest var
+                        //qr code set text in edittext
+
+                    edtbarcode.setText(result.getContents().toString());
+
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void datacall2() {
         try {
+
             imgview.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            Log.e(TAG, "datacall2: " + e);
         }
-        catch (Exception e)
-        {
-            Log.e(TAG, "datacall2: "+e);
-        }
-        }
+    }
 
     private void datacall() {
         try {
@@ -955,6 +1003,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+
     public void goback(View view) {
         super.onBackPressed();
     }

@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class agent_view_client_details extends AppCompatActivity {
-    String userName;
+    String userName, userName1;
     int adata = 0;
 
     RadioGroup rdgroup;
@@ -79,6 +80,8 @@ public class agent_view_client_details extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             userName = extras.getString("qrcode");
+            userName1 = extras.getString("cnm");
+
             // and get whatever type user account id is
             // edtbarcode.setText(userName.toString());
         }
@@ -175,12 +178,13 @@ public class agent_view_client_details extends AppCompatActivity {
                   /*  tvtotaldata.setText("Collected Amount:"+adata);
                     tvpendingamout.setText("Pending Amout:"+datapending);*/
                     tvtotalamount.setText("" + datapending);
-                    edtpendding.setText(""+datapending);
+                    edtpendding.setText("" + datapending);
                     //select product for delete
                 } catch (Exception e) {
                     Log.e(TAG, "New: " + e.getMessage());
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -189,6 +193,7 @@ public class agent_view_client_details extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
@@ -202,8 +207,7 @@ public class agent_view_client_details extends AppCompatActivity {
                         a = a + 0;
                         edtpendding.setText("" + a);
                     } catch (Exception e) {
-                        Log.e(TAG, "afterTextChanged" + e);
-                        edtpendding.setText(""+datapending);
+                        edtpendding.setText("" + datapending);
                     }
                 } else {
 
@@ -230,8 +234,6 @@ public class agent_view_client_details extends AppCompatActivity {
         s = edtamount.getText().toString();
         s1 = edtpendding.getText().toString();
 
-
-
         if (!s.equals("")) {
             a = Integer.parseInt(s);
         }
@@ -240,11 +242,9 @@ public class agent_view_client_details extends AppCompatActivity {
         }
         t = a + p;
         // mDatabaseReference = FirebaseDatabase.getInstance().getReference("collected_amount_agent");
-        if(edtamount.getText().toString().equals("")) {
+        if (edtamount.getText().toString().equals("")) {
             edtamount.setError("Enter Some Amount");
-        }
-        else
-        {
+        } else {
             Firebase ref;
             ref = new Firebase(url);
             String date;
@@ -254,7 +254,7 @@ public class agent_view_client_details extends AppCompatActivity {
             FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
             FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-
+            users.put("Customer_name", userName1);
             users.put("QR_code", userName);
             users.put("Agent_email", mFirebaseUser.getEmail().toString());
             users.put("Amount_total", String.valueOf(t));
@@ -263,20 +263,15 @@ public class agent_view_client_details extends AppCompatActivity {
             users.put("Collected_Date", date.toString());
             users.put("Payment_Method", "Cash");
             ref.child("collected_amount").push().setValue(users);
-
-
             Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Data Added", Snackbar.LENGTH_SHORT);
             snackbar1.show();
-
             //clear editext and Textview
             edtpendding.setText("");
             edtamount.setText("");
             tvtotalamount.setText("");
-
             //for a hide a keyboard
             InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(edtamount.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
             try {
                 //clear all data in listview
                 deliver_orderList.clear();
