@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_view_corner"
+    >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/list_view_corner"
+        >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="116dp"
+                android:layout_height="match_parent"
+
+                android:text="Date"
+                android:textAlignment="center"
+                android:textColor="@color/zxing_custom_viewfinder_laser"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/listTitle1"
+                android:layout_width="107dp"
+                android:layout_height="wrap_content"
+                android:text="C.Name"
+                android:textAlignment="center"
+                android:textColor="@color/zxing_custom_viewfinder_laser"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:text="Bottles"
+                android:textColor="@color/zxing_custom_viewfinder_laser"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:text="Status"
+                android:textColor="@color/zxing_custom_viewfinder_laser"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+        <TextView
+            android:id="@+id/date1"
+            android:layout_width="117dp"
+            android:layout_height="match_parent"
+            android:text="04-01-2019"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+
+    </TableLayout>
+
+
+
+</RelativeLayout>

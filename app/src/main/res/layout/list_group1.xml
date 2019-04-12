@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_view_corner"
+
+    android:paddingLeft="10dp">
+
+    <TableLayout
+        android:layout_width="356dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
+
+                android:text="C.Name"
+                android:textAlignment="center"
+                android:textColor="@color/colorBackgroud"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="Collected.Amt"
+                android:textColor="@color/colorBackgroud"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:text="Pending"
+                android:textColor="@color/colorBackgroud"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+
+        <TextView
+            android:id="@+id/tvcustomer_name"
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="2dp"
+            android:text="abc"
+            android:textColor="@color/colorText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+
+    </TableLayout>
+
+
+</RelativeLayout>
