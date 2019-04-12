@@ -69,8 +69,6 @@ import java.util.Map;
 
 
 public class Admin_view_all_client extends AppCompatActivity implements View.OnClickListener {
-
-
     public static final String STORAGE_PATH_UPLOADS = "uploads/";
     public static final String DATABASE_PATH_UPLOADS1 = "Product_data";
     private static final String TAG = "Mohit";
@@ -413,6 +411,11 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
 
+            edtpnm.setText("");
+            edtprice.setText("");
+            edtdetail.setText("");
+
+            img_pro.setImageResource(R.drawable.cus);
 
         }
     }
@@ -503,12 +506,18 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
                     ref.child("Agent_data").child("+91" + mob.toString()).setValue(users);
                     Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
                     registerUser();
-                    dialog.dismiss();
+
+                    edtemail.setText("");
+                    edtpass.setText("");
+                    edtname.setText("");
+                    edtmob.setText("");
+
 
                 }
             }
         });
     }
+
     private void registerUser() {
         String email = edtemail.getText().toString();
         String password = edtpass.getText().toString();
@@ -617,6 +626,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
 
                 uploadFile();
+                dialog.dismiss();
 
               /*String nm = edtnm.getText().toString();
                 String mob = edtmob.getText().toString();
@@ -708,6 +718,7 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View v) {
                 uploadFile();
+
             }
         });
 
@@ -881,6 +892,14 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             // ref.child()
             //   ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+
+            edtnm.setText("");
+            edtadd2.setText("");
+            edtadd.setText("");
+            edtmob.setText("");
+            edtbarcode.setText("");
+
+            imgview.setImageResource(R.drawable.cus);
             clientList.clear();
             arrayList.clear();
             adapter.notifyDataSetChanged();
@@ -930,6 +949,14 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             // ref.child()
             //   ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+
+            edtnm.setText("");
+            edtadd2.setText("");
+            edtadd.setText("");
+            edtmob.setText("");
+            edtbarcode.setText("");
+
+            imgview.setImageResource(R.drawable.cus);
             clientList.clear();
             arrayList.clear();
             adapter.notifyDataSetChanged();
@@ -943,13 +970,11 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 datacall();
                 datacall2();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -960,17 +985,13 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
             if (result.getContents() == null) {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
-
                 try {
                     JSONObject obj = new JSONObject(result.getContents());
-
                 } catch (JSONException e) {
-
                     e.printStackTrace();
                     //get qr result data in toTest var
-                        //qr code set text in edittext
-
-                    edtbarcode.setText(result.getContents().toString());
+                    //qr code set text in edittext
+                    edtbarcode.setText(result.getContents());
 
                 }
             }
@@ -981,7 +1002,6 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
 
     private void datacall2() {
         try {
-
             imgview.setImageBitmap(bitmap);
         } catch (Exception e) {
             Log.e(TAG, "datacall2: " + e);
@@ -996,14 +1016,12 @@ public class Admin_view_all_client extends AppCompatActivity implements View.OnC
         }
     }
 
-
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
-
     public void goback(View view) {
         super.onBackPressed();
     }

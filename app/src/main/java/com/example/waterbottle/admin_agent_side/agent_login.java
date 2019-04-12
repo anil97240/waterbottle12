@@ -129,19 +129,30 @@ public class agent_login extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+
+
+
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        /*Validation_text valid = new Validation_text();
+        if (!valid.isValidEmail(email)) {
+            edtmail.setError("Invalid Email");
+        }
+        else if (!valid.isValidPassword(password)) {
+            edtpass.setError("Invalid Password");
+        }
+        else {*/
+            mAuth = FirebaseAuth.getInstance();
 
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        // String provider = user.getProviders().get(0);
-        progressdailog.setVisibility(View.VISIBLE);
-        deliver_orderList = new ArrayList<>();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
+            // String provider = user.getProviders().get(0);
+            progressdailog.setVisibility(View.VISIBLE);
+            deliver_orderList = new ArrayList<>();
 
 
       /*  Firebase.setAndroidContext(this);
@@ -181,35 +192,35 @@ public class agent_login extends AppCompatActivity {
         });*/
 
 
-        //authenticate user
+            //authenticate user
 
-       auth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(agent_login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            // there was an error
-                            if (password.length() < 6) {
-                                progressdailog.setVisibility(View.GONE);
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(agent_login.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                // there was an error
+                                if (password.length() < 6) {
+                                    progressdailog.setVisibility(View.GONE);
 
-                                edtpass.setError("Validate Password");
+                                    edtpass.setError("Validate Password");
+                                } else {
+                                    progressdailog.setVisibility(View.GONE);
+
+                                    Snackbar.make(rv, "Re-check Email or Password", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null)
+                                            .show();
+                                }
                             } else {
-                                progressdailog.setVisibility(View.GONE);
-
-                                Snackbar.make(rv, "Re-check Email or Password", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null)
-                                        .show();
-                            }
-                        } else {
 
 
-                            mDatabaseReference = FirebaseDatabase.getInstance().getReference("Agent_data");
-                            mDatabaseReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                mDatabaseReference = FirebaseDatabase.getInstance().getReference("Agent_data");
+                                mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
 
                                         // dataSnapshot is the "issue" node with all children with id 0
 
@@ -219,9 +230,8 @@ public class agent_login extends AppCompatActivity {
 
                                             if (usersBean.getAgent_email().equals(usersBean.getAgent_email().trim())) {
 
-                                                if(usersBean.getAgent_password().equals(edtpass.getText().toString().trim())) {
-                                                    if(usersBean.getType().equals("Admin"))
-                                                    {
+                                                if (usersBean.getAgent_password().equals(edtpass.getText().toString().trim())) {
+                                                    if (usersBean.getType().equals("Admin")) {
                                                         progressdailog.setVisibility(View.GONE);
                                                         Intent intent = new Intent(agent_login.this, MainActivity.class);
                                                         SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
@@ -230,9 +240,7 @@ public class agent_login extends AppCompatActivity {
                                                         editor.apply();
                                                         startActivity(intent);
                                                         finish();
-                                                    }
-                                                    else
-                                                    {
+                                                    } else {
                                                         progressdailog.setVisibility(View.GONE);
                                                         Intent intent = new Intent(agent_login.this, agent_barcode.class);
                                                         startActivity(intent);
@@ -244,17 +252,17 @@ public class agent_login extends AppCompatActivity {
                                                     }
                                                 }
                                             } else {
-                                               // Toast.makeText(getApplicationContext(), "Password is wrong", Toast.LENGTH_LONG).show();
+                                                // Toast.makeText(getApplicationContext(), "Password is wrong", Toast.LENGTH_LONG).show();
                                             }
                                         }
-                                }
+                                    }
 
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    }
+                                });
 
 
 
@@ -283,11 +291,13 @@ public class agent_login extends AppCompatActivity {
                                 finish();
 
                             }*/
+                            }
+
                         }
 
-                    }
+                    });
 
-                });
+     //   }
     }
 
     @Override

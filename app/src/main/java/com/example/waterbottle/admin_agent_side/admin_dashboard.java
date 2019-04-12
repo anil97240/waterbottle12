@@ -498,6 +498,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
 
+
                 Firebase ref;
                 ref = new Firebase(url);
                 String email = edtemail.getText().toString();
@@ -505,7 +506,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 String name = edtname.getText().toString();
                 String mob = edtmob.getText().toString();
                 Validation_text valid = new Validation_text();
-
                 if (!valid.isValidName(name)) {
                     edtname.setError("Invalid Name");
                 } else if (!valid.isValidEmail(email)) {
@@ -525,7 +525,12 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                     ref.child("Agent_data").child("+91" + mob).setValue(users);
                     Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
                     registerUser();
-                    dialog.dismiss();
+
+                    edtemail.setText("");
+                    edtpass.setText("");
+                    edtname.setText("");
+                    edtmob.setText("");
+
                     deliver_orderList.remove(p);
                     deliver_orderList.clear();
                     arrayList.clear();
@@ -764,6 +769,13 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             users.put("image", filedownloadpath);
             ref.child("Product_data").push().setValue(users);
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+
+            edtpnm.setText("");
+            edtprice.setText("");
+            edtdetail.setText("");
+            img_pro.setImageBitmap(null);
+            img_pro.setImageResource(R.drawable.cus);
+
         }
     }
 
@@ -870,6 +882,13 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             // ref.child()
             //   ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+            edtnm.setText("");
+            edtadd2.setText("");
+            edtadd.setText("");
+            edtmob.setText("");
+            edtbarcode.setText("");
+            imgview.setImageResource(R.drawable.cus);
+
         }
 
     }
@@ -917,6 +936,13 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             // ref.child()
             // ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+            edtnm.setText("");
+            edtadd2.setText("");
+            edtadd.setText("");
+            edtmob.setText("");
+            edtbarcode.setText("");
+            imgview.setImageResource(R.drawable.cus);
+
         }
     }
 

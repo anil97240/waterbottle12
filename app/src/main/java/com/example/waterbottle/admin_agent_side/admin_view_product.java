@@ -114,7 +114,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
     private TextView tvhide,tvagenthide,tvproducthide,tvlogouthide;
 
     private IntentIntegrator qrScan;
-
+     MyProductListAdapter adapter;
 
     @SuppressLint("ResourceType")
     @Override
@@ -164,7 +164,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                         Log.e(TAG, "onDataChange: " + uploads[i]);
                     }
                     //displaying it to list
-                    final MyProductListAdapter adapter = new MyProductListAdapter(getApplicationContext(), R.layout.product_listview, productList);
+                    adapter = new MyProductListAdapter(getApplicationContext(), R.layout.product_listview, productList);
                     myListView.setAdapter(adapter);
                     myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -395,6 +395,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 uploadFile2();
+                dialog.dismiss();
             }
         });
 
@@ -489,6 +490,12 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             ref.child("Product_data").child(arrayList.get(p).toString()).setValue(users);
 
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+
+
+
+            productList.clear();
+            arrayList.clear();
+            adapter.notifyDataSetChanged();
         }
 
     }
@@ -516,6 +523,12 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             users.put("image",filedownloadpath);
             ref.child("Product_data").child(arrayList.get(p).toString()).setValue(users);
             Toast.makeText(getApplicationContext(),"Product add", Toast.LENGTH_SHORT).show();
+
+
+            productList.clear();
+            arrayList.clear();
+            adapter.notifyDataSetChanged();
+
         }
     }
 
@@ -595,7 +608,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
                     ref.child("Agent_data").child("+91" + mob.toString()).setValue(users);
                     Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
                     registerUser();
-                    dialog.dismiss();
+
+                    edtemail.setText("");
+                    edtpass.setText("");
+                    edtname.setText("");
+                    edtmob.setText("");
                 }
             }
         });
@@ -630,8 +647,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
 
     public void showCustomDialog() {
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         View view = getLayoutInflater().inflate(R.layout.dialog_customer_add, null);
         final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
@@ -651,7 +666,6 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         edtnm.requestFocus();
         //image chooser
 
-
         view.findViewById(R.id.btncloseclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -666,15 +680,12 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
 
             }
         });
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String userName = extras.getString("qrcode");
             // and get whatever type user account id is
             // edtbarcode.setText(userName.toString());
         }
-
-
         view.findViewById(R.id.btnallclient).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -698,6 +709,7 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 uploadFile();
+
                 //  Toast.makeText(admin_dashboard.this, ""+edtnm.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -835,6 +847,15 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             users.put("image", filedownloadpath);
             ref.child("Product_data").push().setValue(users);
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
+            productList.clear();
+            arrayList.clear();
+            adapter.notifyDataSetChanged();
+
+            edtpnm.setText("");
+            edtprice.setText("");
+            edtdetail.setText("");
+
+            img_pro.setImageResource(R.drawable.cus);
 
         }
     }
@@ -950,6 +971,14 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             //ref.child()
             //ref.setValue(users);
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+
+            edtnm.setText("");
+            edtadd2.setText("");
+            edtadd.setText("");
+            edtmob.setText("");
+            edtbarcode.setText("");
+
+            imgview.setImageResource(R.drawable.cus);
         }
 
     }
@@ -1001,6 +1030,12 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             //   ref.setValue(users);
 
             Toast.makeText(getApplicationContext(), "Customer added", Toast.LENGTH_SHORT).show();
+            edtnm.setText("");
+            edtadd2.setText("");
+            edtadd.setText("");
+            edtmob.setText("");
+            edtbarcode.setText("");
+            imgview.setImageBitmap(null);
         }
     }
 

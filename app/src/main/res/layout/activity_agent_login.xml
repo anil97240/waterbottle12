@@ -25,7 +25,7 @@
         android:id="@+id/edtusername1"
         android:layout_width="288dp"
 
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="62dp"
         android:layout_marginLeft="62dp"
@@ -37,6 +37,7 @@
         android:ems="10"
         android:hint="@string/user_name"
         android:inputType="textPersonName"
+        android:paddingStart="5dp"
         android:textColor="#4E4C4C"
         android:textSize="20dp"
         android:textStyle="bold" />
@@ -44,7 +45,7 @@
     <EditText
         android:id="@+id/edtpass1"
         android:layout_width="288dp"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
         android:layout_marginStart="57dp"
@@ -57,6 +58,7 @@
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:paddingStart="5dp"
         android:textColor="#4E4C4C"
         android:textSize="20dp"
         android:textStyle="bold" />
