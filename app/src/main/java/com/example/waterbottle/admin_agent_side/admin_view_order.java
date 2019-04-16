@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
+import com.example.waterbottle.MainActivity;
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.Model.CustomExpandableListAdapter;
 import com.example.waterbottle.admin_agent_side.Model.order;
@@ -77,9 +78,7 @@ public class admin_view_order extends AppCompatActivity {
         SharedPreferences prfs = getSharedPreferences("auth", MODE_PRIVATE);
         String authname = prfs.getString("authname", "");
         expandableListView = findViewById(R.id.expandableListView);
-
         if (authname == "") {
-
             Intent intent = new Intent(admin_view_order.this, agent_login.class);
             SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -87,7 +86,6 @@ public class admin_view_order extends AppCompatActivity {
             editor.commit();
             startActivity(intent);
             finish();
-
         } else {
 
         }
@@ -173,7 +171,7 @@ public class admin_view_order extends AppCompatActivity {
         });
     }
 
-    private void SetStandardGroups(){
+    private void SetStandardGroups() {
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("Customer_order");
@@ -189,15 +187,31 @@ public class admin_view_order extends AppCompatActivity {
                     //   String child = (String) ds.getValue();
                     order child = ds.getValue(order.class);
                     orderList.add(child);
-                    listDataHeader.add("            " + child.getOrder_date() + "        " + child.getCustomer_name() + "                    " + child.getBotttle_qty() + "                " + child.getStatus());
+
                    /*childItem.add("Price :" + String.valueOf(child.getBottle_price()));
                     childItem.add("Mobile No :" + String.valueOf(child.getCustomer_id()));
                     childItem.add("Quantity :" + String.valueOf(child.getBotttle_qty()));
                     childItem.add("Type :" + String.valueOf(child.getBottle_type()));
-                    childItem.add("Order Date :" + String.valueOf(child.getOrder_date()));
+                    childItem.add("Order Date :" + String.valueOf0(child.getOrder_date()));
                     childItem.add("total cost :" + String.valueOf(child.getTotal_cost()));*/
                 }
-                //child data get
+                for(int i=0;i<orderList.size();i++)
+                {
+                    if(orderList.get(i).getStatus().equals("1")) {
+                        listDataHeader.add("            " + orderList.get(i).getOrder_date() + "        " + orderList.get(i).getCustomer_name() + "               " + orderList.get(i).getBotttle_qty() + "             " + "Ordered");
+                    }
+
+                    if(orderList.get(i).getStatus().equals("2")) {
+                        listDataHeader.add("            " + orderList.get(i).getOrder_date() + "        " + orderList.get(i).getCustomer_name() + "               " + orderList.get(i).getBotttle_qty() + "             " + "Shipping");
+                    }
+
+                    if(orderList.get(i).getStatus().equals("3")) {
+                        listDataHeader.add("            " + orderList.get(i).getOrder_date() + "        " + orderList.get(i).getCustomer_name() + "               " + orderList.get(i).getBotttle_qty() + "             " + "Delivered");
+                    }
+
+                }
+                //
+                // child data get
                 mDatabaseReference = FirebaseDatabase.getInstance().getReference("Orer_details");
                 mDatabaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -208,27 +222,22 @@ public class admin_view_order extends AppCompatActivity {
                             orderdetailList.add(data1);
                         }
                         for (int i = 0; i < orderList.size(); i++) {
-                            try
-                            {
+                            try {
                                 childItem = new ArrayList<>();
-                                childItem.add(  "Pro_Name                Bottles                     Price");
+                                childItem.add("Pro_Name                Bottles                     Price");
                                 String orderdata = orderList.get(i).getOrder_id();
                                 //  Toast.makeText(admin_view_order.this, ""+orderdata, Toast.LENGTH_SHORT).show();
-                                for (int j = 0; j < orderdetailList.size(); j++)
-                                {
-                                    if (orderdetailList.get(j).getOrder_id().equals(orderdata))
-                                    {
+                                for (int j = 0; j < orderdetailList.size(); j++) {
+                                    if (orderdetailList.get(j).getOrder_id().equals(orderdata)) {
                                         //  childItem.add("Price :" + String.valueOf(orderList.get(i).getOrder_id() + "        " + "Mobile No :" + String.valueOf(orderList.get(i).getCustomer_id())));
                                         //  childItem.add("Quantity :" + String.valueOf(orderList.get(i).getBotttle_qty() + "        " + "Status :" + String.valueOf(orderList.get(i).getStatus())));
                                         childItem.add(orderdetailList.get(j).getProduct_name() + "                            " + orderdetailList.get(j).getBotttle_qty() + "                             " + orderdetailList.get(j).getBottle_price());
                                         // childItem.add();
                                         //  childItem.add("Quantity  : "+orderdetailList.get(j).getBotttle_qty()+""+"Price  : "+orderdetailList.get(j).getBottle_price());
                                     }
-
                                     listDataChild.put(listDataHeader.get(i), childItem);
                                     counter++;
                                 }
-
                             } catch (Exception e) {
                                 Log.e(TAG, "onDataChange" + e);
                             }
@@ -244,15 +253,17 @@ public class admin_view_order extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
-    public void btnback(View view) {
-        super.onBackPressed();
-    }
-    public void logout(View view) {
 
+    public void btnback(View view) {
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(getApplicationContext(), agent_login.class);
         SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
@@ -261,6 +272,5 @@ public class admin_view_order extends AppCompatActivity {
         editor.commit();
         startActivity(i);
         finish();
-
     }
 }

@@ -20,7 +20,7 @@
 
             <TextView
                 android:id="@+id/textView8"
-                android:layout_width="128dp"
+                android:layout_width="124dp"
                 android:layout_height="match_parent"
                 android:text="Name"
                 android:textAlignment="center"
@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/textView7"
-                android:layout_width="137dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:text="Agent Mobile"
@@ -70,7 +70,7 @@
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:text="abc"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textColor="@color/colorText"
                 android:textSize="12sp"
                 android:textStyle="bold" />

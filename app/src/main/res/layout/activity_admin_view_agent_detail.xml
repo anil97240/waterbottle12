@@ -1,12 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content2"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/uibackgroud"
-    tools:context=".admin_agent_side.Admin_view_all_client">
+    tools:context=".admin_agent_side.admin_dashboard">
+
+    <RelativeLayout
+        android:id="@+id/header1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorFAB1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <Button
+            android:id="@+id/btnback1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/backicon"
+            android:onClick="goback1"/>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="18dp"
+            app:srcCompat="@drawable/titlelogo" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="126dp"
+            android:text="Agent Details"
+            android:textColor="@color/colorText"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
@@ -81,77 +125,16 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/add"
+        android:visibility="gone"
         app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
-
-
-    <RelativeLayout
-        android:id="@+id/header2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorFAB1"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <Button
-            android:id="@+id/btnback1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/backicon"
-            android:onClick="goback1"/>
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="18dp"
-            app:srcCompat="@drawable/titlelogo" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="173dp"
-            android:layout_height="51dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="101dp"
-            android:text="Client Data"
-            android:textColor="@color/colorText"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/Adminviewallclient"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/header2"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="20.0sp"
-        android:paddingRight="10dp"
-        android:scrollbars="horizontal" />
-
     <com.agrawalsuneet.loaderspack.loaders.CurvesLoader
-
         android:id="@+id/curvesLoader"
         android:layout_width="182dp"
         android:layout_height="214dp"
@@ -172,10 +155,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="400dp"
+        android:layout_height="577dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="134dp"
+        android:layout_marginBottom="19dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="20.0sp"
+        android:paddingRight="10dp"
+        android:visibility="gone" />
+
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:dividerHeight="10dp"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:scrollbars="horizontal"
+        android:visibility="visible"
+        android:childDivider="#FFF"/>
+
+    <EditText
+        android:id="@+id/inputSearch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="88dp"
+        android:ems="10"
+        android:hint="Search Agent"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />
+
     <TextView
         android:id="@+id/tvhide"
         android:layout_width="wrap_content"
-        android:layout_height="64dp"
+        android:layout_height="68dp"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="26dp"
         android:layout_marginBottom="0dp"
@@ -232,5 +259,21 @@
         android:textStyle="bold"
         android:visibility="invisible" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fablogout"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/logout"
+        app:backgroundTint="@color/colorFAB1"
+        app:elevation="6dp"
+        android:onClick="logout"
+        app:pressedTranslationZ="12dp" />
 
 </RelativeLayout>
+

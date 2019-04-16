@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
+import com.example.waterbottle.MainActivity;
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.product_model.MyProductListAdapter;
 import com.example.waterbottle.admin_agent_side.product_model.Product;
@@ -490,14 +491,11 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             ref.child("Product_data").child(arrayList.get(p).toString()).setValue(users);
 
             Toast.makeText(getApplicationContext(), "Product add", Toast.LENGTH_SHORT).show();
-
-
-
             productList.clear();
             arrayList.clear();
             adapter.notifyDataSetChanged();
-        }
 
+        }
     }
 //new image
     private void updateproductdata() {
@@ -524,14 +522,12 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
             ref.child("Product_data").child(arrayList.get(p).toString()).setValue(users);
             Toast.makeText(getApplicationContext(),"Product add", Toast.LENGTH_SHORT).show();
 
-
             productList.clear();
             arrayList.clear();
             adapter.notifyDataSetChanged();
 
         }
     }
-
     //for agent add
     public void showAgentDialog() {
         final String[] type = {"Agent"};
@@ -1131,6 +1127,8 @@ public class admin_view_product extends AppCompatActivity implements View.OnClic
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
     public void btnback1(View view) {
-        super.onBackPressed();
+        Intent i=new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

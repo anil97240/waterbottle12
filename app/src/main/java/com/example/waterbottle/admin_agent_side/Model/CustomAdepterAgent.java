@@ -1,14 +1,13 @@
 package com.example.waterbottle.admin_agent_side.Model;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-
 import com.example.waterbottle.R;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,8 +43,15 @@ public class CustomAdepterAgent extends BaseExpandableListAdapter {
         }
         TextView tv = convertView.findViewById(R.id.expandedListItem);
 
-
-        //    tvheader.setText("  Date                  C.Name                   C.AMT");
+        if(childPosition==0)
+        {
+           // tv.setTextColor(Color.parseColor.BLUE);
+            tv.setTextColor(Color.parseColor("#3080DB"));
+        }
+        else
+        {
+            tv.setTextColor(Color.BLACK);
+        }
 
         tv.setText(childText);
         return convertView;
@@ -76,14 +82,18 @@ public class CustomAdepterAgent extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
+
+        if (convertView == null)
+        {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_group_agent, null);
         }
 
         TextView tv = convertView.findViewById(R.id.tvbottletotle);
+
         tv.setText(headerTitle);
         return convertView;
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.waterbottle.admin_agent_side.Model;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,16 @@ public class CustomExpandableorderlist extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.list_item1, null);
         }
         TextView tv = convertView.findViewById(R.id.expandedListItem);
+      /*  if(childPosition==0)
+        {
+            // tv.setTextColor(Color.parseColor.BLUE);
+            tv.setTextColor(Color.parseColor("#3080DB"));
+        }
+        else
+        {
+            tv.setTextColor(Color.BLACK);
+        }*/
+
         tv.setText(childText);
         return convertView;
     }

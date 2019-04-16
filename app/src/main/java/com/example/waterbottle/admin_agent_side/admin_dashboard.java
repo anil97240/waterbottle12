@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
+import com.example.waterbottle.MainActivity;
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.Model.CustomAdepterAgent;
 import com.example.waterbottle.admin_agent_side.Model.MyListAdapter;
@@ -99,6 +101,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
     ImageView img_pro;
     String toTest;
     EditText inputSearch;
+
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private TextView tvhide, tvagenthide, tvproducthide, tvlogouthide;
@@ -109,16 +112,23 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
     private StorageReference storageRef;
     private FirebaseAuth mAuth;
     ArrayList arrayList = new ArrayList<String>();
+    ArrayList arrayListagent;
     //the list values in the List of type hero
     //list to store uploads data
+
     List<agent> deliver_orderList;
     List<deliver_order> deliver_order_data;
+
     //search
+
     private DatabaseReference mDatabaseReference;
+
     //qr Scanner
+
     private IntentIntegrator qrScan;
     private Uri filePath;
     int p;
+     MyListAdapter adapter1;
 
     ExpandableListView expandableListView;
     CustomAdepterAgent customExpandableListViewAdapter;
@@ -141,6 +151,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         String authname = prfs.getString("authname", "");
         expandableListView = findViewById(R.id.expandableListView);
         curvesLoader = findViewById(R.id.curvesLoader);
+        arrayListagent=new ArrayList();
         if (authname == "") {
             Intent intent = new Intent(admin_dashboard.this, agent_login.class);
             startActivity(intent);
@@ -153,12 +164,12 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
      /*   FirebaseUser user =mAuth.getCurrentUser();
         String provider = user.getProviders().get(0);*/
 
-
-        SetStandardGroups();
+        /*-SetStandardGroups();
+        arrayList=new ArrayList();
         customExpandableListViewAdapter = new CustomAdepterAgent(this, listDataHeader, listDataChild);
+*/
         expandableListView.setAdapter(customExpandableListViewAdapter);
         deliver_order_data = new ArrayList<>();
-
         deliver_orderList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.listView);
 
@@ -173,7 +184,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         agent upload = postSnapshot.getValue(agent.class);
                         deliver_orderList.add(upload);
-                        arrayList.add(postSnapshot.getKey());
+                        arrayListagent.add(postSnapshot.getKey());
                     }
                     curvesLoader.setVisibility(View.GONE);
 
@@ -186,8 +197,8 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                         Log.e(TAG, "onDataChange: " + uploads[i].toString());
                     }
                     //displaying it to list
-                    final MyListAdapter adapter = new MyListAdapter(getApplicationContext(), R.layout.my_custom_list, deliver_orderList);
-                    listView.setAdapter(adapter);
+                 adapter1 = new MyListAdapter(getApplicationContext(), R.layout.my_custom_list, deliver_orderList);
+                    listView.setAdapter(adapter1);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -200,16 +211,18 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
                             final AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this, R.style.Theme_AppCompat_DayNight_Dialog);
 
-                            builder.setTitle("Details");
-                            builder.setMessage(alert1 + "\n" + alert2 + "\n" + alert3 + "\n" + alert4 + "\n" + alert5);
+                            builder.setTitle("Are You Sure ?");
+                           builder.setMessage(alert1 + "\n" + alert2 + "\n" + alert3 + "\n" + alert4 + "\n" + alert5);
                             builder.setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Delete</font></font>"), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    mDatabaseReference.child(String.valueOf(arrayList.get(p))).removeValue();
-                                    //  Toast.makeText(Admin_view_all_client.this, "data remove", Toast.LENGTH_SHORT).show();
+
+
+                                    mDatabaseReference.child(String.valueOf(arrayListagent.get(p))).removeValue();
+                                    Toast.makeText(admin_dashboard.this, "data remove", Toast.LENGTH_SHORT).show();
                                     deliver_orderList.remove(p);
+                                    arrayListagent.clear();
                                     deliver_orderList.clear();
-                                    arrayList.clear();
-                                    adapter.notifyDataSetChanged();
+                                    adapter1.notifyDataSetChanged();
                                     //do things
                                 }
                             });
@@ -266,16 +279,47 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // listView.setAdapter(adapter);
                 adapter.getFilter().filter(s.toString());
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
+
+    }
+//edit agent
+    private void Editagent() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(admin_dashboard.this);
+        View view = getLayoutInflater().inflate(R.layout.dialong_agent_add, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.Theme_Design_BottomSheetDialog); // Style here
+        dialog.setContentView(view);
+        dialog.show();
+
+        //get all edittext in dialog_customer_add
+        edtnm = view.findViewById(R.id.edtnm);
+        edtmob = view.findViewById(R.id.edtmob);
+        edtadd = view.findViewById(R.id.edtname);
+        edtadd2 = view.findViewById(R.id.edtaddresstwo);
+        edtbarcode = view.findViewById(R.id.edtbarcode);
+
+
+     /*   edtnm.requestFocus();
+        c = clientList.get(p);
+        edtnm.setText(c.getCustomer_name());
+        edtmob.setText(c.getMobile_number());
+        edtadd.setText(c.getLocal_address());
+        edtadd2.setText(c.getAddress());
+        edtbarcode.setText(c.getCustomer_qrcode());*/
+
+
+
 
     }
 
@@ -346,7 +390,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                                     if (deliver_order_data.get(j).getAgent_email().equals(orderdata)) {
                                         //  childItem.add("Price :" + String.valueOf(orderList.get(i).getOrder_id() + "        " + "Mobile No :" + String.valueOf(orderList.get(i).getCustomer_id())));
                                         //  childItem.add("Quantity :" + String.valueOf(orderList.get(i).getBotttle_qty() + "        " + "Status :" + String.valueOf(orderList.get(i).getStatus())));
-                                        childItem.add("   "+deliver_order_data.get(j).getCollected_Date() + "           " + deliver_order_data.get(j).getCustomer_name() + "                         " + deliver_order_data.get(j).getAmount_collected());
+                                        childItem.add("   " + deliver_order_data.get(j).getCollected_Date() + "           " + deliver_order_data.get(j).getCustomer_name() + "                         " + deliver_order_data.get(j).getAmount_collected());
                                         // childItem.add();
                                         //  childItem.add("Quantity  : "+orderdetailList.get(j).getBotttle_qty()+""+"Price  : "+orderdetailList.get(j).getBottle_price());
                                     }
@@ -367,6 +411,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                     }
                 });
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -435,8 +480,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 showFileChooser1();
-
-
             }
         });
         view.findViewById(R.id.btnaddproduct).setOnClickListener(new View.OnClickListener() {
@@ -463,6 +506,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
         final EditText edtname = view.findViewById(R.id.edtname);
         final EditText edtmob = view.findViewById(R.id.edtmob);
+
         edtname.requestFocus();
 
         view.findViewById(R.id.btnviewallagent).setOnClickListener(new View.OnClickListener() {
@@ -485,8 +529,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-
-
         view.findViewById(R.id.btnclose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -494,11 +536,10 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+
         view.findViewById(R.id.btnaddagent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Firebase ref;
                 ref = new Firebase(url);
                 String email = edtemail.getText().toString();
@@ -506,6 +547,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 String name = edtname.getText().toString();
                 String mob = edtmob.getText().toString();
                 Validation_text valid = new Validation_text();
+
                 if (!valid.isValidName(name)) {
                     edtname.setError("Invalid Name");
                 } else if (!valid.isValidEmail(email)) {
@@ -515,6 +557,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                 } else if (!valid.isValidMobile(mob)) {
                     edtmob.setError("Invalid Mobile No");
                 } else {
+
                     //insert Agent in firebase
                     Map<String, String> users = new HashMap<>();
                     users.put("Agent_email", email);
@@ -524,13 +567,13 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                     users.put("Type", type[0]);
                     ref.child("Agent_data").child("+91" + mob).setValue(users);
                     Toast.makeText(getApplicationContext(), "Agent add", Toast.LENGTH_SHORT).show();
+
                     registerUser();
 
                     edtemail.setText("");
                     edtpass.setText("");
                     edtname.setText("");
                     edtmob.setText("");
-
                     deliver_orderList.remove(p);
                     deliver_orderList.clear();
                     arrayList.clear();
@@ -539,8 +582,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    public void registerUser()
-    {
+    public void registerUser() {
         String email = edtemail.getText().toString();
         String password = edtpass.getText().toString();
         if (TextUtils.isEmpty(email)) {
@@ -556,7 +598,6 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                         } else {
                             Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
@@ -642,8 +683,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void showFileChooser1()
-    {
+    private void showFileChooser1() {
         //for image select
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -651,14 +691,13 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST1);
     }
 
-    public String getFileExtension(Uri uri)
-    {
+    public String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-    private void animateFAB()
-    {
+
+    private void animateFAB() {
         if (isFabOpen) {
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
@@ -675,9 +714,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             fab4.setClickable(false);
             isFabOpen = false;
             Log.d("Raj", "close");
-        }
-        else
-            {
+        } else {
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
@@ -888,9 +925,7 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
             edtmob.setText("");
             edtbarcode.setText("");
             imgview.setImageResource(R.drawable.cus);
-
         }
-
     }
 
     //no image
@@ -1023,7 +1058,20 @@ public class admin_dashboard extends AppCompatActivity implements View.OnClickLi
     }
 
     public void goback1(View view) {
-        super.onBackPressed();
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+        finish();
     }
+
+    public void logout(View view) {
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(getApplicationContext(), agent_login.class);
+            SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            startActivity(i);
+            finish();
+        }
 }
 

@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
 import com.example.waterbottle.admin_agent_side.admin_dashboard;
+import com.example.waterbottle.admin_agent_side.admin_view_agent_detail;
 import com.example.waterbottle.admin_agent_side.admin_view_order;
 import com.example.waterbottle.admin_agent_side.agent_login;
 import com.example.waterbottle.admin_agent_side.order_delivered;
@@ -82,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
         startActivity(i);
         finish();
+    }
+
+    public void agentdetails(View view) {
+
+        Intent i=new Intent(MainActivity.this, admin_view_agent_detail.class);
+        startActivity(i);
     }
 }
 

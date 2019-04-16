@@ -178,7 +178,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="500dp"
         android:background="@color/colorFAB1"
         android:paddingLeft="20dp"
@@ -192,38 +192,39 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/backicon"
             android:onClick="backpress" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="3dp"
             app:srcCompat="@drawable/titlelogo" />
 
         <TextView
             android:id="@+id/Customer"
-            android:layout_width="228dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="2dp"
+            android:layout_width="236dp"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
             android:layout_toStartOf="@+id/imageView3"
-            android:layout_toEndOf="@+id/button2"
             android:text="Customer Data"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/colorText"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             tools:text="Customer Data" />
     </RelativeLayout>
@@ -256,6 +257,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:dividerHeight="20.0sp"
+        android:scrollbars="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

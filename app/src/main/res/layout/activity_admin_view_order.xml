@@ -8,21 +8,22 @@
     tools:context=".admin_agent_side.admin_view_order">
 
     <RelativeLayout
+        android:id="@+id/header3"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="60dp"
         android:background="@color/colorFAB1"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="18dp"
             app:srcCompat="@drawable/titlelogo" />
 
@@ -30,11 +31,11 @@
             android:id="@+id/textView3"
             android:layout_width="128dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="29dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="100dp"
             android:text="ORDER"
             android:textColor="@color/colorText"
@@ -44,15 +45,12 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/backicon"
             android:onClick="btnback" />
-
 
     </RelativeLayout>
 
@@ -70,18 +68,21 @@
         android:paddingRight="10dp"
         android:visibility="gone" />
 
-
     <ExpandableListView
         android:id="@+id/expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/header3"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
+        android:childDivider="#FFF"
         android:dividerHeight="10dp"
+        android:headerDividersEnabled="true"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:paddingTop="10dp"
+        android:scrollbars="horizontal"
         android:visibility="visible" />
-
 
     <EditText
         android:id="@+id/inputSearch"
@@ -119,7 +120,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fablogout"
         android:layout_width="65dp"
@@ -135,5 +135,6 @@
         app:backgroundTint="@color/colorFAB1"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
+
 
 </RelativeLayout>

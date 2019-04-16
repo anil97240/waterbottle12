@@ -1,12 +1,12 @@
 package com.example.waterbottle.admin_agent_side.Model;
 
 public class order {
-    private String Customer_id, Order_date,Order_id,Status, Botttle_qty, total_cost,Customer_name;
+    private String Customer_id, Order_date, Order_id, Status, Botttle_qty, total_cost, Customer_name, Customer_qrcode;
 
     public order() {
     }
 
-    public order(String customer_id, String order_date, String order_id, String status, String botttle_qty, String total_cost, String customer_name) {
+    public order(String customer_id, String order_date, String order_id, String status, String botttle_qty, String total_cost, String customer_name, String customer_qrcode) {
         Customer_id = customer_id;
         Order_date = order_date;
         Order_id = order_id;
@@ -14,6 +14,7 @@ public class order {
         Botttle_qty = botttle_qty;
         this.total_cost = total_cost;
         Customer_name = customer_name;
+        Customer_qrcode = customer_qrcode;
     }
 
     public String getCustomer_id() {
@@ -70,5 +71,13 @@ public class order {
 
     public void setCustomer_name(String customer_name) {
         Customer_name = customer_name;
+    }
+
+    public String getCustomer_qrcode() {
+        return Customer_qrcode;
+    }
+
+    public void setCustomer_qrcode(String customer_qrcode) {
+        Customer_qrcode = customer_qrcode;
     }
 }

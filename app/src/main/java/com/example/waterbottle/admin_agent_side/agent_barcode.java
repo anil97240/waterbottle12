@@ -397,7 +397,7 @@ public class agent_barcode extends AppCompatActivity implements View.OnClickList
             client.setCustomer_qrcode(qrcode);
             Map<String, String> users = new HashMap<>();
             users.put("Customer_name", nm);
-         //   users.put("Agent_email", mFirebaseUser.getEmail());
+         // users.put("Agent_email", mFirebaseUser.getEmail());
             users.put("Mobile_number", mob);
             users.put("Address", add);
             users.put("Local_address", add2);

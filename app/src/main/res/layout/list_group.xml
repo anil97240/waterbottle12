@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/list_view_corner"
+    android:background="@drawable/expandlistviewcorner"
     >
 
     <TableLayout
@@ -10,7 +10,7 @@
         android:layout_height="52dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/list_view_corner"
+        android:background="@drawable/expandlistviewcorner"
         >
 
         <TableRow
@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/listTitle1"
-                android:layout_width="107dp"
+                android:layout_width="94dp"
                 android:layout_height="wrap_content"
                 android:text="C.Name"
                 android:textAlignment="center"
@@ -40,17 +40,19 @@
 
             <TextView
                 android:id="@+id/total"
-                android:layout_width="76dp"
+                android:layout_width="67dp"
                 android:layout_height="match_parent"
                 android:text="Bottles"
                 android:textColor="@color/zxing_custom_viewfinder_laser"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/status"
                 android:layout_width="76dp"
                 android:layout_height="match_parent"
                 android:text="Status"
+                android:textAlignment="center"
                 android:textColor="@color/zxing_custom_viewfinder_laser"
                 android:textSize="18sp"
                 android:textStyle="bold" />

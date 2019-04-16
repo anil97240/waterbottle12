@@ -7,54 +7,51 @@
     android:background="@drawable/uibackgroud"
     tools:context=".admin_agent_side.order_delivered">
 
+
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:background="@color/colorFAB1">
+        android:layout_height="60dp"
+        android:background="@color/colorFAB1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <Button
+            android:id="@+id/btnback1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/backicon"
+            android:onClick="gotodash" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="18dp"
             app:srcCompat="@drawable/titlelogo" />
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="142dp"
+            android:layout_width="251dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="111dp"
-            android:layout_marginRight="111dp"
-            android:text="Delivered"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="70dp"
+            android:text="Order Deliver"
             android:textColor="@color/colorText"
             android:textSize="30sp"
             android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/backicon"
-            android:onClick="gotodash" />
-
-
     </RelativeLayout>
-
 
     <ListView
         android:id="@+id/ordercompletelistview"
@@ -74,14 +71,16 @@
         android:id="@+id/expandlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/header"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:dividerHeight="10dp"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:scrollbars="horizontal"
+        android:childDivider="#FFF"/>
 
     <com.agrawalsuneet.loaderspack.loaders.CurvesLoader
-
         android:id="@+id/curvesLoader"
         android:layout_width="182dp"
         android:layout_height="214dp"

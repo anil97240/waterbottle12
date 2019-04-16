@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
+import com.example.waterbottle.MainActivity;
 import com.example.waterbottle.R;
 import com.example.waterbottle.admin_agent_side.Model.CustomExpandableorderlist;
 import com.example.waterbottle.admin_agent_side.Model.deliver_order;
@@ -198,7 +199,7 @@ public class order_delivered extends AppCompatActivity {
                     childItem = new ArrayList<>();
                     childItem.add("Agent Email :" + String.valueOf(deliver_orderList.get(i).getAgent_email()+"     "));
                     childItem.add("Collected_date :" + String.valueOf(deliver_orderList.get(i).getCollected_Date()+"     "+"Method :" + String.valueOf(deliver_orderList.get(i).getPayment_Method())));
-                    childItem.add("Total Amount :" + String.valueOf(deliver_orderList.get(i).getAmount_total()+"        C_QR :"+deliver_orderList.get(i).getQR_code()));
+                    childItem.add("Total Amount :" + String.valueOf(deliver_orderList.get(i).getAmount_total()+"       C_QR :"+deliver_orderList.get(i).getQR_code()));
                     listDataChild.put(listDataHeader.get(counter), childItem);
                     counter++;
                 }
@@ -212,7 +213,9 @@ public class order_delivered extends AppCompatActivity {
     }
 
     public void gotodash(View view) {
-        super.onBackPressed();
+        Intent i=new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     public void logout(View view) {

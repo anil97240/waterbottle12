@@ -3,6 +3,7 @@ package com.example.waterbottle.admin_agent_side.Model;
 import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.list_item, null);
         }
         TextView tv = convertView.findViewById(R.id.expandedListItem);
+        if(childPosition==0)
+        {
+            // tv.setTextColor(Color.parseColor.BLUE);
+            tv.setTextColor(Color.parseColor("#3080DB"));
+        }
+        else
+        {
+            tv.setTextColor(Color.BLACK);
+        }
+
        // TextView tv2 = convertView.findViewById(R.id.tvname);
         //tv2.setText(  "        Pro_Name              Bottles            Price  ");
         tv.setText(childText);
